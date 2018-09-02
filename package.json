@@ -1,0 +1,63 @@
+{
+  "name": "mastoot",
+  "version": "0.0.1",
+  "main": "out/main/main.js",
+  "description": "mastoot",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npm run clean; npm run dev:build-main && npm run dev:serve",
+    "dev:build-main": "cross-env NODE_ENV=development parcel build src/main/main.js --target node --out-dir out/main",
+    "dev:build-renderer": "cross-env NODE_ENV=development parcel build src/renderer/index.html --target electron --out-dir out/renderer --public-url ./",
+    "dev:serve": "cross-env NODE_ENV=development parcel src/renderer/index.html --target electron --out-dir out/renderer --public-url ./",
+    "electron": "electron .",
+    "lint": "eslint --ext .js,.vue src",
+    "fmt": "eslint --ext .js,.vue src --fix",
+    "test": "jest",
+    "clean": "rm -r out/",
+    "package:build-main": "cross-env NODE_ENV=production parcel build src/main/main.js --target node --out-dir out/main",
+    "package:build-renderer": "cross-env NODE_ENV=production parcel build src/renderer/index.html --target electron --out-dir out/renderer --public-url ./",
+    "package": "npm run clean;rm -r dist;npm run package:build-main&&npm run package:build-renderer&&mkdir dist&&node script/packaging.js"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
+  },
+  "dependencies": {
+    "vue": "^2.5.17",
+    "vue-hot-reload-api": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.0.0",
+    "@vue/component-compiler-utils": "^2.2.0",
+    "@vue/test-utils": "^1.0.0-beta.24",
+    "babel-eslint": "^9.0.0",
+    "babel-jest": "^23.4.2",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "cross-env": "^5.2.0",
+    "electron": "^2.0.8",
+    "electron-packager": "^12.1.1",
+    "eslint": "^5.4.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-vue": "^2.0.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "eslint-plugin-vue": "^4.7.1",
+    "jest": "^23.5.0",
+    "parcel-bundler": "^1.9.7",
+    "parcel-plugin-eslint": "^1.0.4",
+    "parcel-plugin-eslint-sfc": "git://github.com/netalkGB/parcel-plugin-eslint.git#sfconly",
+    "vue-jest": "^2.6.0",
+    "vue-template-compiler": "^2.5.17"
+  }
+}
