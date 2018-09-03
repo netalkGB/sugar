@@ -1,5 +1,5 @@
 {
-  "presets": ["env"],
+  "presets": [["env", { "targets": { "electron": "2.0" } }]],
   "plugins": [
     [
       "transform-inline-environment-variables",

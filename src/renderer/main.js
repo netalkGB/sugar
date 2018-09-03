@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import App from './App'
-import log4js from 'log4js'
+import Buefy from 'buefy'
+import router from './router'
+import logger from './other/Logger'
+import '../../node_modules/buefy/lib/buefy.css'
 
-const logger = log4js.getLogger('renderer')
-logger.level = process.env.NODE_ENV === 'development' ? 'all' : 'warn'
 logger.debug('development mode.')
 
 Vue.config.productionTip = false
+
+Vue.use(Buefy)
 new Vue({
+  router,
   render: h => h(App)
 }).$mount('#app')
