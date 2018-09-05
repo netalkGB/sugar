@@ -8,7 +8,10 @@ logger.level = level
 logger.debug('development mode.')
 
 function createWindow () {
-  mainWindow = new BrowserWindow({ width: 800, height: 600 })
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600
+  })
   if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools()
   }
