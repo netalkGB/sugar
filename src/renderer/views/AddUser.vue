@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import Mastodon from 'mastodon-api'
 import logger from '../other/Logger'
 import { shell } from 'electron'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
@@ -25,38 +25,40 @@ export default {
       pin: ''
     }
   },
+  watch: {
+    userList: function () {
+      logger.debug(this.userList)
+    }
+  },
+  computed: {
+    ...mapGetters('users', { userList: 'getUserList' })
+  },
   methods: {
-    ...mapActions([{ getAccessToken: 'users/addUser' }]),
-    async login () {
-      const res = await Mastodon.createOAuthApp(
-        `https://${this.host}/api/v1/apps`,
-        'mastoot',
-        'read write follow'
-      )
-      this.clientId = res.client_id
-      this.clientSecret = res.client_secret
-      logger.debug('clientId:', this.clientId)
-      logger.debug('clientSecret:', this.clientSecret)
-      const url = await Mastodon.getAuthorizationUrl(
-        this.clientId,
-        this.clientSecret,
-        `https://${this.host}`,
-        'read write follow'
-      )
-      logger.debug(url)
-      shell.openExternal(url)
-      this.canPushDone = true
+    ...mapActions('users', ['getPIN', 'addUser', 'saveUserConfig']),
+    login () {
+      this.getPIN(this.host).then(obj => {
+        this.clientId = obj.clientId
+        this.clientSecret = obj.clientSecret
+        logger.debug('url', obj.url)
+        shell.openExternal(obj.url)
+        this.canPushDone = true
+      }).catch(e => {
+        logger.debug('err')
+        logger.debug(e)
+      })
     },
     done () {
-      Mastodon.getAccessToken(
-        this.clientId,
-        this.clientSecret,
-        this.pin,
-        `https://${this.host}`
-      ).then(accessToken => {
-        logger.debug('token', accessToken)
+      const { clientId, clientSecret, pin, host } = this
+      this.addUser({ clientId, clientSecret, pin, host }).then(() => {
+        logger.debug('done:', 'success')
+        this.saveUserConfig().catch(e => {
+          logger.debug('save err')
+          logger.debug(e)
+        })
+      }).catch(e => {
+        logger.debug('err')
+        logger.debug(e)
       })
-      // this.$store.dispatch('users/addUser', { clientId, clientSecret, pin, host })
     }
   }
 }

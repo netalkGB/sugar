@@ -4,16 +4,24 @@
 
 <script>
 import logger from '../other/Logger'
-import Settings from '../other/Settings'
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   async mounted () {
+    await this.loadUserConfig()
     logger.debug('select user')
-    const users = await Settings.getUsers()
-    logger.debug('users:', users)
-    if (users === null) {
+    logger.debug('userList:')
+    logger.debug(JSON.stringify(this.userList))
+    if (this.userList.length <= 0) {
       logger.debug('goto adduser(auth)page')
       this.$router.push('/adduser')
     }
+  },
+  methods: {
+    ...mapActions('users', ['loadUserConfig'])
+  },
+  computed: {
+    ...mapGetters('users', { userList: 'getUserList' })
   }
 }
 </script>

@@ -34,4 +34,14 @@ export default class Settings {
       }
     }
   }
+  static saveUsers (data) {
+    return new Promise((resolve, reject) => {
+      storage.set('users', data, e => {
+        if (!e) {
+          resolve()
+        }
+        reject(e)
+      })
+    })
+  }
 }
