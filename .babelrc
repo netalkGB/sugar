@@ -1,11 +1,14 @@
 {
-  "presets": [["env", { "targets": { "electron": "2.0" } }]],
+  "presets": [
+    ["env", { "targets": { "electron": "2.0" }, "shippedProposals": true }]
+  ],
   "plugins": [
     [
       "transform-inline-environment-variables",
       {
         "include": ["NODE_ENV"]
       }
-    ]
+    ],
+    "transform-object-rest-spread"
   ]
 }
