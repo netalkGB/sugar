@@ -1,13 +1,13 @@
 <template>
-  <router-view />
+<div>HomeTimeline</div>
 </template>
 
 <script>
 export default {
-  name: 'App',
-  components: {}
+
 }
 </script>
 
 <style>
+
 </style>

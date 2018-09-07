@@ -1,12 +1,32 @@
 <template>
   <div>
-    <h1>ユーザを追加</h1>
-    <h2>Step 1. ホスト名を入力してください</h2>
-    <input type="text" placeholder="mstdn.jp" v-model="host">
-    <button @click="login">ログイン</button>
-    <h2>Step 2. ブラウザが開くので表示されたPINコードをペーストしてください</h2>
-    <input v-model="pin" type="text">
-    <button :disabled="!canPushDone" @click="done">完了</button>
+    <div id="main">
+      <h1>ユーザを追加</h1>
+      <h2>Step 1. ホスト名を入力してください</h2>
+      <b-field>
+        <b-input placeholder="mstdn.jp"
+            type="search"
+            v-model="host"
+        >
+        </b-input>
+        <p class="control">
+            <button class="button is-primary" @click="login">ログイン</button>
+        </p>
+      </b-field>
+      <p v-if="invalidHostName">ホストに接続できません</p>
+      <h2>Step 2. ブラウザが開くので表示されたPINコードをペーストしてください</h2>
+      <b-field>
+          <b-input placeholder="PINコード"
+              type="search"
+              v-model="pin"
+          >
+          </b-input>
+          <p class="control">
+              <button :disabled="!canPushDone" class="button is-success" @click="done">完了</button>
+          </p>
+      </b-field>
+      <p v-if="invalidPINCode">認証できませんでした</p>
+    </div>
   </div>
 </template>
 
@@ -22,7 +42,9 @@ export default {
       canPushDone: false,
       clientId: '',
       clientSecret: '',
-      pin: ''
+      pin: '',
+      invalidHostName: false,
+      invalidPINCode: false
     }
   },
   watch: {
@@ -45,12 +67,14 @@ export default {
       }).catch(e => {
         logger.debug('err')
         logger.debug(e)
+        this.invalidHostName = true
       })
     },
     done () {
       const { clientId, clientSecret, pin, host } = this
       this.addUser({ clientId, clientSecret, pin, host }).then(() => {
         logger.debug('done:', 'success')
+        this.$router.push('/')
         this.saveUserConfig().catch(e => {
           logger.debug('save err')
           logger.debug(e)
@@ -58,11 +82,19 @@ export default {
       }).catch(e => {
         logger.debug('err')
         logger.debug(e)
+        this.invalidPINCode = true
       })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+h2 {
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+#main {
+  margin:24px;
+}
 </style>

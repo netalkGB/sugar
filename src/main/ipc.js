@@ -6,6 +6,7 @@ export default logger => {
       event.sender.send('login-success', await Mastodon.loginPhase1(host))
     } catch (e) {
       const { message, name } = e
+      logger.debug(message)
       event.sender.send('login-error', { message, name })
     }
   })

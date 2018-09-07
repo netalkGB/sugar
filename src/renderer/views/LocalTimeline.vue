@@ -1,13 +1,15 @@
 <template>
-  <router-view />
+  <div>
+    LocalTimeline
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
-  components: {}
+
 }
 </script>
 
 <style>
+
 </style>
