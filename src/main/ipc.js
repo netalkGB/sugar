@@ -1,43 +1,33 @@
-import Mastodon from 'mastodon-api'
+import Mastodon from './mastodon/Mastodon'
 import { ipcMain } from 'electron'
 export default logger => {
   ipcMain.on('login', async (event, host) => {
     try {
-      const res = await Mastodon.createOAuthApp(
-        `https://${host}/api/v1/apps`,
-        'mastoot',
-        'read write follow'
-      )
-      const clientId = res.client_id
-      const clientSecret = res.client_secret
-      const url = await Mastodon.getAuthorizationUrl(
-        clientId,
-        clientSecret,
-        `https://${host}`,
-        'read write follow'
-      )
-      event.sender.send('login-success', {
-        clientId,
-        clientSecret,
-        url
-      })
+      event.sender.send('login-success', await Mastodon.loginPhase1(host))
     } catch (e) {
-      event.sender.send('login-error', e)
+      const { message, name } = e
+      event.sender.send('login-error', { message, name })
     }
   })
-  ipcMain.on('login2', (event, arg) => {
-    Mastodon.getAccessToken(
-      arg.clientId,
-      arg.clientSecret,
-      arg.pin,
-      `https://${arg.host}`
-    )
-      .then(accessToken => {
-        logger.debug('token', accessToken)
-        event.sender.send('login2-success', { ...arg, accessToken })
+  ipcMain.on('login2', async (event, arg) => {
+    try {
+      const { clientId, clientSecret, pin, host } = arg
+      const accessToken = await Mastodon.loginPhase2(
+        clientId,
+        clientSecret,
+        pin,
+        host
+      )
+      event.sender.send('login2-success', {
+        clientId,
+        clientSecret,
+        pin,
+        host,
+        accessToken
       })
-      .catch(e => {
-        event.sender.send('login2-error', e)
-      })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('login2-error', { message, name })
+    }
   })
 }
