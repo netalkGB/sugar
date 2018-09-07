@@ -7,7 +7,7 @@ import logger from '../other/Logger'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  async mounted () {
+  async created () {
     await this.loadUserConfig()
     logger.debug('select user')
     logger.debug('userList:')
@@ -15,6 +15,9 @@ export default {
     if (this.userList.length <= 0) {
       logger.debug('goto adduser(auth)page')
       this.$router.push('/adduser')
+    }
+    if (this.userList.length === 1) {
+      this.$router.push('/user/1/home_timeline')
     }
   },
   methods: {
