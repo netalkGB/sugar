@@ -1,5 +1,5 @@
 <template>
-  <div id="main" ref="main" :style="{ width: width + 'px', height: height + 'px' }">
+  <div id="main" :style="{ width: width + 'px', height: height + 'px' }">
     <div id="menu">
       <router-link :to="{name:'home_timeline'}">htl</router-link>
       <br>
@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import logger from '../other/Logger'
-
 export default {
   props: { userId: Number },
   data () {
