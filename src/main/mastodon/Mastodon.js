@@ -28,4 +28,38 @@ export default class Mastodon {
     )
     return accessToken
   }
+  constructor ({ accessToken, host }) {
+    this.mastodon = new M({
+      access_token: accessToken,
+      timeout_ms: 60 * 1000,
+      api_url: `https://${host}/api/v1/`
+    })
+  }
+  fetchHomeTimeline (appendParams) {
+    let params = {}
+    if (appendParams && appendParams.maxID) {
+      params = { ...params, max_id: appendParams.maxID }
+    }
+    return this.mastodon.get('timelines/home', params)
+  }
+  fetchLocalTimeline (appendParams) {
+    let params = { local: true }
+    if (appendParams && appendParams.maxID) {
+      params = { ...params, max_id: appendParams.maxID }
+    }
+    return this.mastodon.get('timelines/public', params)
+  }
+  streamHomeTimeline () {
+    return this.mastodon.stream('streaming/user')
+  }
+  streamLocalTimeline () {
+    return this.mastodon.stream('streaming/public/local')
+  }
+  postToot (appendParams) {
+    let params = {}
+    if (appendParams && appendParams.toot) {
+      params = { ...params, status: appendParams.toot }
+    }
+    return this.mastodon.post('statuses', params)
+  }
 }
