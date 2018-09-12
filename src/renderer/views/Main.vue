@@ -1,9 +1,7 @@
 <template>
   <div id="main" :style="{ width: width + 'px', height: height + 'px' }">
     <div id="menu">
-      <router-link :to="{name:'home_timeline'}">htl</router-link>
-      <br>
-      <router-link :to="{name:'local_timeline'}">ltl</router-link>
+      <Sidebar />
     </div>
     <div id="content">
       <router-view></router-view>
@@ -12,31 +10,44 @@
 </template>
 
 <script>
+import logger from '../other/Logger'
+import Sidebar from '../components/Sidebar'
 export default {
   props: { userId: Number },
-  data () {
+  components:{
+    Sidebar
+  },
+  data() {
     return {
       width: 0,
       height: 0
-    }
+    };
   },
-  mounted () {
-    this.width = window.innerWidth
-    this.height = window.innerHeight
-    window.addEventListener('resize', (e) => {
-      this.width = window.innerWidth
-      this.height = window.innerHeight
-    })
+  mounted() {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    window.addEventListener("resize", e => {
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
+      logger.debug(this.width, this.height);
+    });
   },
-  beforeDestroy () {
-    window.removeEventListener('resize')
+  beforeDestroy() {
+    window.removeEventListener("resize");
   }
-}
+};
 </script>
 
 <style scoped>
 #main {
   display: flex;
-  background-color: gainsboro;
+  /* background-color: gainsboro; */
+}
+#content {
+  width: calc(100% - 40px);
+  /* background-color: aqua; */
+}
+#menu {
+  width: 40px;
 }
 </style>

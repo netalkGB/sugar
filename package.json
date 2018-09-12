@@ -33,6 +33,7 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "buefy": "^0.6.6",
     "electron-json-storage": "^4.1.2",
     "log4js": "^3.0.5",
