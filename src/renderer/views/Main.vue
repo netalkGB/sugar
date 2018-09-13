@@ -14,28 +14,28 @@ import logger from '../other/Logger'
 import Sidebar from '../components/Sidebar'
 export default {
   props: { userId: Number },
-  components:{
+  components: {
     Sidebar
   },
-  data() {
+  data () {
     return {
       width: 0,
       height: 0
-    };
+    }
   },
-  mounted() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    window.addEventListener("resize", e => {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
-      logger.debug(this.width, this.height);
-    });
+  mounted () {
+    this.width = window.innerWidth
+    this.height = window.innerHeight
+    window.addEventListener('resize', e => {
+      this.width = window.innerWidth
+      this.height = window.innerHeight
+      logger.debug(this.width, this.height)
+    })
   },
-  beforeDestroy() {
-    window.removeEventListener("resize");
+  beforeDestroy () {
+    window.removeEventListener('resize')
   }
-};
+}
 </script>
 
 <style scoped>
