@@ -1,14 +1,10 @@
 {
   "presets": [
-    ["env", { "targets": { "electron": "2.0" }, "shippedProposals": true }]
-  ],
-  "plugins": [
     [
-      "transform-inline-environment-variables",
+      "@babel/preset-env",
       {
-        "include": ["NODE_ENV"]
+        "useBuiltIns": "usage"
       }
-    ],
-    "transform-object-rest-spread"
+    ]
   ]
 }
