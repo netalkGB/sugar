@@ -11,7 +11,7 @@
 
 <script>
 import logger from '../other/Logger'
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/Sidebar/Sidebar'
 export default {
   props: { userId: Number },
   components: {
@@ -41,11 +41,10 @@ export default {
 <style scoped>
 #main {
   display: flex;
-  /* background-color: gainsboro; */
+  user-select: none;
 }
 #content {
   width: calc(100% - 40px);
-  /* background-color: aqua; */
 }
 #menu {
   width: 40px;
