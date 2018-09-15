@@ -5,7 +5,8 @@
   "description": "mastoot",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run clean; npm run dev:build-main && npm run dev:serve",
+    "dev": "npm run clean; npm run dev:build-main && npm run dev:watch-renderer",
+    "dev:watch-renderer": "webpack --config webpack.config.renderer.js  --mode=development --watch",
     "dev:build-renderer": "webpack --config webpack.config.renderer.js  --mode=development",
     "dev:build-main": "webpack --config webpack.config.main.js  --mode=development",
     "start": "npm run dev:build-main &&npm run dev:build-renderer && npm run electron",
