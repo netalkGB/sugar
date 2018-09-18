@@ -5,11 +5,15 @@ import Settings from '../other/Settings'
 export default {
   namespaced: true,
   state: {
-    userList: []
+    userList: [],
+    currentUser: 0
   },
   getters: {
     getUserList (state) {
       return state.userList
+    },
+    getCurrentUserId (state) {
+      return state.currentUser
     }
   },
   mutations: {
@@ -25,11 +29,17 @@ export default {
       logger.debug(user)
       state.userList.push(user)
     },
+    setId (state, payload) {
+      state.currentUser = payload
+    },
     set (state, payload) {
       state.userList = payload
     }
   },
   actions: {
+    setCurrentUserId ({ commit }, id) {
+      commit('setId', id)
+    },
     saveUserConfig ({ getters }) {
       return Settings.saveUsers(getters['getUserList'])
     },
