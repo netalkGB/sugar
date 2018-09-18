@@ -12,6 +12,8 @@
 <script>
 import logger from '../other/Logger'
 import Sidebar from '../components/Sidebar/Sidebar'
+import { mapActions } from 'vuex'
+
 export default {
   props: { userId: Number },
   components: {
@@ -22,6 +24,13 @@ export default {
       width: 0,
       height: 0
     }
+  },
+  methods: {
+    ...mapActions('users', ['setCurrentUserId'])
+  },
+  created () {
+    logger.debug('userId', this.userId)
+    this.setCurrentUserId(this.userId)
   },
   mounted () {
     this.width = window.innerWidth
