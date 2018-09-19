@@ -18,8 +18,13 @@ html,
 body {
   margin: 0;
   padding: 0;
+  color: #3E3E3E;
 }
 html::-webkit-scrollbar {
   display: none;
+}
+a {
+  text-decoration:none;
+  color: #5555CC;
 }
 </style>

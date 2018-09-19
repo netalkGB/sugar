@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <h1>HomeTimeline</h1>
-  </div>
+  <TimeLine />
 </template>
 
 <script>
+import TimeLine from '../components/TimeLine/TimeLine'
 import { mapGetters, mapActions } from 'vuex'
 import logger from '../other/Logger'
 import { ipcRenderer } from 'electron'
 export default {
+  components: { TimeLine },
   computed: {
     ...mapGetters('users', { currentUserId: 'getCurrentUserId', userList: 'getUserList' })
   },
@@ -64,13 +64,13 @@ export default {
     logger.debug('host', host)
     this.accessToken = accessToken
     this.host = host
-    this.startStream().catch(e => logger.debug(e))
-    this.fetch(host, accessToken).then(result => {
-      logger.debug(result)
-      this.data = result
-    }).catch(err => {
-      logger.debug(err)
-    })
+    // this.startStream().catch(e => logger.debug(e))
+    // this.fetch(host, accessToken).then(result => {
+    //   logger.debug(result)
+    //   this.data = result
+    // }).catch(err => {
+    //   logger.debug(err)
+    // })
   }
 }
 </script>
