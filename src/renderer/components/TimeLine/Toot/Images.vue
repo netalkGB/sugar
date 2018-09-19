@@ -4,7 +4,7 @@
     <img src="https://avatars3.githubusercontent.com/u/13611993">
     <img src="https://avatars3.githubusercontent.com/u/13611993">
     <img src="https://avatars3.githubusercontent.com/u/13611993">
-  </div>  
+  </div>
 </template>
 
 <script>

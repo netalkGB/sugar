@@ -25,8 +25,9 @@ import Profile from './Profile'
 import Time from './Time'
 import TlText from './TlText'
 import Action from './Action'
+import Images from './Images'
 export default {
-  components: { BoostedBy, FavoritedBy, ProfileImage, Profile, Time, TlText, Action },
+  components: { BoostedBy, FavoritedBy, ProfileImage, Profile, Time, TlText, Action, Images }
 }
 </script>
 
