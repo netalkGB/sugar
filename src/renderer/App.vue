@@ -27,4 +27,8 @@ a {
   text-decoration:none;
   color: #5555CC;
 }
+p {
+  margin: 0;
+  padding: 0;
+}
 </style>

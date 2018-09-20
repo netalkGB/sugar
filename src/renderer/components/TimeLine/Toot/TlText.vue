@@ -1,12 +1,11 @@
 <template>
-  <div id="text" ref="tltext">
-    <p>あああああああああああああああ<a href="https://www.google.com/">Google</a>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
-  </div>
+  <div id="text" ref="tltext" v-html="content"></div>
 </template>
 
 <script>
 import { shell } from 'electron'
 export default {
+  props: ['content'],
   data () {
     return {
       hrefs: null
@@ -33,8 +32,5 @@ export default {
 #text {
   overflow-wrap: break-word;
   width: 100%;
-}
-#text > p {
-  margin: 0;
 }
 </style>

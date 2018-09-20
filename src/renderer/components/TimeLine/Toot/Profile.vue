@@ -1,8 +1,8 @@
 <template>
   <div id="nameandid">
-    <div id="name">name</div>
-    <div id="protect"><IosLockIcon :w="'12'" :h="'12'" /></div>
-    <div id="id">@screen_name@example.com</div>
+    <div id="name" v-if="profile.displayName">{{profile.displayName}}</div>
+    <div id="protect" v-if="profile.locked"><IosLockIcon :w="'12'" :h="'12'" /></div>
+    <div id="id">{{profile.userid}}</div>
   </div>
 </template>
 
@@ -10,7 +10,8 @@
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 
 export default {
-  components: { IosLockIcon }
+  components: { IosLockIcon },
+  props: ['profile']
 }
 </script>
 
