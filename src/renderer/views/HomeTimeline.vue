@@ -1,5 +1,5 @@
 <template>
-  <TimeLine />
+  <TimeLine :timeline="timeline"/>
 </template>
 
 <script>
@@ -7,6 +7,7 @@ import TimeLine from '../components/TimeLine/TimeLine'
 import { mapGetters, mapActions } from 'vuex'
 import logger from '../other/Logger'
 import { ipcRenderer } from 'electron'
+import Toot from '../other/Toot'
 export default {
   components: { TimeLine },
   computed: {
@@ -14,7 +15,7 @@ export default {
   },
   data () {
     return {
-      data: [], host: '', accessToken: ''
+      data: [], host: '', accessToken: '', timeline: []
     }
   },
   methods: {
@@ -64,6 +65,10 @@ export default {
     logger.debug('host', host)
     this.accessToken = accessToken
     this.host = host
+    this.fetch(host, accessToken).then(response => {
+      const { data } = response
+      this.timeline = data.map(item => Toot.fromMastodon(item))
+    })
     // this.startStream().catch(e => logger.debug(e))
     // this.fetch(host, accessToken).then(result => {
     //   logger.debug(result)

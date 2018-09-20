@@ -1,10 +1,16 @@
 <template>
   <div id="action">
-    <div id="reply"><IosUndoIcon :w="'18'" :h="'18'" /> <div class="count">32</div></div>
-    <div id="boost" class="boosted" ><MdRepeatIcon :w="'18'" :h="'18'" /><div class="count">50</div></div>
-    <div id="protectedboost"><IosLockIcon :w="'18'" :h="'18'" /><div class="count"></div></div>
-    <div id="dmboost"><IosMailIcon :w="'18'" :h="'18'" /><div class="count"></div></div>
-    <div id="favorite" class="favorited"> <IosStarIcon :w="'18'" :h="'18'" /><div class="count">32</div></div>
+    <div id="reply"><IosUndoIcon :w="'18'" :h="'18'" /> <div class="count">{{repliesCount}}</div></div>
+    <template v-if="visibility === 'public' || visibility === 'unlisted'">
+      <div id="boost" ><MdRepeatIcon :w="'18'" :h="'18'" /><div class="count">{{boostsCount}}</div></div>
+    </template>
+    <template v-else-if="visibility === 'private'">
+      <div id="protectedboost"><IosLockIcon :w="'18'" :h="'18'" /><div class="count"></div></div>
+    </template>
+    <template v-else>
+      <div id="dmboost"><IosMailIcon :w="'18'" :h="'18'" /><div class="count"></div></div>
+    </template>
+    <div id="favorite"> <IosStarIcon :w="'18'" :h="'18'" /><div class="count">{{favoritesCount}}</div></div>
   </div>
 </template>
 
@@ -16,7 +22,8 @@ import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import IosMailIcon from 'vue-ionicons/dist/ios-mail.vue'
 
 export default {
-  components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon }
+  components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon },
+  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount']
 }
 </script>
 

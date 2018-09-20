@@ -1,15 +1,12 @@
 <template>
   <div id="images">
-    <img src="https://avatars3.githubusercontent.com/u/13611993">
-    <img src="https://avatars3.githubusercontent.com/u/13611993">
-    <img src="https://avatars3.githubusercontent.com/u/13611993">
-    <img src="https://avatars3.githubusercontent.com/u/13611993">
+    <img v-for="(image, index) in medium" :key="index" :src="image.previewUrl">
   </div>
 </template>
 
 <script>
 export default {
-
+  props: ['medium']
 }
 </script>
 

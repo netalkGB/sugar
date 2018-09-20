@@ -1,10 +1,15 @@
 <template>
-  <div id="time">30m</div>
+  <div id="time" :title="localTime">30m</div>
 </template>
 
 <script>
 export default {
-
+  props: ['date'],
+  computed: {
+    localTime () {
+      return this.date.toLocaleString()
+    }
+  }
 }
 </script>
 

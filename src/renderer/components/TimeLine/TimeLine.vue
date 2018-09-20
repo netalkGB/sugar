@@ -1,13 +1,14 @@
 <template>
   <div class="timeline">
-    <Toot v-for="(item, index) in [null,null,null,null,null,null,null,null,null,null,null]" :key="index"/>
+    <Toot v-for="(toot, index) in timeline" :toot="toot" :key="index"/>
   </div>
 </template>
 
 <script>
 import Toot from './Toot/Toot'
 export default {
-  components: { Toot }
+  components: { Toot },
+  props: ['timeline']
 }
 </script>
 
