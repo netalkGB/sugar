@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MdRepeatIcon :w="'12'" :h="'12'" id="boosted" />nameさんがブースト
+    <MdRepeatIcon :w="'12'" :h="'12'" id="boosted" />{{boostedBy.displayName}}さんがブースト
   </div>
 </template>
 
@@ -8,7 +8,8 @@
 import MdRepeatIcon from 'vue-ionicons/dist/md-repeat.vue'
 
 export default {
-  components: { MdRepeatIcon }
+  components: { MdRepeatIcon },
+  props: ['boostedBy']
 }
 </script>
 

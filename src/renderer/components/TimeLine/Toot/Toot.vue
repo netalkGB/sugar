@@ -1,6 +1,6 @@
 <template>
   <div id="tootwrapper">
-    <BoostedBy style="display:none;" class="notification"/>
+    <BoostedBy v-if="toot.boostedBy" :boostedBy="toot.boostedBy" class="notification"/>
     <FavoritedBy style="display:none;" class="notification"/>
     <div id="toot">
       <ProfileImage :profile="toot.profile" />

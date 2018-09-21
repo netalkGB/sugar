@@ -11,15 +11,22 @@ export default class Toot {
     this.repliesCount = args.repliesCount
     this.visibility = args.visibility
     this.medium = args.medium
+    this.boostedBy = args.boostedBy
   }
   static fromMastodon (data) {
-    const profile = Profile.fromAccount(data.account)
-    const date = new Date(data.created_at)
-    const content = data.content
-    const boostsCount = data.reblogs_count
-    const favoritesCount = data.favourites_count
-    const repliesCount = data.replies_count
-    const visibility = data.visibility
+    let item
+    if (data.reblog !== null) {
+      item = data.reblog
+    } else {
+      item = data
+    }
+    const profile = Profile.fromAccount(item.account)
+    const date = new Date(item.created_at)
+    const content = item.content
+    const boostsCount = item.reblogs_count
+    const favoritesCount = item.favourites_count
+    const repliesCount = item.replies_count
+    const visibility = item.visibility
     let obj = {
       profile,
       date,
@@ -29,13 +36,15 @@ export default class Toot {
       repliesCount,
       visibility
     }
-    if (data.media_attachments) {
+    if (item.media_attachments) {
       obj = {
         ...obj,
-        medium: Media.fromMediaAttachments(data.media_attachments)
+        medium: Media.fromMediaAttachments(item.media_attachments)
       }
     }
-    const toot = new Toot(obj)
-    return toot
+    if (data.reblog !== null) {
+      obj = { ...obj, boostedBy: Profile.fromAccount(data.account) }
+    }
+    return new Toot(obj)
   }
 }
