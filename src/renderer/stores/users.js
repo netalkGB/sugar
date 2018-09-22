@@ -14,6 +14,9 @@ export default {
     },
     getCurrentUserId (state) {
       return state.currentUser
+    },
+    getCurrentUser (state) {
+      return state.userList.find(user => user.userNumber === state.currentUser)
     }
   },
   mutations: {
