@@ -12,16 +12,16 @@ export default {
     }
   },
   mounted () {
-    this.link = this.$refs.tltext.getElementsByTagName('a')
-    for (let a of this.link) {
+    this.hrefs = this.$refs.tltext.querySelectorAll('p > a')
+    for (let a of this.hrefs) {
       a.addEventListener('click', (e) => {
         e.preventDefault()
-        shell.openExternal(e.target.href)
+        shell.openExternal(e.path.find(elem => elem.href).href)
       })
     }
   },
   destroyed () {
-    for (let a of this.link) {
+    for (let a of this.hrefs) {
       a.removeEventListener('click', (e) => { })
     }
   }
