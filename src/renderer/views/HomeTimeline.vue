@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     ...mapActions('users', ['loadUserConfig']),
-    ...mapActions('timelines', ['firstFetch'])
+    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
   },
   async created () {
     if (!this.currentUser) {
@@ -29,6 +29,9 @@ export default {
     this.accessToken = accessToken
     this.host = host
     this.firstFetch({ host, accessToken, type: 'hometl' }).then(() => {
+      this.startStreaming({ host, accessToken, type: 'hometl' }).catch(e => {
+        logger.debug(e)
+      })
     })
   }
 }

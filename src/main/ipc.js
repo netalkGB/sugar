@@ -75,4 +75,33 @@ export default logger => {
       ipcMain.removeListener('streamHomeTimeline', () => {})
     }
   })
+
+  ipcMain.on('fetchLocalTimeline', async (event, args) => {
+    try {
+      const { host, accessToken } = args
+      const result = await getClient(accessToken, host).fetchLocalTimeline()
+      event.sender.send('fetchLocalTimeline-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchLocalTimeline-error', { message, name })
+    }
+  })
+  ipcMain.once('streamLocalTimeline', async (event, args) => {
+    ipcMain.removeAllListeners(['streamLocalTimeline'])
+    try {
+      const { host, accessToken } = args
+      const stream = await getClient(accessToken, host).streamLocalTimeline()
+      stream.on('message', msg => {
+        event.sender.send('streamLocalTimeline-onMessage', msg)
+      })
+      stream.on('error', error => {
+        event.sender.send('streamLocalTimeline-onError', error)
+        ipcMain.removeListener('streamLocalTimeline', () => {})
+      })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('streamLocalTimeline-error', { message, name })
+      ipcMain.removeListener('streamLocalTimeline', () => {})
+    }
+  })
 }
