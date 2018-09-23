@@ -40,6 +40,21 @@ export default {
           break
         }
       }
+    },
+    removeTootFromTl (state, payload) {
+      const { id, host, accessToken, type } = payload
+      for (let timeline of state.timelines) {
+        if (
+          timeline.host === host &&
+          timeline.accessToken === accessToken &&
+          timeline.type === type
+        ) {
+          const roundedId = parseInt(id, 10)
+          timeline.data = timeline.data.filter(
+            timeline => parseInt(timeline.id) !== roundedId
+          )
+        }
+      }
     }
   },
   actions: {
@@ -101,6 +116,9 @@ export default {
             if (msg.event === 'update') {
               const data = msg.data
               commit('prependTimeline', { host, accessToken, type, data })
+            } else if (msg.event === 'delete') {
+              const id = msg.data
+              commit('removeTootFromTl', { host, accessToken, type, id })
             }
           })
           ipcRenderer.send('streamHomeTimeline', { host, accessToken })
@@ -117,6 +135,9 @@ export default {
             if (msg.event === 'update') {
               const data = msg.data
               commit('prependTimeline', { host, accessToken, type, data })
+            } else if (msg.event === 'delete') {
+              const id = msg.data
+              commit('removeTootFromTl', { host, accessToken, type, id })
             }
           })
           ipcRenderer.send('streamLocalTimeline', { host, accessToken })
