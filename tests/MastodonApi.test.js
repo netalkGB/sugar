@@ -8,7 +8,7 @@ describe('fetch toot', async () => {
   it('should be fetch toot from home', async () => {
     const result = await mastodon.fetchHomeTimeline()
     for (let toot of result.data) {
-      expect(toot.content.indexOf('<p>') >= 0).toBe(true)
+      expect(toot.content.length >= 0).toBe(true)
     }
   })
   it('should be fetch and retrieve toot from ltl', async () => {
@@ -26,17 +26,17 @@ describe('fetch toot', async () => {
     }
     expect(toots.length).toBe(40)
     for (let toot of toots) {
-      expect(toot.indexOf('<p>') >= 0).toBe(true)
+      expect(toot.length >= 0).toBe(true)
     }
   })
 
   it('should be fetch toot from ltl', async () => {
     const result = await mastodon.fetchLocalTimeline()
     for (let toot of result.data) {
-      expect(toot.content.indexOf('<p>') >= 0).toBe(true)
+      expect(toot.content.length >= 0).toBe(true)
     }
   })
-  it('should be fetch and retrieve toot from home', async () => {
+  it('should be fetch and retrieve toot from local', async () => {
     const result = await mastodon.fetchLocalTimeline()
     let toots = []
     for (let toot of result.data) {
@@ -51,7 +51,7 @@ describe('fetch toot', async () => {
     }
     expect(toots.length).toBe(40)
     for (let toot of toots) {
-      expect(toot.indexOf('<p>') >= 0).toBe(true)
+      expect(toot.length >= 0).toBe(true)
     }
   })
 })

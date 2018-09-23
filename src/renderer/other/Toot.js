@@ -5,7 +5,8 @@ export default class Toot {
     this.profile = args.profile
     this.content = args.content
     this.date = args.date
-
+    this.id = args.id
+    this.boostId = args.boostId
     this.boostsCount = args.boostsCount
     this.favoritesCount = args.favoritesCount
     this.repliesCount = args.repliesCount
@@ -22,6 +23,7 @@ export default class Toot {
     }
     const profile = Profile.fromAccount(item.account)
     const date = new Date(item.created_at)
+    const id = item.id
     const content = item.content
     const boostsCount = item.reblogs_count
     const favoritesCount = item.favourites_count
@@ -34,7 +36,8 @@ export default class Toot {
       boostsCount,
       favoritesCount,
       repliesCount,
-      visibility
+      visibility,
+      id
     }
     if (item.media_attachments) {
       obj = {
@@ -43,7 +46,9 @@ export default class Toot {
       }
     }
     if (data.reblog !== null) {
-      obj = { ...obj, boostedBy: Profile.fromAccount(data.account) }
+      const boostedBy = Profile.fromAccount(data.account)
+      const boostId = data.id
+      obj = { ...obj, boostedBy, boostId }
     }
     return new Toot(obj)
   }
