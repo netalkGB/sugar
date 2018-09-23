@@ -75,7 +75,46 @@ export default logger => {
       ipcMain.removeListener('streamHomeTimeline', () => {})
     }
   })
-
+  ipcMain.on('favorite', async (event, args) => {
+    try {
+      const { host, accessToken, id } = args
+      const result = await getClient(accessToken, host).favorite(id)
+      event.sender.send('favorite-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('favorite-error', { message, name })
+    }
+  })
+  ipcMain.on('unFavorite', async (event, args) => {
+    try {
+      const { host, accessToken, id } = args
+      const result = await getClient(accessToken, host).unFavorite(id)
+      event.sender.send('unFavorite-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('unFavorite-error', { message, name })
+    }
+  })
+  ipcMain.on('boost', async (event, args) => {
+    try {
+      const { host, accessToken, id } = args
+      const result = await getClient(accessToken, host).boost(id)
+      event.sender.send('boost-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('boost-error', { message, name })
+    }
+  })
+  ipcMain.on('unBoost', async (event, args) => {
+    try {
+      const { host, accessToken, id } = args
+      const result = await getClient(accessToken, host).unBoost(id)
+      event.sender.send('unBoost-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('unBoost-error', { message, name })
+    }
+  })
   ipcMain.on('fetchLocalTimeline', async (event, args) => {
     try {
       const { host, accessToken } = args

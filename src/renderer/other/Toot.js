@@ -12,6 +12,8 @@ export default class Toot {
     this.repliesCount = args.repliesCount
     this.visibility = args.visibility
     this.medium = args.medium
+    this.favorited = args.favorited
+    this.boosted = args.boosted
     this.boostedBy = args.boostedBy
   }
   static fromMastodon (data) {
@@ -29,6 +31,8 @@ export default class Toot {
     const favoritesCount = item.favourites_count
     const repliesCount = item.replies_count
     const visibility = item.visibility
+    const favorited = item.favourited
+    const boosted = item.reblogged
     let obj = {
       profile,
       date,
@@ -37,7 +41,9 @@ export default class Toot {
       favoritesCount,
       repliesCount,
       visibility,
-      id
+      id,
+      favorited,
+      boosted
     }
     if (item.media_attachments) {
       obj = {

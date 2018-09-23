@@ -1,6 +1,6 @@
 <template>
   <div class="timeline">
-    <Toot v-for="(toot, index) in timeline" :toot="toot" :key="index"/>
+    <Toot v-for="(toot) in timeline" :toot="toot" :key="toot.id"/>
   </div>
 </template>
 

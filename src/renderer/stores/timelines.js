@@ -55,9 +55,91 @@ export default {
           )
         }
       }
+    },
+    setFavorite (state, payload) {
+      const { id, host, accessToken, to } = payload
+      for (let timeline of state.timelines) {
+        if (timeline.host === host && timeline.accessToken === accessToken) {
+          for (let toot of timeline.data) {
+            if (toot.id === id) {
+              toot.favorited = to
+              break
+            }
+          }
+        }
+      }
+    },
+    setBoost (state, payload) {
+      const { id, host, accessToken, to } = payload
+      for (let timeline of state.timelines) {
+        if (timeline.host === host && timeline.accessToken === accessToken) {
+          for (let toot of timeline.data) {
+            if (toot.id === id) {
+              toot.boosted = to
+              break
+            }
+          }
+        }
+      }
     }
   },
   actions: {
+    boost ({ commit, state }, payload) {
+      const { id } = payload
+      const { accessToken, host } = this.getters['users/getCurrentUser']
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once('boost-success', (_, data) => {
+          commit('setBoost', { host, accessToken, id, to: true })
+          resolve(data)
+        })
+        ipcRenderer.once('boost-error', (_, e) => {
+          reject(e)
+        })
+        ipcRenderer.send('boost', { host, accessToken, id })
+      })
+    },
+    unBoost ({ commit, state }, payload) {
+      const { id } = payload
+      const { accessToken, host } = this.getters['users/getCurrentUser']
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once('unBoost-success', (_, data) => {
+          commit('setBoost', { host, accessToken, id, to: false })
+          resolve(data)
+        })
+        ipcRenderer.once('unBoost-error', (_, e) => {
+          reject(e)
+        })
+        ipcRenderer.send('unBoost', { host, accessToken, id })
+      })
+    },
+    favorite ({ commit, state }, payload) {
+      const { id } = payload
+      const { accessToken, host } = this.getters['users/getCurrentUser']
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once('favorite-success', (_, data) => {
+          commit('setFavorite', { host, accessToken, id, to: true })
+          resolve(data)
+        })
+        ipcRenderer.once('favorite-error', (_, e) => {
+          reject(e)
+        })
+        ipcRenderer.send('favorite', { host, accessToken, id })
+      })
+    },
+    unFavorite ({ commit, state }, payload) {
+      const { id } = payload
+      const { accessToken, host } = this.getters['users/getCurrentUser']
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once('unFavorite-success', (_, data) => {
+          commit('setFavorite', { host, accessToken, id, to: false })
+          resolve(data)
+        })
+        ipcRenderer.once('unFavorite-error', (_, e) => {
+          reject(e)
+        })
+        ipcRenderer.send('unFavorite', { host, accessToken, id })
+      })
+    },
     firstFetch ({ commit, state }, payload) {
       const { type, host, accessToken } = payload
       if (type === 'hometl') {

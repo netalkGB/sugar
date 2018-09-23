@@ -62,4 +62,16 @@ export default class Mastodon {
     }
     return this.mastodon.post('statuses', params)
   }
+  favorite (id) {
+    return this.mastodon.post(`statuses/${id}/favourite`)
+  }
+  unFavorite (id) {
+    return this.mastodon.post(`statuses/${id}/unfavourite`)
+  }
+  boost (id) {
+    return this.mastodon.post(`statuses/${id}/reblog`)
+  }
+  unBoost (id) {
+    return this.mastodon.post(`statuses/${id}/unreblog`)
+  }
 }
