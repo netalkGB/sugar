@@ -19,7 +19,7 @@ export default {
   },
   mutations: {
     setTimeline (state, payload) {
-      const { host, accessToken, type, data } = payload
+      const { type, data, host, accessToken } = payload
       const timeline = {
         host,
         accessToken,
@@ -29,7 +29,7 @@ export default {
       state.timelines = [...state.timelines, timeline]
     },
     prependTimeline (state, payload) {
-      const { host, accessToken, type, data } = payload
+      const { type, data, host, accessToken } = payload
       for (let timeline of state.timelines) {
         if (
           timeline.host === host &&
@@ -42,7 +42,7 @@ export default {
       }
     },
     removeTootFromTl (state, payload) {
-      const { id, host, accessToken, type } = payload
+      const { id, type, host, accessToken } = payload
       for (let timeline of state.timelines) {
         if (
           timeline.host === host &&
@@ -57,7 +57,7 @@ export default {
       }
     },
     setFavorite (state, payload) {
-      const { id, host, accessToken, to } = payload
+      const { id, to, host, accessToken } = payload
       for (let timeline of state.timelines) {
         if (timeline.host === host && timeline.accessToken === accessToken) {
           for (let toot of timeline.data) {
@@ -70,7 +70,7 @@ export default {
       }
     },
     setBoost (state, payload) {
-      const { id, host, accessToken, to } = payload
+      const { id, to, host, accessToken } = payload
       for (let timeline of state.timelines) {
         if (timeline.host === host && timeline.accessToken === accessToken) {
           for (let toot of timeline.data) {
@@ -141,7 +141,8 @@ export default {
       })
     },
     firstFetch ({ commit, state }, payload) {
-      const { type, host, accessToken } = payload
+      const { host, accessToken } = this.getters['users/getCurrentUser']
+      const { type } = payload
       if (type === 'hometl') {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchHomeTimeline-success', (_, data) => {
@@ -185,7 +186,8 @@ export default {
       }
     },
     startStreaming ({ commit, state }, payload) {
-      const { type, host, accessToken } = payload
+      const { type } = payload
+      const { host, accessToken } = this.getters['users/getCurrentUser']
       if (type === 'hometl') {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchHomeTimeline-error', (_, e) => {

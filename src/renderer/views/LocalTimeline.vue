@@ -25,13 +25,9 @@ export default {
     if (!this.currentUser) {
       await this.loadUserConfig()
     }
-    const { host, accessToken } = this.currentUser
-    logger.debug('accessToken', accessToken)
-    logger.debug('host', host)
-    this.accessToken = accessToken
-    this.host = host
-    this.firstFetch({ host, accessToken, type: 'localtl' }).then(() => {
-      this.startStreaming({ host, accessToken, type: 'localtl' }).catch(e => {
+
+    this.firstFetch({ type: 'localtl' }).then(() => {
+      this.startStreaming({ type: 'localtl' }).catch(e => {
         logger.debug(e)
       })
     })
@@ -40,5 +36,4 @@ export default {
 </script>
 
 <style>
-
 </style>
