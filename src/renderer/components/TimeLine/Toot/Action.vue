@@ -66,7 +66,7 @@ export default {
         this.displayFavoritesCount--
         this.unFavorite({ id: this.id }).catch((e) => {
           this.displayFavorited = true
-          this.displayFavoritesCount++
+          // this.displayFavoritesCount++
         })
       } else {
         logger.debug('to favorite')
@@ -74,7 +74,7 @@ export default {
         this.displayFavorited = true
         this.favorite({ id: this.id }).catch((e) => {
           this.displayFavorited = false
-          this.displayFavoritesCount--
+          // this.displayFavoritesCount--
         })
       }
     },
@@ -85,7 +85,7 @@ export default {
         this.displayBoostsCount--
         this.unBoost({ id: this.id }).catch((e) => {
           this.displayBoosted = true
-          this.displayBoostsCount++
+          // this.displayBoostsCount++
         })
       } else {
         logger.debug('to boost')
@@ -93,7 +93,7 @@ export default {
         this.displayBoosted = true
         this.boost({ id: this.id }).catch((e) => {
           this.displayBoosted = false
-          this.displayBoostsCount--
+          // this.displayBoostsCount--
         })
       }
     },
