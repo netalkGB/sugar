@@ -23,13 +23,8 @@ export default {
     if (!this.currentUser) {
       await this.loadUserConfig()
     }
-    const { host, accessToken } = this.currentUser
-    logger.debug('accessToken', accessToken)
-    logger.debug('host', host)
-    this.accessToken = accessToken
-    this.host = host
-    this.firstFetch({ host, accessToken, type: 'hometl' }).then(() => {
-      this.startStreaming({ host, accessToken, type: 'hometl' }).catch(e => {
+    this.firstFetch({ type: 'hometl' }).then(() => {
+      this.startStreaming({ type: 'hometl' }).catch(e => {
         logger.debug(e)
       })
     })
