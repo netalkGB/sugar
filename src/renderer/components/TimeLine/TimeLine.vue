@@ -2,15 +2,16 @@
   <div class="timelineContainer" @scroll="scrolling" ref="outerList">
     <div class="innerTimeline" ref="list">
       <Toot v-for="(toot) in timeline" :toot="toot" :key="toot.id"/>
-      <div v-if="loadingPrev === true">Loading...</div>
+      <div v-if="loadingPrev === true" class="loading"><IosSyncIcon  w="20px" h="20px" animate="rotate"/></div>
     </div>
   </div>
 </template>
 
 <script>
 import Toot from './Toot/Toot'
+import IosSyncIcon from 'vue-ionicons/dist/ios-sync.vue'
 export default {
-  components: { Toot },
+  components: { Toot, IosSyncIcon },
   props: ['timeline', 'type'],
   data () {
     return {
@@ -39,8 +40,8 @@ export default {
           break
         case 'loading(prev)':
           if (this.loadingPrev === false) {
-            this.$emit('wantOldToot', { maxID: this.timeline[this.timeline.length - 1].id })
             this.loadingPrev = true
+            this.$emit('wantOldToot', { maxID: this.timeline[this.timeline.length - 1].id })
           }
           break
         case 'buffering':
@@ -67,5 +68,9 @@ export default {
   width: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+}
+.loading {
+  text-align: center;
+  color:#00AAFF
 }
 </style>
