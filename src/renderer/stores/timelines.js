@@ -28,7 +28,7 @@ export default {
       }
       state.timelines = [...state.timelines, timeline]
     },
-    prependTimeline (state, payload) {
+    prependTootTimeline (state, payload) {
       const { type, data, host, accessToken } = payload
       for (let timeline of state.timelines) {
         if (
@@ -37,6 +37,22 @@ export default {
           timeline.type === type
         ) {
           timeline.data = [Toot.fromMastodon(data), ...timeline.data]
+          break
+        }
+      }
+    },
+    appendTootsTimeline (state, payload) {
+      const { type, data, host, accessToken } = payload
+      for (let timeline of state.timelines) {
+        if (
+          timeline.host === host &&
+          timeline.accessToken === accessToken &&
+          timeline.type === type
+        ) {
+          timeline.data = [
+            ...timeline.data,
+            ...data.data.map(d => Toot.fromMastodon(d))
+          ]
           break
         }
       }
@@ -140,6 +156,45 @@ export default {
         ipcRenderer.send('unFavorite', { host, accessToken, id })
       })
     },
+    loadOldToot ({ commit, state }, payload) {
+      const { host, accessToken } = this.getters['users/getCurrentUser']
+      const { type, maxID } = payload
+      if (type === 'hometl') {
+        return new Promise((resolve, reject) => {
+          ipcRenderer.once('fetchHomeTimeline-success', (_, data) => {
+            commit('appendTootsTimeline', {
+              host,
+              accessToken,
+              type,
+              maxID,
+              data
+            })
+            resolve()
+          })
+          ipcRenderer.once('fetchHomeTimeline-error', (_, e) => {
+            reject(e)
+          })
+          ipcRenderer.send('fetchHomeTimeline', { host, accessToken, maxID })
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          ipcRenderer.once('fetchLocalTimeline-success', (_, data) => {
+            commit('appendTootsTimeline', {
+              host,
+              accessToken,
+              type,
+              maxID,
+              data
+            })
+            resolve()
+          })
+          ipcRenderer.once('fetchLocalTimeline-error', (_, e) => {
+            reject(e)
+          })
+          ipcRenderer.send('fetchLocalTimeline', { host, accessToken, maxID })
+        })
+      }
+    },
     firstFetch ({ commit, state }, payload) {
       const { host, accessToken } = this.getters['users/getCurrentUser']
       const { type } = payload
@@ -199,7 +254,7 @@ export default {
           ipcRenderer.on('streamHomeTimeline-onMessage', (e, msg) => {
             if (msg.event === 'update') {
               const data = msg.data
-              commit('prependTimeline', { host, accessToken, type, data })
+              commit('prependTootTimeline', { host, accessToken, type, data })
             } else if (msg.event === 'delete') {
               const id = msg.data
               commit('removeTootFromTl', { host, accessToken, type, id })
@@ -218,7 +273,7 @@ export default {
           ipcRenderer.on('streamLocalTimeline-onMessage', (e, msg) => {
             if (msg.event === 'update') {
               const data = msg.data
-              commit('prependTimeline', { host, accessToken, type, data })
+              commit('prependTootTimeline', { host, accessToken, type, data })
             } else if (msg.event === 'delete') {
               const id = msg.data
               commit('removeTootFromTl', { host, accessToken, type, id })
