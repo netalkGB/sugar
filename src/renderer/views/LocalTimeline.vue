@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <TimeLine :timeline="timeline"/>
-  </div>
+  <TimeLine @wantOldToot="wantOldToot" ref="timeline" type="localtl" :timeline="timeline"/>
 </template>
 
 <script>
@@ -19,13 +17,19 @@ export default {
   },
   methods: {
     ...mapActions('users', ['loadUserConfig']),
-    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
+    ...mapActions('timelines', ['firstFetch', 'startStreaming', 'loadOldToot']),
+    wantOldToot (args) {
+      const { maxID } = args
+      logger.debug('load old toots maxID:', maxID)
+      this.loadOldToot({ type: 'localtl', maxID }).then(() => {
+        this.$refs.timeline.$emit('loadOldTootDone', true)
+      })
+    }
   },
   async created () {
     if (!this.currentUser) {
       await this.loadUserConfig()
     }
-
     this.firstFetch({ type: 'localtl' }).then(() => {
       this.startStreaming({ type: 'localtl' }).catch(e => {
         logger.debug(e)
@@ -35,5 +39,5 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 </style>

@@ -49,8 +49,12 @@ export default logger => {
   })
   ipcMain.on('fetchHomeTimeline', async (event, args) => {
     try {
-      const { host, accessToken } = args
-      const result = await getClient(accessToken, host).fetchHomeTimeline()
+      const { host, accessToken, maxID } = args
+      let opt = {}
+      if (maxID) {
+        opt = { ...opt, maxID }
+      }
+      const result = await getClient(accessToken, host).fetchHomeTimeline(opt)
       event.sender.send('fetchHomeTimeline-success', result)
     } catch (e) {
       const { message, name } = e
@@ -117,8 +121,12 @@ export default logger => {
   })
   ipcMain.on('fetchLocalTimeline', async (event, args) => {
     try {
-      const { host, accessToken } = args
-      const result = await getClient(accessToken, host).fetchLocalTimeline()
+      const { host, accessToken, maxID } = args
+      let opt = {}
+      if (maxID) {
+        opt = { ...opt, maxID }
+      }
+      const result = await getClient(accessToken, host).fetchLocalTimeline(opt)
       event.sender.send('fetchLocalTimeline-success', result)
     } catch (e) {
       const { message, name } = e

@@ -3,9 +3,9 @@
     <div id="menu">
       <Sidebar />
     </div>
-    <div id="content">
-      <router-view></router-view>
-    </div>
+    <!-- <div  @scroll="handleScroll"> -->
+      <router-view id="content" ></router-view>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -55,7 +55,6 @@ export default {
 #content {
   width: calc(100% - 40px);
   height: 100%;
-  overflow-y: scroll;
 }
 #content::-webkit-scrollbar {
   width: 8px;

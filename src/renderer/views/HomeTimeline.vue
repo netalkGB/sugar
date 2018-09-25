@@ -1,5 +1,5 @@
 <template>
-  <TimeLine :timeline="timeline"/>
+  <TimeLine @wantOldToot="wantOldToot" ref="timeline" type="hometl" :timeline="timeline"/>
 </template>
 
 <script>
@@ -17,7 +17,14 @@ export default {
   },
   methods: {
     ...mapActions('users', ['loadUserConfig']),
-    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
+    ...mapActions('timelines', ['firstFetch', 'startStreaming', 'loadOldToot']),
+    wantOldToot (args) {
+      const { maxID } = args
+      logger.debug('load old toots maxID:', maxID)
+      this.loadOldToot({ type: 'hometl', maxID }).then(() => {
+        this.$refs.timeline.$emit('loadOldTootDone', true)
+      })
+    }
   },
   async created () {
     if (!this.currentUser) {
@@ -32,5 +39,5 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 </style>
