@@ -176,7 +176,7 @@ export default {
           })
           ipcRenderer.send('fetchHomeTimeline', { host, accessToken, maxID })
         })
-      } else {
+      } else if (type === 'localtl') {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchLocalTimeline-success', (_, data) => {
             commit('appendTootsTimeline', {
@@ -192,6 +192,23 @@ export default {
             reject(e)
           })
           ipcRenderer.send('fetchLocalTimeline', { host, accessToken, maxID })
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          ipcRenderer.once('fetchPublicTimeline-success', (_, data) => {
+            commit('appendTootsTimeline', {
+              host,
+              accessToken,
+              type,
+              maxID,
+              data
+            })
+            resolve()
+          })
+          ipcRenderer.once('fetchPublicTimeline-error', (_, e) => {
+            reject(e)
+          })
+          ipcRenderer.send('fetchPublicTimeline', { host, accessToken, maxID })
         })
       }
     },
@@ -218,7 +235,7 @@ export default {
             ipcRenderer.send('fetchHomeTimeline', { host, accessToken })
           }
         })
-      } else {
+      } else if (type === 'localtl') {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchLocalTimeline-success', (_, data) => {
             commit('setTimeline', { host, accessToken, type, data })
@@ -238,6 +255,26 @@ export default {
             ipcRenderer.send('fetchLocalTimeline', { host, accessToken })
           }
         })
+      } else {
+        return new Promise((resolve, reject) => {
+          ipcRenderer.once('fetchPublicTimeline-success', (_, data) => {
+            commit('setTimeline', { host, accessToken, type, data })
+            resolve()
+          })
+          ipcRenderer.once('fetchPublicTimeline-error', (_, e) => {
+            reject(e)
+          })
+          if (
+            !state.timelines.find(
+              tl =>
+                tl.type === type &&
+                tl.accessToken === accessToken &&
+                tl.type === type
+            )
+          ) {
+            ipcRenderer.send('fetchPublicTimeline', { host, accessToken })
+          }
+        })
       }
     },
     startStreaming ({ commit, state }, payload) {
@@ -245,7 +282,7 @@ export default {
       const { host, accessToken } = this.getters['users/getCurrentUser']
       if (type === 'hometl') {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchHomeTimeline-error', (_, e) => {
+          ipcRenderer.once('streamHomeTimeline-error', (_, e) => {
             reject(e)
           })
           ipcRenderer.on('streamHomeTimeline-onError', (_, e) => {
@@ -262,9 +299,9 @@ export default {
           })
           ipcRenderer.send('streamHomeTimeline', { host, accessToken })
         })
-      } else {
+      } else if (type === 'localtl') {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchLocalTimeline-error', (_, e) => {
+          ipcRenderer.once('streamLocalTimeline-error', (_, e) => {
             reject(e)
           })
           ipcRenderer.on('streamLocalTimeline-onError', (_, e) => {
@@ -280,6 +317,25 @@ export default {
             }
           })
           ipcRenderer.send('streamLocalTimeline', { host, accessToken })
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          ipcRenderer.once('streamPublicTimeline-error', (_, e) => {
+            reject(e)
+          })
+          ipcRenderer.on('streamPublicTimeline-onError', (_, e) => {
+            reject(e)
+          })
+          ipcRenderer.on('streamPublicTimeline-onMessage', (e, msg) => {
+            if (msg.event === 'update') {
+              const data = msg.data
+              commit('prependTootTimeline', { host, accessToken, type, data })
+            } else if (msg.event === 'delete') {
+              const id = msg.data
+              commit('removeTootFromTl', { host, accessToken, type, id })
+            }
+          })
+          ipcRenderer.send('streamPublicTimeline', { host, accessToken })
         })
       }
     }

@@ -25,16 +25,6 @@ export default {
         this.$refs.timeline.$emit('loadOldTootDone', true)
       })
     }
-  },
-  async created () {
-    if (!this.currentUser) {
-      await this.loadUserConfig()
-    }
-    this.firstFetch({ type: 'localtl' }).then(() => {
-      this.startStreaming({ type: 'localtl' }).catch(e => {
-        logger.debug(e)
-      })
-    })
   }
 }
 </script>

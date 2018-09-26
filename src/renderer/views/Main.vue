@@ -3,9 +3,7 @@
     <div id="menu">
       <Sidebar />
     </div>
-    <!-- <div  @scroll="handleScroll"> -->
-      <router-view id="content" ></router-view>
-    <!-- </div> -->
+    <router-view id="content" ></router-view>
   </div>
 </template>
 
@@ -26,11 +24,27 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['setCurrentUserId'])
+    ...mapActions('users', ['setCurrentUserId']),
+    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
   },
-  created () {
+  async created () {
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
+    this.firstFetch({ type: 'localtl' }).then(() => {
+      this.startStreaming({ type: 'locltl' }).catch(e => {
+        logger.debug(e)
+      })
+    })
+    this.firstFetch({ type: 'hometl' }).then(() => {
+      this.startStreaming({ type: 'hometl' }).catch(e => {
+        logger.debug(e)
+      })
+    })
+    this.firstFetch({ type: 'publictl' }).then(() => {
+      this.startStreaming({ type: 'publictl' }).catch(e => {
+        logger.debug(e)
+      })
+    })
   },
   mounted () {
     this.width = window.innerWidth

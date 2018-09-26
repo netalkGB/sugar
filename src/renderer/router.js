@@ -5,6 +5,7 @@ import AddUser from './views/AddUser'
 import Main from './views/Main'
 import HomeTimeline from './views/HomeTimeline'
 import LocalTimeline from './views/LocalTimeline'
+import PublicTimeline from './views/PublicTimeline'
 Vue.use(Router)
 
 export default new Router({
@@ -33,6 +34,11 @@ export default new Router({
           name: 'local_timeline',
           path: 'local_timeline',
           component: LocalTimeline
+        },
+        {
+          name: 'public_timeline',
+          path: 'public_timeline',
+          component: PublicTimeline
         }
       ]
     }
