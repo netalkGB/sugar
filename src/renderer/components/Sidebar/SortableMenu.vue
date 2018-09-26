@@ -19,7 +19,8 @@ export default {
       drag: false,
       menu: [
         { icon: 'home_timeline', to: { name: 'home_timeline' } },
-        { icon: 'local_timeline', to: { name: 'local_timeline' } }
+        { icon: 'local_timeline', to: { name: 'local_timeline' } },
+        { icon: 'public_timeline', to: { name: 'public_timeline' } }
       ]
     }
   },

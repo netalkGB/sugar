@@ -1,5 +1,5 @@
 <template>
-  <TimeLine @wantOldToot="wantOldToot" ref="timeline" type="hometl" :timeline="timeline"/>
+  <TimeLine @wantOldToot="wantOldToot" ref="timeline" type="publictl" :timeline="timeline"/>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default {
     ...mapGetters('users', { currentUser: 'getCurrentUser' }),
     ...mapState({ tl: state => state.timelines.timelines }),
     timeline () {
-      return (this.tl.find(timeline => timeline.type === 'hometl')) ? this.tl.find(timeline => timeline.type === 'hometl').data : []
+      return (this.tl.find(timeline => timeline.type === 'publictl')) ? this.tl.find(timeline => timeline.type === 'publictl').data : []
     }
   },
   methods: {
@@ -21,7 +21,7 @@ export default {
     wantOldToot (args) {
       const { maxID } = args
       logger.debug('load old toots maxID:', maxID)
-      this.loadOldToot({ type: 'hometl', maxID }).then(() => {
+      this.loadOldToot({ type: 'publictl', maxID }).then(() => {
         this.$refs.timeline.$emit('loadOldTootDone', true)
       })
     }

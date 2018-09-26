@@ -62,7 +62,6 @@ export default logger => {
     }
   })
   ipcMain.once('streamHomeTimeline', async (event, args) => {
-    ipcMain.removeAllListeners(['streamHomeTimeline'])
     try {
       const { host, accessToken } = args
       const stream = await getClient(accessToken, host).streamHomeTimeline()
@@ -76,7 +75,6 @@ export default logger => {
     } catch (e) {
       const { message, name } = e
       event.sender.send('streamHomeTimeline-error', { message, name })
-      ipcMain.removeListener('streamHomeTimeline', () => {})
     }
   })
   ipcMain.on('favorite', async (event, args) => {
@@ -133,8 +131,21 @@ export default logger => {
       event.sender.send('fetchLocalTimeline-error', { message, name })
     }
   })
+  ipcMain.on('fetchPublicTimeline', async (event, args) => {
+    try {
+      const { host, accessToken, maxID } = args
+      let opt = {}
+      if (maxID) {
+        opt = { ...opt, maxID }
+      }
+      const result = await getClient(accessToken, host).fetchPublicTimeline(opt)
+      event.sender.send('fetchPublicTimeline-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchPublicTimeline-error', { message, name })
+    }
+  })
   ipcMain.once('streamLocalTimeline', async (event, args) => {
-    ipcMain.removeAllListeners(['streamLocalTimeline'])
     try {
       const { host, accessToken } = args
       const stream = await getClient(accessToken, host).streamLocalTimeline()
@@ -148,7 +159,22 @@ export default logger => {
     } catch (e) {
       const { message, name } = e
       event.sender.send('streamLocalTimeline-error', { message, name })
-      ipcMain.removeListener('streamLocalTimeline', () => {})
+    }
+  })
+  ipcMain.once('streamPublicTimeline', async (event, args) => {
+    try {
+      const { host, accessToken } = args
+      const stream = await getClient(accessToken, host).streamPublicTimeline()
+      stream.on('message', msg => {
+        event.sender.send('streamPublicTimeline-onMessage', msg)
+      })
+      stream.on('error', error => {
+        event.sender.send('streamPublicTimeline-onError', error)
+        ipcMain.removeListener('streamPublicTimeline', () => {})
+      })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('streamPublicTimeline-error', { message, name })
     }
   })
 }

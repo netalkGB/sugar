@@ -49,11 +49,21 @@ export default class Mastodon {
     }
     return this.mastodon.get('timelines/public', params)
   }
+  fetchPublicTimeline (appendParams) {
+    let params = { local: false }
+    if (appendParams && appendParams.maxID) {
+      params = { ...params, max_id: appendParams.maxID }
+    }
+    return this.mastodon.get('timelines/public', params)
+  }
   streamHomeTimeline () {
     return this.mastodon.stream('streaming/user')
   }
   streamLocalTimeline () {
     return this.mastodon.stream('streaming/public/local')
+  }
+  streamPublicTimeline () {
+    return this.mastodon.stream('streaming/public')
   }
   postToot (appendParams) {
     let params = {}
