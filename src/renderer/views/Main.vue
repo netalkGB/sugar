@@ -31,7 +31,7 @@ export default {
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
     this.firstFetch({ type: 'localtl' }).then(() => {
-      this.startStreaming({ type: 'locltl' }).catch(e => {
+      this.startStreaming({ type: 'localtl' }).catch(e => {
         logger.debug(e)
       })
     })
