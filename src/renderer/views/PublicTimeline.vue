@@ -1,9 +1,10 @@
 <template>
-  <TimeLine @wantOldToot="wantOldToot" ref="timeline" type="publictl" :timeline="timeline"/>
+  <TimeLine @wantOldToot="wantOldToot" ref="timeline" :type="type" :timeline="timeline"/>
 </template>
 
 <script>
 import TimeLine from '../components/TimeLine/TimeLine'
+import TimelineType from '../other/TimelineType'
 import { mapGetters, mapActions, mapState } from 'vuex'
 import logger from '../other/Logger'
 export default {
@@ -12,7 +13,13 @@ export default {
     ...mapGetters('users', { currentUser: 'getCurrentUser' }),
     ...mapState({ tl: state => state.timelines.timelines }),
     timeline () {
-      return (this.tl.find(timeline => timeline.type === 'publictl')) ? this.tl.find(timeline => timeline.type === 'publictl').data : []
+      const timeline = this.tl.find(timeline => timeline.type === this.type)
+      return timeline ? timeline.data : []
+    }
+  },
+  data () {
+    return {
+      type: TimelineType.publictl
     }
   },
   methods: {
@@ -21,7 +28,7 @@ export default {
     wantOldToot (args) {
       const { maxID } = args
       logger.debug('load old toots maxID:', maxID)
-      this.loadOldToot({ type: 'publictl', maxID }).then(() => {
+      this.loadOldToot({ type: this.type, maxID }).then(() => {
         this.$refs.timeline.$emit('loadOldTootDone', true)
       })
     }

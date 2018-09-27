@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import Toot from '../other/Toot'
+import TimelineType from '../other/TimelineType'
 export default {
   namespaced: true,
   state: {
@@ -159,7 +160,7 @@ export default {
     loadOldToot ({ commit, state }, payload) {
       const { host, accessToken } = this.getters['users/getCurrentUser']
       const { type, maxID } = payload
-      if (type === 'hometl') {
+      if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchHomeTimeline-success', (_, data) => {
             commit('appendTootsTimeline', {
@@ -176,7 +177,7 @@ export default {
           })
           ipcRenderer.send('fetchHomeTimeline', { host, accessToken, maxID })
         })
-      } else if (type === 'localtl') {
+      } else if (type === TimelineType.localtl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchLocalTimeline-success', (_, data) => {
             commit('appendTootsTimeline', {
@@ -215,7 +216,7 @@ export default {
     firstFetch ({ commit, state }, payload) {
       const { host, accessToken } = this.getters['users/getCurrentUser']
       const { type } = payload
-      if (type === 'hometl') {
+      if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchHomeTimeline-success', (_, data) => {
             commit('setTimeline', { host, accessToken, type, data })
@@ -235,7 +236,7 @@ export default {
             ipcRenderer.send('fetchHomeTimeline', { host, accessToken })
           }
         })
-      } else if (type === 'localtl') {
+      } else if (type === TimelineType.localtl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchLocalTimeline-success', (_, data) => {
             commit('setTimeline', { host, accessToken, type, data })
@@ -280,7 +281,7 @@ export default {
     startStreaming ({ commit, state }, payload) {
       const { type } = payload
       const { host, accessToken } = this.getters['users/getCurrentUser']
-      if (type === 'hometl') {
+      if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('streamHomeTimeline-error', (_, e) => {
             reject(e)
@@ -299,7 +300,7 @@ export default {
           })
           ipcRenderer.send('streamHomeTimeline', { host, accessToken })
         })
-      } else if (type === 'localtl') {
+      } else if (type === TimelineType.localtl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('streamLocalTimeline-error', (_, e) => {
             reject(e)
