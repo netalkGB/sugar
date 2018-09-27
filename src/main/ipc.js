@@ -1,7 +1,7 @@
 import Mastodon from './mastodon/Mastodon'
 import { ipcMain } from 'electron'
 
-export default logger => {
+export default (logger) => {
   let clients = []
   function getClient (accessToken, host) {
     let client = clients.find(
@@ -17,6 +17,7 @@ export default logger => {
       return client.mastodon
     }
   }
+
   ipcMain.on('login', async (event, host) => {
     try {
       event.sender.send('login-success', await Mastodon.loginPhase1(host))

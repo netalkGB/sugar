@@ -40,7 +40,7 @@
 
 <script>
 import logger from '../other/Logger'
-import { shell } from 'electron'
+import { shell, ipcRenderer } from 'electron'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -59,6 +59,9 @@ export default {
     userList: function () {
       logger.debug(this.userList)
     }
+  },
+  created () {
+    ipcRenderer.send('changeWindowSize', 'adduser')
   },
   computed: {
     ...mapGetters('users', { userList: 'getUserList' })
