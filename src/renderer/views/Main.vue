@@ -12,7 +12,7 @@ import logger from '../other/Logger'
 import TimelineType from '../other/TimelineType'
 import Sidebar from '../components/Sidebar/Sidebar'
 import { mapActions } from 'vuex'
-
+import { ipcRenderer } from 'electron'
 export default {
   props: { userId: Number },
   components: {
@@ -29,6 +29,7 @@ export default {
     ...mapActions('timelines', ['firstFetch', 'startStreaming'])
   },
   async created () {
+    ipcRenderer.send('changeWindowSize', 'main')
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
     this.firstFetch({ type: TimelineType.localtl }).then(() => {
