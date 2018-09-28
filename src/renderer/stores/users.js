@@ -6,11 +6,16 @@ export default {
   namespaced: true,
   state: {
     userList: [],
-    currentUser: 0
+    currentUser: 0,
+    nextUserId: 1
   },
   getters: {
     getUserList (state) {
       return state.userList
+    },
+    getUsers (state) {
+      const { userList, nextUserId } = state
+      return { userList, nextUserId }
     },
     getCurrentUserId (state) {
       return state.currentUser
@@ -27,7 +32,7 @@ export default {
         clientSecret: payload.clientSecret,
         accessToken: payload.accessToken,
         host: payload.host,
-        userNumber: state.userList.length + 1
+        userNumber: state.nextUserId++
       }
       logger.debug(user)
       state.userList.push(user)
@@ -36,7 +41,7 @@ export default {
       state.currentUser = payload
     },
     set (state, payload) {
-      state.userList = payload
+      state = payload
     }
   },
   actions: {
@@ -44,7 +49,7 @@ export default {
       commit('setId', id)
     },
     saveUserConfig ({ getters }) {
-      return Settings.saveUsers(getters['getUserList'])
+      return Settings.saveUsers(getters['getUsers'])
     },
     async loadUserConfig ({ commit }, _) {
       const users = await Settings.getUsers()
