@@ -41,7 +41,8 @@ export default {
       state.currentUser = payload
     },
     set (state, payload) {
-      state = payload
+      state.userList = payload.userList
+      state.nextUserId = payload.nextUserId
     }
   },
   actions: {

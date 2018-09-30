@@ -27,7 +27,7 @@ export default class Settings {
       return null
     } else {
       const users = await get('users')
-      if (users !== null && users.length >= 1) {
+      if (users !== null) {
         return users
       } else {
         return null
