@@ -1,10 +1,10 @@
 <template>
   <router-link :to="to">
-    <MdHomeIcon v-if="icon === 'home_timeline'" :w="width" :h="height" id="icon"/>
-    <IosPeopleIcon v-if="icon === 'local_timeline'" :w="width" :h="height" id="icon"/>
-    <IosGlobeIcon v-if="icon === 'public_timeline'" :w="width" :h="height" id="icon"/>
-    <IosAddIcon v-if="icon === 'addTab'" :w="width" :h="height" id="icon" />
-    <MdSettingsIcon v-if="icon === 'settings'" :w="width" :h="height" id="icon" />
+    <MdHomeIcon v-if="icon === 'home_timeline'" :w="width" :h="height" class="icon"/>
+    <IosPeopleIcon v-if="icon === 'local_timeline'" :w="width" :h="height" class="icon"/>
+    <IosGlobeIcon v-if="icon === 'public_timeline'" :w="width" :h="height" class="icon"/>
+    <IosAddIcon v-if="icon === 'addTab'" :w="width" :h="height" class="icon" />
+    <MdSettingsIcon v-if="icon === 'settings'" :w="width" :h="height" class="icon" />
   </router-link>
 
 </template>
@@ -28,10 +28,9 @@ export default {
 </script>
 
 <style scoped>
-#icon {
+.icon {
   height: 48px;
   color: #888888;
-  /* background-color: beige; */
   display: flex;
   align-items: center;
   justify-content: center;

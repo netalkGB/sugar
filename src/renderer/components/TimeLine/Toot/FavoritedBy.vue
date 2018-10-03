@@ -1,6 +1,6 @@
 <template>
-  <div id="favoritedby">
-    <IosStarIcon :w="'12'" :h="'12'" id="favorited"/>nameさんがお気に入りに追加
+  <div>
+    <IosStarIcon :w="'12'" :h="'12'" class="favorited"/>nameさんがお気に入りに追加
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style scope>
-#favorited {
+.favorited {
   color: #ffaa00;
 }
 </style>

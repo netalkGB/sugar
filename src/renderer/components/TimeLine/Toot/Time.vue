@@ -1,5 +1,5 @@
 <template>
-  <div id="time" :title="localTime">{{diffAndFormat}}</div>
+  <div class="time" :title="localTime">{{diffAndFormat}}</div>
 </template>
 
 <script>
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style scoped>
-#time {
+.time {
   width: 24px;
   text-align: right;
 }

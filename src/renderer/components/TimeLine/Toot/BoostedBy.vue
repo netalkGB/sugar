@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MdRepeatIcon :w="'12'" :h="'12'" id="boosted" />{{boostedBy.displayName}}さんがブースト
+    <MdRepeatIcon :w="'12'" :h="'12'" class="boosted" />{{boostedBy.displayName}}さんがブースト
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style scope>
-#boosted {
+.boosted {
   color: #0000ff;
 }
 </style>

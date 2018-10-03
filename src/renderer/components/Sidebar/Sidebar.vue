@@ -1,10 +1,10 @@
 <template>
   <div id="sidebar">
-    <div id="menu">
+    <div>
       <SortableMenu />
       <Icon to="#" icon="addTab"/>
     </div>
-    <div id="menu2">
+    <div>
       <Icon to="#" icon="settings" />
     </div>
   </div>
