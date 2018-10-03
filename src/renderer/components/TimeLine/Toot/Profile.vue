@@ -1,8 +1,8 @@
 <template>
-  <div id="nameandid">
-    <div id="name" v-if="profile.displayName">{{profile.displayName}}</div>
-    <div id="protect" v-if="profile.locked"><IosLockIcon :w="'12'" :h="'12'" /></div>
-    <div id="id">{{profile.userid}}</div>
+  <div class="nameandid">
+    <div class="name" v-if="profile.displayName">{{profile.displayName}}</div>
+    <div class="protect" v-if="profile.locked"><IosLockIcon :w="'12'" :h="'12'" /></div>
+    <div class="id">{{profile.userid}}</div>
   </div>
 </template>
 
@@ -16,19 +16,19 @@ export default {
 </script>
 
 <style scoped>
-#nameandid {
+.nameandid {
   display: flex;
   width: calc(100% - 20px);
   margin-right: 4px;
 }
-#name {
+.name {
   font-weight: bolder;
   margin-right: 3px;
 }
-#protect {
+.protect {
   width: 16px;
 }
-#id {
+.id {
   overflow: hidden;
   text-overflow: ellipsis;
 }

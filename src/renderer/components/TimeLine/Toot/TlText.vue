@@ -1,5 +1,5 @@
 <template>
-  <div id="text" ref="tltext" v-html="content"></div>
+  <div class="text" ref="tltext" v-html="content"></div>
 </template>
 
 <script>
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-#text {
+.text {
   overflow-wrap: break-word;
   width: 100%;
 }

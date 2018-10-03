@@ -1,8 +1,11 @@
 <template>
-  <div id="action">
-    <div id="reply"><IosUndoIcon :w="'18'" :h="'18'" /> <div class="count">{{repliesCount}}</div></div>
+  <div class="actions flex" >
+    <div class="reply flex">
+      <IosUndoIcon :w="'18'" :h="'18'" />
+      <div class="count">{{repliesCount}}</div>
+    </div>
     <template v-if="visibility === 'public' || visibility === 'unlisted'">
-      <div id="boost" :class="{boosted:displayBoosted}" @click="boostToot">
+      <div class="action flex" :class="{boosted:displayBoosted}" @click="boostToot">
         <MdRepeatIcon :w="'18'" :h="'18'" />
         <div class="count">
           <span v-if="displayBoostsCount > 0">
@@ -12,18 +15,18 @@
       </div>
     </template>
     <template v-else-if="visibility === 'private'">
-      <div id="protectedboost">
+      <div class="action flex">
         <IosLockIcon :w="'18'" :h="'18'" />
         <div class="count"></div>
       </div>
     </template>
     <template v-else>
-      <div id="dmboost">
+      <div class="action flex">
         <IosMailIcon :w="'18'" :h="'18'" />
         <div class="count"></div>
       </div>
     </template>
-    <div id="favorite" :class="{favorited:displayFavorited}" @click="favoriteToot">
+    <div class="action flex" :class="{favorited:displayFavorited}" @click="favoriteToot">
       <IosStarIcon :w="'18'" :h="'18'" />
       <div class="count">
         <span v-if="displayFavoritesCount > 0">{{displayFavoritesCount}}</span>
@@ -66,7 +69,6 @@ export default {
         this.displayFavoritesCount--
         this.unFavorite({ id: this.id }).catch((e) => {
           this.displayFavorited = true
-          // this.displayFavoritesCount++
         })
       } else {
         logger.debug('to favorite')
@@ -74,7 +76,6 @@ export default {
         this.displayFavorited = true
         this.favorite({ id: this.id }).catch((e) => {
           this.displayFavorited = false
-          // this.displayFavoritesCount--
         })
       }
     },
@@ -85,7 +86,6 @@ export default {
         this.displayBoostsCount--
         this.unBoost({ id: this.id }).catch((e) => {
           this.displayBoosted = true
-          // this.displayBoostsCount++
         })
       } else {
         logger.debug('to boost')
@@ -93,7 +93,6 @@ export default {
         this.displayBoosted = true
         this.boost({ id: this.id }).catch((e) => {
           this.displayBoosted = false
-          // this.displayBoostsCount--
         })
       }
     },
@@ -103,8 +102,10 @@ export default {
 </script>
 
 <style scoped>
-#action {
+.flex {
   display: flex;
+}
+.actions {
   flex-wrap: wrap;
   margin: 4px 0;
 }
@@ -115,14 +116,8 @@ export default {
   color: #0000ff;
 }
 
-#reply,
-#boost,
-#favorite,
-#protectedboost,
-#dmboost {
-  display: flex;
+.action {
   cursor: pointer;
-  /* color: #bbbbbb; */
 }
 .count {
   width: 32px;

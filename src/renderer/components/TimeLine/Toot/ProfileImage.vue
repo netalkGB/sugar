@@ -1,6 +1,6 @@
 <template>
-  <div id="profileImg">
-    <img :src="profile.avatar">
+  <div class="profileImg">
+    <img class="img" :src="profile.avatar">
   </div>
 </template>
 
@@ -11,12 +11,12 @@ export default {
 </script>
 
 <style scoped>
-#profileImg {
+.profileImg {
   width: 40px;
   display: flex;
   justify-content: center;
 }
-#profileImg > img {
+.img {
   margin-top: 10px;
   width: 32px;
   height: 32px;
