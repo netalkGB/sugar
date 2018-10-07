@@ -1,8 +1,10 @@
 <template>
   <div class="timelineContainer" @scroll="scrolling" ref="outerList">
     <div class="innerTimeline" ref="list">
-      <Toot v-for="(toot) in timeline" :toot="toot" :key="toot.id"/>
-      <div v-if="loadingPrev === true" class="loading"><IosSyncIcon  w="20px" h="20px" animate="rotate"/></div>
+      <Toot v-for="(toot) in timeline" :toot="toot" :key="toot.id" />
+      <div v-if="loadingPrev === true" class="loading">
+        <IosSyncIcon w="20px" h="20px" animate="rotate" />
+      </div>
     </div>
   </div>
 </template>
@@ -48,6 +50,7 @@ export default {
           this.prevScrollHeight = this.$refs.list.scrollHeight
           break
       }
+      this.$emit('scrollStateChanged', this.scrollState)
     }
   },
   created () {
@@ -71,6 +74,6 @@ export default {
 }
 .loading {
   text-align: center;
-  color:#00AAFF
+  color: #00aaff;
 }
 </style>
