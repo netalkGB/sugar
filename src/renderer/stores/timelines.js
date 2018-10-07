@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron'
 import Toot from '../other/Toot'
 import TimelineType from '../other/TimelineType'
+const upperLimitToot = 50
 export default {
   namespaced: true,
   state: {
@@ -19,12 +20,56 @@ export default {
     }
   },
   mutations: {
+    cleaningTl (state, payload) {
+      const { type, host, accessToken } = payload
+      if (type !== undefined) {
+        for (let timeline of state.timelines) {
+          if (
+            timeline.host === host &&
+            timeline.accessToken === accessToken &&
+            timeline.type === type
+          ) {
+            if (timeline.data.length >= upperLimitToot) {
+              timeline.data = timeline.data.slice(0, upperLimitToot)
+            }
+            break
+          }
+        }
+      } else {
+        for (let timeline of state.timelines) {
+          if (
+            timeline.active === false &&
+            timeline.host === host &&
+            timeline.accessToken === accessToken
+          ) {
+            if (timeline.data.length >= upperLimitToot) {
+              timeline.data = timeline.data.slice(0, upperLimitToot)
+            }
+          }
+        }
+      }
+    },
+    setActive (state, payload) {
+      const { type, host, accessToken } = payload
+      for (let timeline of state.timelines) {
+        if (
+          timeline.host === host &&
+          timeline.accessToken === accessToken &&
+          timeline.type === type
+        ) {
+          timeline.active = true
+        } else {
+          timeline.active = false
+        }
+      }
+    },
     setTimeline (state, payload) {
       const { type, data, host, accessToken } = payload
       const timeline = {
         host,
         accessToken,
         type,
+        active: false,
         data: data.data.map(item => Toot.fromMastodon(item))
       }
       state.timelines = [...state.timelines, timeline]
@@ -293,6 +338,7 @@ export default {
             if (msg.event === 'update') {
               const data = msg.data
               commit('prependTootTimeline', { host, accessToken, type, data })
+              commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
               commit('removeTootFromTl', { host, accessToken, type, id })
@@ -312,6 +358,7 @@ export default {
             if (msg.event === 'update') {
               const data = msg.data
               commit('prependTootTimeline', { host, accessToken, type, data })
+              commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
               commit('removeTootFromTl', { host, accessToken, type, id })
@@ -331,6 +378,7 @@ export default {
             if (msg.event === 'update') {
               const data = msg.data
               commit('prependTootTimeline', { host, accessToken, type, data })
+              commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
               commit('removeTootFromTl', { host, accessToken, type, id })
@@ -339,6 +387,16 @@ export default {
           ipcRenderer.send('streamPublicTimeline', { host, accessToken })
         })
       }
+    },
+    cleaningTl ({ commit, state }, payload) {
+      const { type } = payload
+      const { host, accessToken } = this.getters['users/getCurrentUser']
+      commit('cleaningTl', { type, host, accessToken })
+    },
+    setActive ({ commit, state }, payload) {
+      const { type } = payload
+      const { host, accessToken } = this.getters['users/getCurrentUser']
+      commit('setActive', { type, host, accessToken })
     }
   }
 }
