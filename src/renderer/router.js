@@ -6,6 +6,7 @@ import Main from './views/Main'
 import HomeTimeline from './views/HomeTimeline'
 import LocalTimeline from './views/LocalTimeline'
 import PublicTimeline from './views/PublicTimeline'
+import NewToot from './views/NewToot'
 Vue.use(Router)
 
 export default new Router({
@@ -41,6 +42,12 @@ export default new Router({
           component: PublicTimeline
         }
       ]
+    },
+    {
+      name: 'new_toot',
+      path: '/newtoot/:userId',
+      props: route => ({ userId: Number(route.params.userId) }),
+      component: NewToot
     }
   ],
   mode: 'hash'

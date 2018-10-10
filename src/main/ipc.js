@@ -1,7 +1,7 @@
 import Mastodon from './mastodon/Mastodon'
-import { ipcMain } from 'electron'
+import { ipcMain, dialog } from 'electron'
 
-export default (logger) => {
+export default logger => {
   let clients = []
   function getClient (accessToken, host) {
     let client = clients.find(
@@ -177,5 +177,17 @@ export default (logger) => {
       const { message, name } = e
       event.sender.send('streamPublicTimeline-error', { message, name })
     }
+  })
+  ipcMain.on('openDialog', (event, args) => {
+    event.sender.send(
+      'openDialog-success',
+      dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [
+          { name: 'Images', extensions: ['jpg', 'png', 'jpeg'] },
+          { name: 'Movies', extensions: ['mp4'] }
+        ]
+      })
+    )
   })
 }
