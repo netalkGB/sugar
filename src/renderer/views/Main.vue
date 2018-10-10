@@ -1,9 +1,9 @@
 <template>
   <div id="main" :style="{ width: width + 'px', height: height + 'px' }">
     <div id="menu">
-      <Sidebar />
+      <Sidebar :userId="userId" />
     </div>
-    <router-view id="content" ></router-view>
+    <router-view id="content"></router-view>
   </div>
 </template>
 
@@ -58,7 +58,7 @@ export default {
     })
   },
   beforeDestroy () {
-    window.removeEventListener('resize')
+    window.removeEventListener('resize', () => { })
   }
 }
 </script>
