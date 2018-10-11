@@ -70,6 +70,15 @@ export default {
       files: []
     }
   },
+  watch: {
+    isCW (newVal) {
+      console.log('aa')
+      this.$emit('requireHeightChange', { cw: newVal, fileList: this.files.length > 0 })
+    },
+    files (newVal) {
+      this.$emit('requireHeightChange', { cw: this.isCW, fileList: newVal.length > 0 })
+    }
+  },
   computed: {
     tootLength () {
       return maxTootLength - this.toot.length
@@ -88,8 +97,6 @@ export default {
 
 <style scoped>
 .newToot {
-  padding: 4px;
-  width: calc(100% - 8px);
   background-color: #eeeeee;
 }
 .toot {
@@ -110,5 +117,8 @@ export default {
 }
 .imgs {
   width: 300px;
+}
+.contentWarning {
+  margin-bottom: 4px;
 }
 </style>
