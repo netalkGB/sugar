@@ -1,5 +1,5 @@
 <template>
-  <NewToot :userId="userId"></NewToot>
+  <NewToot class="newtoot" :userId="userId"></NewToot>
 </template>
 
 <script>
@@ -10,5 +10,5 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 </style>

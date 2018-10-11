@@ -1,18 +1,18 @@
 <template>
   <div class="newToot">
-    <textarea :value="toot" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div v-if="isCW" class="contentWarning">
       <input value="" placeholder="ここに警告を書いてください">
     </div>
+    <textarea :value="toot" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div class="menu">
       <div>
-        <button @click="addFile" :disabled="files.length >= 4">写真を追加</button>
-        <select>
+        <MtButton :onClick="addFile" :disabled="files.length >= 4">写真を追加</MtButton>
+        <MtSelect>
           <option value="public">公開</option>
           <option value="unlisted">未収載</option>
           <option value="private">フォロワー限定</option>
           <option value="direct">ダイレクト</option>
-        </select>
+        </MtSelect>
         <label>
           CW:<input type="checkbox" v-model="isCW">
         </label>
@@ -21,7 +21,7 @@
         {{ tootLength }}
       </div>
     </div>
-    <button>トゥート</button>
+    <MtButton type="submit">トゥート</MtButton>
     <div v-if="files.length > 0" class="imgs">
       <div class="item" v-for="(file,idx) in files" :key="idx">
         <div @click="removeFile(idx)">x</div>
@@ -35,8 +35,14 @@
 import { mapActions } from 'vuex'
 import { ipcRenderer } from 'electron'
 import logger from '../../other/Logger'
+import MtButton from '../Form/MtButton'
+import MtSelect from '../Form/MtSelect'
 const maxTootLength = 500
 export default {
+  components: {
+    MtButton,
+    MtSelect
+  },
   props: { userId: Number },
   methods: {
     ...mapActions('users', ['loadUserConfig', 'setCurrentUserId']),
@@ -84,6 +90,7 @@ export default {
 .newToot {
   padding: 4px;
   width: calc(100% - 8px);
+  background-color: #eeeeee;
 }
 .toot {
   border: none;
@@ -92,6 +99,7 @@ export default {
   padding: 4px;
   margin: 0;
   resize: none;
+  outline: none;
 }
 .menu {
   display: flex;
