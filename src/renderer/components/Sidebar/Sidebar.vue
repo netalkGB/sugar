@@ -23,7 +23,7 @@ export default {
   methods: {
     newToot () {
       const url = this.$router.resolve(`/newtoot/${this.userId}`).href
-      window.open(url, '_blank', 'width=400,height=240')
+      window.open(url, '_blank', 'width=320,height=150')
     }
   },
   mounted () {
