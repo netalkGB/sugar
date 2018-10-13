@@ -1,20 +1,20 @@
 <template>
   <div class="newToot">
     <div v-if="isCW" class="contentWarning">
-      <input v-model="spoilerText" placeholder="ここに警告を書いてください">
+      <input v-model="spoilerText" :disabled="sending" placeholder="ここに警告を書いてください">
     </div>
-    <textarea :value="toot" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
+    <textarea :value="toot" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div class="menu">
       <div>
-        <MtButton @click.native="addFile" :disabled="files.length >= 4">写真を追加</MtButton>
-        <MtSelect v-model='visibility'>
+        <MtButton @click.native="addFile" :disabled="files.length >= 4 || sending">写真を追加</MtButton>
+        <MtSelect :disabled="sending" v-model='visibility'>
           <option value="public">公開</option>
           <option value="unlisted">未収載</option>
           <option value="private">フォロワー限定</option>
           <option value="direct">ダイレクト</option>
         </MtSelect>
         <label>
-          CW:<input type="checkbox" v-model="isCW">
+          CW:<input type="checkbox" :disabled="sending" v-model="isCW">
         </label>
       </div>
       <div>
