@@ -65,12 +65,36 @@ export default class Mastodon {
   streamPublicTimeline () {
     return this.mastodon.stream('streaming/public')
   }
-  postToot (appendParams) {
-    let params = {}
-    if (appendParams && appendParams.toot) {
-      params = { ...params, status: appendParams.toot }
+  postToot (params) {
+    const {
+      status,
+      visibility,
+      inReplyToID,
+      mediaIDs,
+      sensitive,
+      isCW,
+      spoilerText
+    } = params
+    let opts = {
+      status,
+      visibility
     }
-    return this.mastodon.post('statuses', params)
+    if (inReplyToID !== undefined && inReplyToID !== null) {
+      opts = { ...opts, in_reply_to_id: inReplyToID }
+    }
+    if (mediaIDs !== undefined && inReplyToID !== null && mediaIDs.length > 0) {
+      opts = { ...opts, media_ids: mediaIDs }
+    }
+    if (sensitive !== undefined && sensitive !== null) {
+      opts = { ...opts, sensitive }
+    }
+    if (isCW !== undefined && isCW !== null) {
+      opts = { ...opts, cw: isCW }
+    }
+    if (spoilerText !== undefined && spoilerText !== null) {
+      opts = { ...opts, spoiler_text: spoilerText }
+    }
+    return this.mastodon.post('statuses', opts)
   }
   favorite (id) {
     return this.mastodon.post(`statuses/${id}/favourite`)

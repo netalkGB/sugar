@@ -22,8 +22,6 @@ export default {
   methods: {
     changeHeight (ev) {
       const { cw, fileList } = ev
-      console.log(cw)
-      console.log(fileList)
       let deltaHeight = 0
       if (cw === true) {
         deltaHeight += 30

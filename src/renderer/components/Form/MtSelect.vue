@@ -1,5 +1,5 @@
 <template>
-  <select :disabled="disabled" class="select">
+  <select :disabled="disabled" :value="value"  @change="handleChange" class="select">
     <slot></slot>
   </select>
 </template>
@@ -11,6 +11,14 @@ export default {
       type: Boolean,
       defualt: false,
       required: false
+    },
+    value: {
+      type: String
+    }
+  },
+  methods: {
+    handleChange (e) {
+      this.$emit('input', e.target.value)
     }
   }
 }
