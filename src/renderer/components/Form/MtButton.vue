@@ -1,11 +1,11 @@
 <template>
-  <button v-if="type === 'submit'" :disabled="disabled" @click="onClick()" class="button submit">
+  <button v-if="type === 'submit'" :disabled="disabled" class="button submit">
     <slot></slot>
   </button>
-  <button v-else-if="type === 'danger'" :disabled="disabled" @click="onClick()" class="button danger">
+  <button v-else-if="type === 'danger'" :disabled="disabled" class="button danger">
     <slot></slot>
   </button>
-  <button v-else :disabled="disabled" @click="onClick()" class="button normal">
+  <button v-else :disabled="disabled" class="button normal">
     <slot></slot>
   </button>
 </template>
@@ -22,11 +22,6 @@ export default {
       type: Boolean,
       defualt: false,
       required: false
-    },
-    onClick: {
-      type: Function,
-      required: false,
-      default: () => { }
     }
   }
 }

@@ -1,13 +1,13 @@
 <template>
   <div class="newToot">
     <div v-if="isCW" class="contentWarning">
-      <input value="" placeholder="ここに警告を書いてください">
+      <input v-model="spoilerText" placeholder="ここに警告を書いてください">
     </div>
     <textarea :value="toot" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div class="menu">
       <div>
-        <MtButton :onClick="addFile" :disabled="files.length >= 4">写真を追加</MtButton>
-        <MtSelect>
+        <MtButton @Click.native="addFile" :disabled="files.length >= 4">写真を追加</MtButton>
+        <MtSelect v-model='visibility'>
           <option value="public">公開</option>
           <option value="unlisted">未収載</option>
           <option value="private">フォロワー限定</option>
@@ -21,7 +21,7 @@
         {{ tootLength }}
       </div>
     </div>
-    <MtButton type="submit">トゥート</MtButton>
+    <MtButton :disabled="sending" @click.native="postToot" type="submit">トゥート</MtButton>
     <div v-if="files.length > 0" class="imgs">
       <div class="item" v-for="(file,idx) in files" :key="idx">
         <div @click="removeFile(idx)">x</div>
@@ -46,6 +46,23 @@ export default {
   props: { userId: Number },
   methods: {
     ...mapActions('users', ['loadUserConfig', 'setCurrentUserId']),
+    postToot () {
+      this.sending = true
+      const { accessToken, host } = this.keys
+      const { isCW, toot, visibility, spoilerText, files } = this
+      let params = {
+        status: toot,
+        visibility
+      }
+      if (isCW === true) {
+        params = { ...params, isCW, spoilerText }
+      }
+      if (isCW === true && files.length > 0) {
+        params = { ...params, sensitive: true }
+      }
+      logger.debug('send', { accessToken, host, toot: params })
+      ipcRenderer.send('postToot', { accessToken, host, toot: params })
+    },
     handleInput (e) {
       const value = e.target.value
       this.toot = value
@@ -60,23 +77,38 @@ export default {
     },
     removeFile (idx) {
       this.files = this.files.filter((val, index) => idx !== index)
+    },
+    clearForm () {
+      this.toot = ''
+      this.spoilerText = ''
+      this.spoilerText = ''
+      this.files = []
     }
   },
   data () {
     return {
       toot: '',
+      visibility: 'public',
+      spoilerText: '',
       maxTootLength,
       isCW: false,
-      files: []
+      files: [],
+      keys: {},
+      sending: false
     }
   },
   watch: {
     isCW (newVal) {
-      console.log('aa')
+      if (newVal === false) {
+        this.spoilerText = ''
+      }
       this.$emit('requireHeightChange', { cw: newVal, fileList: this.files.length > 0 })
     },
     files (newVal) {
       this.$emit('requireHeightChange', { cw: this.isCW, fileList: newVal.length > 0 })
+    },
+    visibility (newVal) {
+      logger.debug(newVal)
     }
   },
   computed: {
@@ -87,10 +119,33 @@ export default {
   async created () {
     await this.loadUserConfig()
     this.setCurrentUserId(this.userId)
-    logger.debug(this.$store.getters['users/getCurrentUser'])
+    const { accessToken, host } = this.$store.getters['users/getCurrentUser']
+    this.keys.accessToken = accessToken
+    this.keys.host = host
+    ipcRenderer.addListener('postToot-success', (e, m) => {
+      const { host, accessToken, result } = m
+      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+        return
+      }
+      logger.debug('postToot-success', result)
+      if (result.resp.statusCode === 200) {
+        this.clearForm()
+      }
+      this.sending = false
+    })
+    ipcRenderer.addListener('postToot-error', (e, m) => {
+      const { host, accessToken, error } = m
+      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+        return
+      }
+      this.sending = false
+      logger.error(error)
+    })
   },
   destroyed () {
     ipcRenderer.removeListener('openDialog-success', () => { })
+    ipcRenderer.removeListener('postToot-success', () => { })
+    ipcRenderer.removeListener('postToot-error', () => { })
   }
 }
 </script>

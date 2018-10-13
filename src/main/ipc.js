@@ -178,6 +178,21 @@ export default logger => {
       event.sender.send('streamPublicTimeline-error', { message, name })
     }
   })
+  ipcMain.on('postToot', async (event, args) => {
+    const { host, accessToken, toot } = args
+    try {
+      const result = await getClient(accessToken, host).postToot(toot)
+      event.sender.send('postToot-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+
+      event.sender.send('postToot-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('openDialog', (event, args) => {
     event.sender.send(
       'openDialog-success',
