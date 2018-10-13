@@ -185,11 +185,25 @@ export default logger => {
       event.sender.send('postToot-success', { result, host, accessToken })
     } catch (e) {
       const { message, name } = e
-
       event.sender.send('postToot-error', {
         error: { message, name },
         host,
         accessToken
+      })
+    }
+  })
+  ipcMain.on('uploadFile', async (event, args) => {
+    const { host, accessToken, filePath, uuid } = args
+    try {
+      const result = await getClient(accessToken, host).uploadFile({ filePath })
+      event.sender.send('uploadFile-success', { result, host, accessToken, uuid })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('uploadFile-error', {
+        error: { message, name },
+        host,
+        accessToken,
+        uuid
       })
     }
   })

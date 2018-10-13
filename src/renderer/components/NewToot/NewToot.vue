@@ -21,7 +21,7 @@
         {{ tootLength }}
       </div>
     </div>
-    <MtButton :disabled="sending" @click.native="postToot" type="submit">トゥート</MtButton>
+    <MtButton :disabled="sending || isPreparingImage" @click.native="postToot" type="submit">トゥート</MtButton>
     <div v-if="files.length > 0" class="imgs">
       <div class="item" v-for="(file,idx) in files" :key="idx">
         <div @click="removeFile(idx)">x</div>
@@ -34,6 +34,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { ipcRenderer } from 'electron'
+import uuidv4 from 'uuid/v4'
 import logger from '../../other/Logger'
 import MtButton from '../Form/MtButton'
 import MtSelect from '../Form/MtSelect'
@@ -60,6 +61,10 @@ export default {
       if (isCW === true && files.length > 0) {
         params = { ...params, sensitive: true }
       }
+      if (files.length > 0) {
+        const mediaIDs = this.files.map(val => val.id)
+        params = { ...params, mediaIDs }
+      }
       logger.debug('send', { accessToken, host, toot: params })
       ipcRenderer.send('postToot', { accessToken, host, toot: params })
     },
@@ -68,12 +73,19 @@ export default {
       this.toot = value
     },
     addFile () {
+      const { accessToken, host } = this.keys
       ipcRenderer.once('openDialog-success', (_, appendFile) => {
         if (appendFile !== null) {
-          this.files = [...this.files, ...appendFile]
+          const filePath = appendFile[0]
+          const uuid = uuidv4()
+          this.uploadFile({ host, accessToken, filePath, uuid })
+          this.files = [...this.files, { filePath, uuid, id: null, state: 'uploading' }]
         }
       })
       ipcRenderer.send('openDialog')
+    },
+    uploadFile (args) {
+      ipcRenderer.send('uploadFile', args)
     },
     removeFile (idx) {
       this.files = this.files.filter((val, index) => idx !== index)
@@ -106,14 +118,14 @@ export default {
     },
     files (newVal) {
       this.$emit('requireHeightChange', { cw: this.isCW, fileList: newVal.length > 0 })
-    },
-    visibility (newVal) {
-      logger.debug(newVal)
     }
   },
   computed: {
     tootLength () {
       return maxTootLength - this.toot.length
+    },
+    isPreparingImage () {
+      return this.files.find(val => val.state === 'error' || val.state === 'uploading') !== undefined
     }
   },
   async created () {
@@ -127,7 +139,6 @@ export default {
       if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
         return
       }
-      logger.debug('postToot-success', result)
       if (result.resp.statusCode === 200) {
         this.clearForm()
       }
@@ -141,11 +152,40 @@ export default {
       this.sending = false
       logger.error(error)
     })
+    ipcRenderer.addListener('uploadFile-success', (e, m) => {
+      const { host, accessToken, result, uuid } = m
+      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+        return
+      }
+      if (this.files.find(val => val.uuid === uuid) === null) {
+        return
+      }
+      if (result.resp.statusCode === 200) {
+        const id = result.data.id
+        this.files = this.files.map((val) => val.uuid === uuid ? { ...val, id, state: 'done' } : val)
+      } else {
+        this.files = this.files.map((val) => val.uuid === uuid ? { ...val, state: 'error' } : val)
+        logger.error(result)
+      }
+    })
+    ipcRenderer.addListener('uploadFile-error', (e, m) => {
+      const { host, accessToken, error, uuid } = m
+      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+        return
+      }
+      if (this.files.find(val => val.uuid === uuid) === null) {
+        return
+      }
+      this.files = this.files.map((val) => val.uuid === uuid ? { ...val, state: 'error' } : val)
+      logger.error(error)
+    })
   },
   destroyed () {
     ipcRenderer.removeListener('openDialog-success', () => { })
     ipcRenderer.removeListener('postToot-success', () => { })
     ipcRenderer.removeListener('postToot-error', () => { })
+    ipcRenderer.removeListener('uploadFile-success', () => { })
+    ipcRenderer.removeListener('uploadFile-error', () => { })
   }
 }
 </script>
