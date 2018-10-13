@@ -6,7 +6,7 @@
     <textarea :value="toot" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div class="menu">
       <div>
-        <MtButton @Click.native="addFile" :disabled="files.length >= 4">写真を追加</MtButton>
+        <MtButton @click.native="addFile" :disabled="files.length >= 4">写真を追加</MtButton>
         <MtSelect v-model='visibility'>
           <option value="public">公開</option>
           <option value="unlisted">未収載</option>
