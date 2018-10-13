@@ -1,4 +1,6 @@
 import M from 'mastodon-api'
+const fs = require('fs')
+
 export default class Mastodon {
   static async loginPhase1 (host) {
     let clientId
@@ -95,6 +97,13 @@ export default class Mastodon {
       opts = { ...opts, spoiler_text: spoilerText }
     }
     return this.mastodon.post('statuses', opts)
+  }
+  async uploadFile (params) {
+    const { filePath } = params
+    const response = await this.mastodon.post('media', {
+      file: fs.createReadStream(filePath)
+    })
+    return response
   }
   favorite (id) {
     return this.mastodon.post(`statuses/${id}/favourite`)
