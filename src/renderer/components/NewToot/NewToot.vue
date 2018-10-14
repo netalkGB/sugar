@@ -22,27 +22,25 @@
       </div>
     </div>
     <MtButton :disabled="sending || isPreparingImage" @click.native="postToot" type="submit">トゥート</MtButton>
-    <div v-if="files.length > 0" class="imgs">
-      <div class="item" v-for="(file,idx) in files" :key="idx">
-        <div @click="removeFile(idx)">x</div>
-        <div>{{file}}</div>
-      </div>
-    </div>
+    <Images :files="files" @removeFile="removeFile" class="imgs" />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { ipcRenderer } from 'electron'
-import uuidv4 from 'uuid/v4'
+import Images from './Images'
 import logger from '../../other/Logger'
+import FileState from '../../other/FileState'
+import File from '../../other/File'
 import MtButton from '../Form/MtButton'
 import MtSelect from '../Form/MtSelect'
 const maxTootLength = 500
 export default {
   components: {
     MtButton,
-    MtSelect
+    MtSelect,
+    Images
   },
   props: { userId: Number },
   methods: {
@@ -73,19 +71,20 @@ export default {
       this.toot = value
     },
     addFile () {
-      const { accessToken, host } = this.keys
       ipcRenderer.once('openDialog-success', (_, appendFile) => {
         if (appendFile !== null) {
           const filePath = appendFile[0]
-          const uuid = uuidv4()
-          this.uploadFile({ host, accessToken, filePath, uuid })
-          this.files = [...this.files, { filePath, uuid, id: null, state: 'uploading' }]
+          const file = File.setFile({ filePath, state: FileState.uploading })
+          this.files = [...this.files, file]
+          this.uploadFile(file)
         }
       })
       ipcRenderer.send('openDialog')
     },
-    uploadFile (args) {
-      ipcRenderer.send('uploadFile', args)
+    uploadFile (file) {
+      const { accessToken, host } = this.keys
+      const { filePath, uuid } = file
+      ipcRenderer.send('uploadFile', { accessToken, host, filePath, uuid })
     },
     removeFile (idx) {
       this.files = this.files.filter((val, index) => idx !== index)
@@ -162,9 +161,9 @@ export default {
       }
       if (result.resp.statusCode === 200) {
         const id = result.data.id
-        this.files = this.files.map((val) => val.uuid === uuid ? { ...val, id, state: 'done' } : val)
+        this.files = this.files.map((val) => val.uuid === uuid ? val.changeState({ newState: FileState.done, id }) : val)
       } else {
-        this.files = this.files.map((val) => val.uuid === uuid ? { ...val, state: 'error' } : val)
+        this.files = this.files.map((val) => val.uuid === uuid ? val.changeState({ newState: FileState.error, id: null }) : val)
         logger.error(result)
       }
     })
@@ -176,7 +175,7 @@ export default {
       if (this.files.find(val => val.uuid === uuid) === null) {
         return
       }
-      this.files = this.files.map((val) => val.uuid === uuid ? { ...val, state: 'error' } : val)
+      this.files = this.files.map((val) => val.uuid === uuid ? { ...val, state: FileState.error } : val)
       logger.error(error)
     })
   },
@@ -207,9 +206,7 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.item {
-  display: flex;
-}
+
 .imgs {
   width: 300px;
 }
