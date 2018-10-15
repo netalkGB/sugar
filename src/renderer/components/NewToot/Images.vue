@@ -1,5 +1,5 @@
 <template>
-  <div class="item" v-if="files.length > 0">
+  <div class="images" v-if="files.length > 0">
     <ImagePreview class="preview" v-for="(file,idx) in files" :file="file" :idx="idx" :key="idx" @remove="removeFile" />
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style scoped>
-.item {
+.images {
   display: flex;
   overflow-y: auto;
 }
