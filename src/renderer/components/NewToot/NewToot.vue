@@ -219,6 +219,7 @@ export default {
 
 .imgs {
   width: 100%;
+  height: 110px;
   margin-top: 8px;
 }
 
