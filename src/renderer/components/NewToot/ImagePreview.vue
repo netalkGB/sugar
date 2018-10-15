@@ -9,13 +9,15 @@
       </template>
     </div>
     <div class="absolute" :class="{ uploading:file.state === 'uploading',error: file.state === 'error' }">
-      <div class="icon" v-if="file.state === 'uploading'">
+      <div class="state" v-if="file.state === 'uploading'">
         <div class="spin">
           <ios-sync-icon />
         </div>
       </div>
-      <div class="message" v-if="file.state === 'error'">
-        error
+      <div class="state" v-if="file.state === 'error'">
+        <div>
+          error
+        </div>
       </div>
       <div class="close" @click="close">
         <div>[x]</div>
@@ -103,7 +105,7 @@ export default {
 .image:hover .close {
   display: flex;
 }
-.icon {
+.state {
   position: absolute;
   width: 100%;
   height: 100%;
