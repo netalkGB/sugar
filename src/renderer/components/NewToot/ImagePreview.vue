@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="close" @click="close">
-        <div>[x]</div>
+        <div><ios-close-icon title="close" :w="16" :h="16" /></div>
       </div>
     </div>
   </div>
@@ -28,9 +28,11 @@
 
 <script>
 import IosSyncIcon from 'vue-ionicons/dist/ios-sync.vue'
+import IosCloseIcon from 'vue-ionicons/dist/ios-close.vue'
 export default {
   components: {
-    IosSyncIcon
+    IosSyncIcon,
+    IosCloseIcon
   },
   props: ['file', 'idx'],
   methods: {
@@ -95,11 +97,10 @@ export default {
   position: absolute;
   background-color: rgba(58, 51, 51, 1);
   width: 16px;
-  height: 13px;
+  height: 15px;
   display: none;
   justify-content: center;
   align-items: center;
-  font-size: 10px;
   cursor: pointer;
 }
 .image:hover .close {
