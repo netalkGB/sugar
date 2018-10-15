@@ -3,7 +3,7 @@
     <div v-if="isCW" class="contentWarning">
       <input class="cw" v-model="spoilerText" :disabled="sending" placeholder="ここに警告を書いてください">
     </div>
-    <textarea :value="toot" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
+    <textarea :value="toot" ref="toottext" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div class="menu">
       <div>
         <MtButton class="item" @click.native="addFile" :disabled="files.length >= 4 || sending">写真を追加</MtButton>
@@ -21,7 +21,7 @@
         {{ tootLength }}
       </div>
     </div>
-    <MtButton :disabled="sending || isPreparingImage" @click.native="postToot" type="submit" class="item">トゥート</MtButton>
+    <MtButton :disabled="isCanToot === false" @click.native="postToot" type="submit" class="item">トゥート</MtButton>
     <Images :files="files" @removeFile="removeFile" class="imgs" />
   </div>
 </template>
@@ -124,7 +124,16 @@ export default {
       return maxTootLength - this.toot.length
     },
     isPreparingImage () {
-      return this.files.find(val => val.state === 'error' || val.state === 'uploading') !== undefined
+      return this.files.find(val => val.state === FileState.error || val.state === FileState.uploading) !== undefined
+    },
+    isCanToot () {
+      if (this.sending) {
+        return false
+      } else if (this.isPreparingImage || ((this.toot.length <= 0 || this.toot.length > 500) && this.files.length <= 0)) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   async created () {
@@ -133,6 +142,11 @@ export default {
     const { accessToken, host } = this.$store.getters['users/getCurrentUser']
     this.keys.accessToken = accessToken
     this.keys.host = host
+    window.addEventListener('keydown', (e) => {
+      if (((e.ctrlKey || e.metaKey) && e.keyCode === 13) && this.isCanToot) {
+        this.postToot()
+      }
+    })
     ipcRenderer.addListener('postToot-success', (e, m) => {
       const { host, accessToken, result } = m
       if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
@@ -142,6 +156,9 @@ export default {
         this.clearForm()
       }
       this.sending = false
+      this.$nextTick(() => {
+        this.$refs.toottext.focus()
+      })
     })
     ipcRenderer.addListener('postToot-error', (e, m) => {
       const { host, accessToken, error } = m
@@ -185,6 +202,7 @@ export default {
     ipcRenderer.removeListener('postToot-error', () => { })
     ipcRenderer.removeListener('uploadFile-success', () => { })
     ipcRenderer.removeListener('uploadFile-error', () => { })
+    window.removeEventListener('keydown', () => { })
   }
 }
 </script>
