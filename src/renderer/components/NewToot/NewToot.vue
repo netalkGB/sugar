@@ -1,7 +1,7 @@
 <template>
   <div class="newToot">
     <div v-if="isCW" class="contentWarning">
-      <input v-model="spoilerText" :disabled="sending" placeholder="ここに警告を書いてください">
+      <input class="cw" v-model="spoilerText" :disabled="sending" placeholder="ここに警告を書いてください">
     </div>
     <textarea :value="toot" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div class="menu">
@@ -208,11 +208,16 @@ export default {
   justify-content: space-between;
 }
 
+.cw {
+  border: none;
+  width: 100%;
+}
+
 .imgs {
-  /* width: calc(100% - 8px); */
   width: 100%;
   margin-top: 8px;
 }
+
 .contentWarning {
   margin-bottom: 4px;
 }
