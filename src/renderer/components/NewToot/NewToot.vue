@@ -201,6 +201,7 @@ export default {
   margin: 0;
   resize: none;
   outline: none;
+  user-select: auto;
 }
 .menu {
   display: flex;
@@ -208,7 +209,9 @@ export default {
 }
 
 .imgs {
-  width: 300px;
+  /* width: calc(100% - 8px); */
+  width: 100%;
+  margin-top: 8px;
 }
 .contentWarning {
   margin-bottom: 4px;

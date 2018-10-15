@@ -27,7 +27,7 @@ export default {
         deltaHeight += 30
       }
       if (fileList === true) {
-        deltaHeight += 100
+        deltaHeight += 118
       }
       window.resizeTo(this.width + this.padding * 2, this.defaultWindowHeight + deltaHeight)
     }

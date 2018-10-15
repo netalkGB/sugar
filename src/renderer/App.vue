@@ -18,14 +18,25 @@ html,
 body {
   margin: 0;
   padding: 0;
-  color: #3E3E3E;
+  color: #3e3e3e;
+  user-select: none;
 }
-html::-webkit-scrollbar {
-  display: none;
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::webkit-scrollbar-track {
+  background: #efefef;
+}
+*::-webkit-scrollbar-thumb {
+  background: #cccccc;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
 }
 a {
-  text-decoration:none;
-  color: #5555CC;
+  text-decoration: none;
+  color: #5555cc;
 }
 p {
   margin: 0;

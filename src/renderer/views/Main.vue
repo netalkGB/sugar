@@ -72,15 +72,7 @@ export default {
   width: calc(100% - 40px);
   height: 100%;
 }
-#content::-webkit-scrollbar {
-  width: 8px;
-}
-#content::-webkit-scrollbar-track {
-  background: #efefef;
-}
-#content::-webkit-scrollbar-thumb {
-  background: #cccccc;
-}
+
 #menu {
   width: 40px;
   height: 100%;
