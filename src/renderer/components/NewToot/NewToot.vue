@@ -6,14 +6,14 @@
     <textarea :value="toot" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
     <div class="menu">
       <div>
-        <MtButton @click.native="addFile" :disabled="files.length >= 4 || sending">写真を追加</MtButton>
-        <MtSelect :disabled="sending" v-model='visibility'>
+        <MtButton class="item" @click.native="addFile" :disabled="files.length >= 4 || sending">写真を追加</MtButton>
+        <MtSelect class="item" :disabled="sending" v-model='visibility'>
           <option value="public">公開</option>
           <option value="unlisted">未収載</option>
           <option value="private">フォロワー限定</option>
           <option value="direct">ダイレクト</option>
         </MtSelect>
-        <label>
+        <label class="item">
           CW:<input type="checkbox" :disabled="sending" v-model="isCW">
         </label>
       </div>
@@ -21,7 +21,7 @@
         {{ tootLength }}
       </div>
     </div>
-    <MtButton :disabled="sending || isPreparingImage" @click.native="postToot" type="submit">トゥート</MtButton>
+    <MtButton :disabled="sending || isPreparingImage" @click.native="postToot" type="submit" class="item">トゥート</MtButton>
     <Images :files="files" @removeFile="removeFile" class="imgs" />
   </div>
 </template>
@@ -206,6 +206,10 @@ export default {
 .menu {
   display: flex;
   justify-content: space-between;
+}
+
+.item {
+  height: 24px;
 }
 
 .cw {
