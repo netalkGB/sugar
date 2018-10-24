@@ -3,25 +3,29 @@
     <div v-if="isCW" class="contentWarning">
       <input class="cw" v-model="spoilerText" :disabled="sending" placeholder="ここに警告を書いてください">
     </div>
-    <textarea :value="toot" ref="toottext" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
+    <div class="inputToot">
+      <textarea :value="toot" ref="toottext" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
+    </div>
     <div class="menu">
       <div>
-        <MtButton class="item" @click.native="addFile" :disabled="files.length >= 4 || sending">写真を追加</MtButton>
-        <MtSelect class="item" :disabled="sending" v-model='visibility'>
+        <MtButton class="item addFile" @click.native="addFile" :disabled="files.length >= 4 || sending">写真を追加</MtButton>
+        <MtSelect class="item permission" :disabled="sending" v-model='visibility'>
           <option value="public">公開</option>
           <option value="unlisted">未収載</option>
           <option value="private">フォロワー限定</option>
           <option value="direct">ダイレクト</option>
         </MtSelect>
-        <label class="item">
+        <label class="item iscw">
           CW:<input type="checkbox" :disabled="sending" v-model="isCW">
         </label>
       </div>
-      <div>
+      <div class="tootlength">
         {{ tootLength }}
       </div>
     </div>
-    <MtButton :disabled="isCanToot === false" @click.native="postToot" type="submit" class="item">トゥート</MtButton>
+    <div class="menu">
+      <MtButton :disabled="isCanToot === false" @click.native="postToot" type="submit" class="item">トゥート</MtButton>
+    </div>
     <Images :files="files" @removeFile="removeFile" class="imgs" />
   </div>
 </template>
@@ -221,13 +225,21 @@ export default {
   outline: none;
   user-select: auto;
 }
+.inputToot {
+  height: 58px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
 .menu {
   display: flex;
   justify-content: space-between;
+  height: auto;
+  margin-bottom: 4px;
+  width: 320px;
 }
 
 .item {
-  height: 24px;
+  height: 30px;
 }
 
 .cw {
@@ -238,10 +250,10 @@ export default {
 .imgs {
   width: 100%;
   height: 110px;
-  margin-top: 8px;
 }
 
 .contentWarning {
   margin-bottom: 4px;
+  height: 30px;
 }
 </style>
