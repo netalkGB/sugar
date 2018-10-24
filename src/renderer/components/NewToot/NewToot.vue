@@ -254,7 +254,6 @@ export default {
   font-size: initial;
 }
 
-
 .imgs {
   width: 100%;
   height: 110px;
