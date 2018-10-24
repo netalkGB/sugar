@@ -1,7 +1,7 @@
 <template>
   <div class="actions flex" >
-    <div class="reply flex">
-      <IosUndoIcon :w="'18'" :h="'18'" />
+    <div class="reply flex" @click="replyToot">
+      <IosUndoIcon :w="'18'" :h="'18'"/>
       <div class="count">{{repliesCount}}</div>
     </div>
     <template v-if="visibility === 'public' || visibility === 'unlisted'">
@@ -46,7 +46,7 @@ import logger from '../../../other/Logger'
 
 export default {
   components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon },
-  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount', 'favorited', 'boosted', 'id'],
+  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount', 'favorited', 'boosted', 'id', 'userid'],
   data () {
     return {
       displayBoosted: false,
@@ -62,6 +62,10 @@ export default {
     this.displayBoostsCount = this.boostsCount
   },
   methods: {
+    replyToot () {
+      logger.debug('reply')
+      this.reply({ inReplyToID: this.id, destination: this.userid })
+    },
     favoriteToot () {
       if (this.displayFavorited) {
         logger.debug('to unfavorite')
@@ -96,7 +100,7 @@ export default {
         })
       }
     },
-    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost'])
+    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost', 'reply'])
   }
 }
 </script>

@@ -46,7 +46,7 @@ export default {
     MtSelect,
     Images
   },
-  props: { userId: Number },
+  props: { userId: Number, inReplyToID: String, destination: String },
   methods: {
     ...mapActions('users', ['loadUserConfig', 'setCurrentUserId']),
     postToot () {
@@ -56,6 +56,9 @@ export default {
       let params = {
         status: toot,
         visibility
+      }
+      if (this.copyInReplyToID && this.toot.search(this.copyDestination) > 0) {
+        params = { ...params, inReplyToID: this.inReplyToID }
       }
       if (isCW === true) {
         params = { ...params, isCW, spoilerText }
@@ -98,6 +101,8 @@ export default {
       this.spoilerText = ''
       this.spoilerText = ''
       this.files = []
+      this.copyInReplyToID = null
+      this.copyDestination = null
     }
   },
   data () {
@@ -109,7 +114,9 @@ export default {
       isCW: false,
       files: [],
       keys: {},
-      sending: false
+      sending: false,
+      copyInReplyToID: null,
+      copyDestination: null
     }
   },
   watch: {
@@ -117,10 +124,16 @@ export default {
       if (newVal === false) {
         this.spoilerText = ''
       }
-      this.$emit('requireHeightChange', { cw: newVal, fileList: this.files.length > 0 })
+      this.$emit('requireHeightChange', {
+        cw: newVal,
+        fileList: this.files.length > 0
+      })
     },
     files (newVal) {
-      this.$emit('requireHeightChange', { cw: this.isCW, fileList: newVal.length > 0 })
+      this.$emit('requireHeightChange', {
+        cw: this.isCW,
+        fileList: newVal.length > 0
+      })
     }
   },
   computed: {
@@ -128,12 +141,21 @@ export default {
       return maxTootLength - this.toot.length
     },
     isPreparingImage () {
-      return this.files.find(val => val.state === FileState.error || val.state === FileState.uploading) !== undefined
+      return (
+        this.files.find(
+          val =>
+            val.state === FileState.error || val.state === FileState.uploading
+        ) !== undefined
+      )
     },
     isCanToot () {
       if (this.sending) {
         return false
-      } else if (this.isPreparingImage || ((this.toot.length <= 0 || this.toot.length > 500) && this.files.length <= 0)) {
+      } else if (
+        this.isPreparingImage ||
+        ((this.toot.length <= 0 || this.toot.length > 500) &&
+          this.files.length <= 0)
+      ) {
         return false
       } else {
         return true
@@ -143,11 +165,22 @@ export default {
   async created () {
     await this.loadUserConfig()
     this.setCurrentUserId(this.userId)
+    this.copyDestination = this.destination
+    this.copyInReplyToID = this.inReplyToID
+    if (location.href.search('destination=') < 0) {
+      this.copyDestination = null
+    }
+    if (location.href.search('inReplyToID=') < 0) {
+      this.copyInReplyToID = null
+    }
+    if (this.copyDestination !== null) {
+      this.toot = '@' + this.copyDestination + ' '
+    }
     const { accessToken, host } = this.$store.getters['users/getCurrentUser']
     this.keys.accessToken = accessToken
     this.keys.host = host
-    window.addEventListener('keydown', (e) => {
-      if (((e.ctrlKey || e.metaKey) && e.keyCode === 13) && this.isCanToot) {
+    window.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 13 && this.isCanToot) {
         this.postToot()
       }
     })
@@ -182,9 +215,19 @@ export default {
       }
       if (result.resp.statusCode === 200) {
         const id = result.data.id
-        this.files = this.files.map((val) => val.uuid === uuid ? val.changeState({ newState: FileState.done, id }) : val)
+        this.files = this.files.map(
+          val =>
+            val.uuid === uuid
+              ? val.changeState({ newState: FileState.done, id })
+              : val
+        )
       } else {
-        this.files = this.files.map((val) => val.uuid === uuid ? val.changeState({ newState: FileState.error, id: null }) : val)
+        this.files = this.files.map(
+          val =>
+            val.uuid === uuid
+              ? val.changeState({ newState: FileState.error, id: null })
+              : val
+        )
         logger.error(result)
       }
     })
@@ -196,17 +239,19 @@ export default {
       if (this.files.find(val => val.uuid === uuid) === null) {
         return
       }
-      this.files = this.files.map((val) => val.uuid === uuid ? { ...val, state: FileState.error } : val)
+      this.files = this.files.map(
+        val => (val.uuid === uuid ? { ...val, state: FileState.error } : val)
+      )
       logger.error(error)
     })
   },
   destroyed () {
-    ipcRenderer.removeListener('openDialog-success', () => { })
-    ipcRenderer.removeListener('postToot-success', () => { })
-    ipcRenderer.removeListener('postToot-error', () => { })
-    ipcRenderer.removeListener('uploadFile-success', () => { })
-    ipcRenderer.removeListener('uploadFile-error', () => { })
-    window.removeEventListener('keydown', () => { })
+    ipcRenderer.removeListener('openDialog-success', () => {})
+    ipcRenderer.removeListener('postToot-success', () => {})
+    ipcRenderer.removeListener('postToot-error', () => {})
+    ipcRenderer.removeListener('uploadFile-success', () => {})
+    ipcRenderer.removeListener('uploadFile-error', () => {})
+    window.removeEventListener('keydown', () => {})
   }
 }
 </script>
