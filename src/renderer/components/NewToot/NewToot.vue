@@ -239,13 +239,21 @@ export default {
 }
 
 .item {
-  height: 30px;
+  height: 25px;
+  font-size: 11px;
 }
 
 .cw {
   border: none;
   width: 100%;
 }
+
+.iscw {
+  width: 30px;
+  height: 25px;
+  font-size: initial;
+}
+
 
 .imgs {
   width: 100%;
