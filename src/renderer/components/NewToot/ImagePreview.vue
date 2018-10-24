@@ -11,7 +11,7 @@
     <div class="absolute" :class="{ uploading:file.state === 'uploading',error: file.state === 'error' }">
       <div class="state" v-if="file.state === 'uploading'">
         <div class="spin">
-          <ios-sync-icon :w="25" :h="25" />
+          <ios-sync-icon w="25" h="25" />
         </div>
       </div>
       <div class="state" v-if="file.state === 'error'">
@@ -21,7 +21,7 @@
       </div>
       <div class="close" @click="close">
         <div>
-          <ios-close-icon title="close" :w="16" :h="16" />
+          <ios-close-icon title="close" w="16" h="16" />
         </div>
       </div>
     </div>
