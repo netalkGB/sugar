@@ -146,6 +146,11 @@ export default {
     }
   },
   actions: {
+    reply ({ commit, state }, payload) {
+      const { inReplyToID, destination } = payload
+      const id = this.getters['users/getCurrentUserId']
+      window.open(`#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`, '_blank', 'width=320,height=150')
+    },
     boost ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']

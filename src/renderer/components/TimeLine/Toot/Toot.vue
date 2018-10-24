@@ -11,7 +11,7 @@
         </div>
         <TlText :content="toot.content" />
         <Images v-if="toot.medium.length > 0" :medium="toot.medium" />
-        <Action :id="toot.id" :favorited="toot.favorited" :boosted="toot.boosted" :visibility="toot.visibility" :favoritesCount="toot.favoritesCount" :boostsCount="toot.boostsCount" :repliesCount="toot.repliesCount" />
+        <Action :userid="toot.profile.userid" :id="toot.id" :favorited="toot.favorited" :boosted="toot.boosted" :visibility="toot.visibility" :favoritesCount="toot.favoritesCount" :boostsCount="toot.boostsCount" :repliesCount="toot.repliesCount" />
       </div>
     </div>
   </div>
