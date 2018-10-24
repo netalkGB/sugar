@@ -5,8 +5,8 @@
 <script>
 import NewToot from '../components/NewToot/NewToot'
 const padding = 4
-const defaultWindowHeight = 150
-const defaultWindowWidth = 320
+const defaultWindowHeight = 138
+const defaultWindowWidth = 330
 export default {
   components: { NewToot },
   props: { userId: Number },
@@ -16,7 +16,9 @@ export default {
       height: 0,
       padding,
       defaultWindowHeight,
-      defaultWindowWidth
+      defaultWindowWidth,
+      marginH: 0,
+      marginW: 0
     }
   },
   methods: {
@@ -24,15 +26,18 @@ export default {
       const { cw, fileList } = ev
       let deltaHeight = 0
       if (cw === true) {
-        deltaHeight += 30
+        deltaHeight += 34
       }
       if (fileList === true) {
-        deltaHeight += 118
+        deltaHeight += 110
       }
-      window.resizeTo(this.width + this.padding * 2, this.defaultWindowHeight + deltaHeight)
+      window.resizeTo(window.outerWidth, this.defaultWindowHeight + this.marginH + deltaHeight)
     }
   },
   created () {
+    this.marginH = window.outerHeight - window.innerHeight
+    this.marginW = window.outerWidth - window.innerWidth
+    window.resizeTo(this.defaultWindowWidth + this.marginW, this.defaultWindowHeight + this.marginH)
     this.width = window.innerWidth - this.padding * 2
     this.height = window.innerHeight - this.padding * 2
     window.addEventListener('resize', e => {
