@@ -6,6 +6,7 @@ import Main from './views/Main'
 import HomeTimeline from './views/HomeTimeline'
 import LocalTimeline from './views/LocalTimeline'
 import PublicTimeline from './views/PublicTimeline'
+import Notification from './views/Notification'
 import NewToot from './views/NewToot'
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
           name: 'public_timeline',
           path: 'public_timeline',
           component: PublicTimeline
+        },
+        {
+          name: 'notification',
+          path: 'notification',
+          component: Notification
         }
       ]
     },
