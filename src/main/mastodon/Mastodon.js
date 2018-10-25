@@ -58,6 +58,13 @@ export default class Mastodon {
     }
     return this.mastodon.get('timelines/public', params)
   }
+  fetchNotification (appendParams) {
+    let params = {}
+    if (appendParams && appendParams.maxID) {
+      params = { ...params, max_id: appendParams.maxID }
+    }
+    return this.mastodon.get('notifications', params)
+  }
   streamHomeTimeline () {
     return this.mastodon.stream('streaming/user')
   }

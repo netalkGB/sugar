@@ -146,6 +146,20 @@ export default logger => {
       event.sender.send('fetchPublicTimeline-error', { message, name })
     }
   })
+  ipcMain.on('fetchNotification', async (event, args) => {
+    try {
+      const { host, accessToken, maxID } = args
+      let opt = {}
+      if (maxID) {
+        opt = { ...opt, maxID }
+      }
+      const result = await getClient(accessToken, host).fetchNotification(opt)
+      event.sender.send('fetchNotification-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchNotification-error', { message, name })
+    }
+  })
   ipcMain.once('streamLocalTimeline', async (event, args) => {
     try {
       const { host, accessToken } = args

@@ -8,4 +8,7 @@ export default class TimelineType {
   static get publictl () {
     return 'publictl'
   }
+  static get notification () {
+    return 'notification'
+  }
 }

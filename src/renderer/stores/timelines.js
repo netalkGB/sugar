@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import Toot from '../other/Toot'
+import Notification from '../other/Notification'
 import TimelineType from '../other/TimelineType'
 const upperLimitToot = 50
 export default {
@@ -70,7 +71,10 @@ export default {
         accessToken,
         type,
         active: false,
-        data: data.data.map(item => Toot.fromMastodon(item))
+        data:
+          type !== TimelineType.notification
+            ? data.data.map(item => Toot.fromMastodon(item))
+            : data.data.map(item => Notification.fromMastodon(item))
       }
       state.timelines = [...state.timelines, timeline]
     },
@@ -149,7 +153,11 @@ export default {
     reply ({ commit, state }, payload) {
       const { inReplyToID, destination } = payload
       const id = this.getters['users/getCurrentUserId']
-      window.open(`#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`, '_blank', 'width=320,height=150')
+      window.open(
+        `#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`,
+        '_blank',
+        'width=320,height=150'
+      )
     },
     boost ({ commit, state }, payload) {
       const { id } = payload
@@ -306,7 +314,7 @@ export default {
             ipcRenderer.send('fetchLocalTimeline', { host, accessToken })
           }
         })
-      } else {
+      } else if (type === TimelineType.publictl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchPublicTimeline-success', (_, data) => {
             commit('setTimeline', { host, accessToken, type, data })
@@ -324,6 +332,26 @@ export default {
             )
           ) {
             ipcRenderer.send('fetchPublicTimeline', { host, accessToken })
+          }
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          ipcRenderer.once('fetchNotification-success', (_, data) => {
+            commit('setTimeline', { host, accessToken, type, data })
+            resolve()
+          })
+          ipcRenderer.once('fetchNotification-error', (_, e) => {
+            reject(e)
+          })
+          if (
+            !state.timelines.find(
+              tl =>
+                tl.type === type &&
+                tl.accessToken === accessToken &&
+                tl.type === type
+            )
+          ) {
+            ipcRenderer.send('fetchNotification', { host, accessToken })
           }
         })
       }
