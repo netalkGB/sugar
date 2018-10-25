@@ -47,6 +47,11 @@ export default {
         logger.debug(e)
       })
     })
+    this.firstFetch({ type: TimelineType.notification }).then(() => {
+      this.startStreaming({ type: TimelineType.publictl }).catch(e => {
+        logger.debug(e)
+      })
+    })
   },
   mounted () {
     this.width = window.innerWidth
