@@ -1,6 +1,6 @@
 <template>
   <div class="actions flex" >
-    <div class="reply flex" @click="replyToot">
+    <div class="action flex" @click="replyToot">
       <IosUndoIcon :w="'18'" :h="'18'"/>
       <div class="count">{{repliesCount}}</div>
     </div>
