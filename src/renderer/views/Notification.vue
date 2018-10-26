@@ -17,8 +17,6 @@ export default {
         this.cleaningTl({ type: this.type })
       }
       let timeline = this.tl.find(timeline => timeline.type === this.type)
-      timeline.data = timeline.data.filter(tl => tl !== null)
-      logger.debug('Notification.vue', JSON.stringify(timeline))
       return timeline ? timeline.data : []
     }
   },
