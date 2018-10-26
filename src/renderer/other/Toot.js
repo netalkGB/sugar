@@ -15,6 +15,7 @@ export default class Toot {
     this.favorited = args.favorited
     this.boosted = args.boosted
     this.boostedBy = args.boostedBy
+    this.followedBy = args.followedBy
   }
   static fromMastodon (data) {
     let item
@@ -89,8 +90,75 @@ export default class Toot {
         }
       }
       return obj
+    } else if (data.type === 'reblog') {
+      const profile = Profile.fromAccount(data.status.account)
+      const date = new Date(data.created_at)
+      const id = data.id
+      const content = data.status.content
+      const boostsCount = data.status.reblogs_count
+      const favoritesCount = data.status.favourites_count
+      const repliesCount = data.status.replies_count
+      const visibility = data.status.visibility
+      const favorited = data.status.favourited
+      const boosted = data.status.reblogged
+      const boostedBy = Profile.fromAccount(data.account)
+      let obj = {
+        profile,
+        date,
+        content,
+        boostsCount,
+        favoritesCount,
+        repliesCount,
+        visibility,
+        id,
+        favorited,
+        boosted,
+        boostedBy
+      }
+      if (data.status.media_attachments) {
+        obj = {
+          ...obj,
+          medium: Media.fromMediaAttachments(data.status.media_attachments)
+        }
+      }
+      return obj
+    } else if (data.type === 'favourite') {
+      const profile = Profile.fromAccount(data.status.account)
+      const date = new Date(data.created_at)
+      const id = data.id
+      const content = data.status.content
+      const boostsCount = data.status.reblogs_count
+      const favoritesCount = data.status.favourites_count
+      const repliesCount = data.status.replies_count
+      const visibility = data.status.visibility
+      const favorited = data.status.favourited
+      const boosted = data.status.reblogged
+      const favoritedBy = Profile.fromAccount(data.account)
+      let obj = {
+        profile,
+        date,
+        content,
+        boostsCount,
+        favoritesCount,
+        repliesCount,
+        visibility,
+        id,
+        favorited,
+        boosted,
+        favoritedBy
+      }
+      if (data.status.media_attachments) {
+        obj = {
+          ...obj,
+          medium: Media.fromMediaAttachments(data.status.media_attachments)
+        }
+      }
+      return obj
     } else {
-      return null
+      const date = new Date(data.created_at)
+      const id = data.id
+      const followedBy = Profile.fromAccount(data.account)
+      return { date, id, followedBy }
     }
   }
 }
