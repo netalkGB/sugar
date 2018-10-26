@@ -138,6 +138,21 @@ export default {
         }
       }
     },
+    removeTootFromNotification (state, payload) {
+      const { id, host, accessToken } = payload
+      for (let timeline of state.timelines) {
+        if (
+          timeline.host === host &&
+          timeline.accessToken === accessToken &&
+          timeline.type === TimelineType.notification
+        ) {
+          const roundedId = parseInt(id, 10)
+          timeline.data = timeline.data.filter(
+            timeline => parseInt(timeline.originalId) !== roundedId
+          )
+        }
+      }
+    },
     removeTootFromTl (state, payload) {
       const { id, type, host, accessToken } = payload
       for (let timeline of state.timelines) {
@@ -422,6 +437,7 @@ export default {
             } else if (msg.event === 'delete') {
               const id = msg.data
               commit('removeTootFromTl', { host, accessToken, type, id })
+              commit('removeTootFromNotification', { host, accessToken, id })
             } else if (msg.event === 'notification') {
               const data = msg.data
               commit('prependNotification', {
@@ -468,7 +484,7 @@ export default {
               commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
-              console.log(id)
+              commit('removeTootFromNotification', { host, accessToken, id })
               commit('removeTootFromTl', { host, accessToken, type, id })
             }
           })
