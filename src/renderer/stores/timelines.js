@@ -173,7 +173,7 @@ export default {
       for (let timeline of state.timelines) {
         if (timeline.host === host && timeline.accessToken === accessToken) {
           for (let toot of timeline.data) {
-            if (toot.id === id) {
+            if (toot.originalId === id) {
               toot.favorited = to
               break
             }
@@ -186,7 +186,7 @@ export default {
       for (let timeline of state.timelines) {
         if (timeline.host === host && timeline.accessToken === accessToken) {
           for (let toot of timeline.data) {
-            if (toot.id === id) {
+            if (toot.originalId === id) {
               toot.boosted = to
               break
             }
