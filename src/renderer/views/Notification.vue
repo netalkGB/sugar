@@ -1,5 +1,5 @@
 <template>
-  <span>{{timeline}}</span>
+  <TimeLine @wantOldToot="wantOldToot" ref="timeline" :type="type" :timeline="timeline" @scrollStateChanged="handleScrollState" />
 </template>
 
 <script>
@@ -17,6 +17,7 @@ export default {
         this.cleaningTl({ type: this.type })
       }
       let timeline = this.tl.find(timeline => timeline.type === this.type)
+      timeline.data = timeline.data.filter(tl => tl !== null)
       logger.debug('Notification.vue', JSON.stringify(timeline))
       return timeline ? timeline.data : []
     }
