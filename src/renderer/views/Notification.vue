@@ -31,7 +31,13 @@ export default {
   methods: {
     ...mapActions('users', ['loadUserConfig']),
     ...mapActions('timelines', ['firstFetch', 'startStreaming', 'loadOldToot', 'cleaningTl', 'setActive']),
-    wantOldToot (args) { },
+    wantOldToot (args) {
+      const { maxID } = args
+      logger.debug('load old toots maxID:', maxID)
+      this.loadOldToot({ type: this.type, maxID }).then(() => {
+        this.$refs.timeline.$emit('loadOldTootDone', true)
+      })
+    },
     handleScrollState (state) {
       this.state = state
     }

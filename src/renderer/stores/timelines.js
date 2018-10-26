@@ -98,10 +98,17 @@ export default {
           timeline.accessToken === accessToken &&
           timeline.type === type
         ) {
-          timeline.data = [
-            ...timeline.data,
-            ...data.data.map(d => Toot.fromMastodon(d))
-          ]
+          if (type !== TimelineType.notification) {
+            timeline.data = [
+              ...timeline.data,
+              ...data.data.map(d => Toot.fromMastodon(d))
+            ]
+          } else {
+            timeline.data = [
+              ...timeline.data,
+              ...data.data.map(d => Toot.fromMastodonNotification(d))
+            ]
+          }
           break
         }
       }
@@ -251,7 +258,7 @@ export default {
           })
           ipcRenderer.send('fetchLocalTimeline', { host, accessToken, maxID })
         })
-      } else {
+      } else if (type === TimelineType.publictl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchPublicTimeline-success', (_, data) => {
             commit('appendTootsTimeline', {
@@ -267,6 +274,23 @@ export default {
             reject(e)
           })
           ipcRenderer.send('fetchPublicTimeline', { host, accessToken, maxID })
+        })
+      } else {
+        return new Promise((resolve, reject) => {
+          ipcRenderer.once('fetchNotification-success', (_, data) => {
+            commit('appendTootsTimeline', {
+              host,
+              accessToken,
+              type,
+              maxID,
+              data
+            })
+            resolve()
+          })
+          ipcRenderer.once('fetchNotification-error', (_, e) => {
+            reject(e)
+          })
+          ipcRenderer.send('fetchNotification', { host, accessToken, maxID })
         })
       }
     },
