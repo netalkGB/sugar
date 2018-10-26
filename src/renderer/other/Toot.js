@@ -16,7 +16,7 @@ export default class Toot {
     this.boosted = args.boosted
     this.boostedBy = args.boostedBy
     this.followedBy = args.followedBy
-    this.originalId = this.originalId
+    this.originalId = args.originalId
   }
   static fromMastodon (data) {
     let item
@@ -28,7 +28,7 @@ export default class Toot {
     const profile = Profile.fromAccount(item.account)
     const date = new Date(item.created_at)
     const id = item.id
-    const originalId = item.id
+    const originalId = id
     const content = item.content
     const boostsCount = item.reblogs_count
     const favoritesCount = item.favourites_count
