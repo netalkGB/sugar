@@ -77,6 +77,22 @@ export default {
       }
       state.timelines = [...state.timelines, timeline]
     },
+    prependNotification (state, payload) {
+      const { data, host, accessToken } = payload
+      for (let timeline of state.timelines) {
+        if (
+          timeline.host === host &&
+          timeline.accessToken === accessToken &&
+          timeline.type === TimelineType.notification
+        ) {
+          timeline.data = [
+            Toot.fromMastodonNotification(data),
+            ...timeline.data
+          ]
+          break
+        }
+      }
+    },
     prependTootTimeline (state, payload) {
       const { type, data, host, accessToken } = payload
       for (let timeline of state.timelines) {
@@ -90,6 +106,22 @@ export default {
         }
       }
     },
+    appendNotificationTimeline (state, payload) {
+      const { data, host, accessToken } = payload
+      for (let timeline of state.timelines) {
+        if (
+          timeline.host === host &&
+          timeline.accessToken === accessToken &&
+          timeline.type === TimelineType.notification
+        ) {
+          timeline.data = [
+            ...timeline.data,
+            ...data.data.map(d => Toot.fromMastodonNotification(d))
+          ]
+          break
+        }
+      }
+    },
     appendTootsTimeline (state, payload) {
       const { type, data, host, accessToken } = payload
       for (let timeline of state.timelines) {
@@ -98,17 +130,10 @@ export default {
           timeline.accessToken === accessToken &&
           timeline.type === type
         ) {
-          if (type !== TimelineType.notification) {
-            timeline.data = [
-              ...timeline.data,
-              ...data.data.map(d => Toot.fromMastodon(d))
-            ]
-          } else {
-            timeline.data = [
-              ...timeline.data,
-              ...data.data.map(d => Toot.fromMastodonNotification(d))
-            ]
-          }
+          timeline.data = [
+            ...timeline.data,
+            ...data.data.map(d => Toot.fromMastodon(d))
+          ]
           break
         }
       }
@@ -278,10 +303,9 @@ export default {
       } else {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchNotification-success', (_, data) => {
-            commit('appendTootsTimeline', {
+            commit('appendNotificationTimeline', {
               host,
               accessToken,
-              type,
               maxID,
               data
             })
@@ -398,6 +422,13 @@ export default {
             } else if (msg.event === 'delete') {
               const id = msg.data
               commit('removeTootFromTl', { host, accessToken, type, id })
+            } else if (msg.event === 'notification') {
+              const data = msg.data
+              commit('prependNotification', {
+                host,
+                accessToken,
+                data
+              })
             }
           })
           ipcRenderer.send('streamHomeTimeline', { host, accessToken })
@@ -437,6 +468,7 @@ export default {
               commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
+              console.log(id)
               commit('removeTootFromTl', { host, accessToken, type, id })
             }
           })
