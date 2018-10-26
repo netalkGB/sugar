@@ -16,6 +16,7 @@ export default class Toot {
     this.boosted = args.boosted
     this.boostedBy = args.boostedBy
     this.followedBy = args.followedBy
+    this.originalId = this.originalId
   }
   static fromMastodon (data) {
     let item
@@ -27,6 +28,7 @@ export default class Toot {
     const profile = Profile.fromAccount(item.account)
     const date = new Date(item.created_at)
     const id = item.id
+    const originalId = item.id
     const content = item.content
     const boostsCount = item.reblogs_count
     const favoritesCount = item.favourites_count
@@ -44,7 +46,8 @@ export default class Toot {
       visibility,
       id,
       favorited,
-      boosted
+      boosted,
+      originalId
     }
     if (item.media_attachments) {
       obj = {
@@ -71,6 +74,7 @@ export default class Toot {
       const visibility = data.status.visibility
       const favorited = data.status.favourited
       const boosted = data.status.reblogged
+      const originalId = data.status.id
       let obj = {
         profile,
         date,
@@ -81,7 +85,8 @@ export default class Toot {
         visibility,
         id,
         favorited,
-        boosted
+        boosted,
+        originalId
       }
       if (data.status.media_attachments) {
         obj = {
@@ -102,6 +107,7 @@ export default class Toot {
       const favorited = data.status.favourited
       const boosted = data.status.reblogged
       const boostedBy = Profile.fromAccount(data.account)
+      const originalId = data.status.id
       let obj = {
         profile,
         date,
@@ -113,7 +119,8 @@ export default class Toot {
         id,
         favorited,
         boosted,
-        boostedBy
+        boostedBy,
+        originalId
       }
       if (data.status.media_attachments) {
         obj = {
@@ -134,6 +141,7 @@ export default class Toot {
       const favorited = data.status.favourited
       const boosted = data.status.reblogged
       const favoritedBy = Profile.fromAccount(data.account)
+      const originalId = data.status.id
       let obj = {
         profile,
         date,
@@ -145,7 +153,8 @@ export default class Toot {
         id,
         favorited,
         boosted,
-        favoritedBy
+        favoritedBy,
+        originalId
       }
       if (data.status.media_attachments) {
         obj = {
