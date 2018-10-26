@@ -1,6 +1,5 @@
 import { ipcRenderer } from 'electron'
 import Toot from '../other/Toot'
-import Notification from '../other/Notification'
 import TimelineType from '../other/TimelineType'
 const upperLimitToot = 50
 export default {
@@ -74,7 +73,7 @@ export default {
         data:
           type !== TimelineType.notification
             ? data.data.map(item => Toot.fromMastodon(item))
-            : data.data.map(item => Notification.fromMastodon(item))
+            : data.data.map(item => Toot.fromMastodonNotification(item))
       }
       state.timelines = [...state.timelines, timeline]
     },

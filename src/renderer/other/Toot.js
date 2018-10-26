@@ -58,4 +58,39 @@ export default class Toot {
     }
     return new Toot(obj)
   }
+  static fromMastodonNotification (data) {
+    if (data.type === 'mention') {
+      const profile = Profile.fromAccount(data.account)
+      const date = new Date(data.created_at)
+      const id = data.id
+      const content = data.status.content
+      const boostsCount = data.status.reblogs_count
+      const favoritesCount = data.status.favourites_count
+      const repliesCount = data.status.replies_count
+      const visibility = data.status.visibility
+      const favorited = data.status.favourited
+      const boosted = data.status.reblogged
+      let obj = {
+        profile,
+        date,
+        content,
+        boostsCount,
+        favoritesCount,
+        repliesCount,
+        visibility,
+        id,
+        favorited,
+        boosted
+      }
+      if (data.status.media_attachments) {
+        obj = {
+          ...obj,
+          medium: Media.fromMediaAttachments(data.status.media_attachments)
+        }
+      }
+      return obj
+    } else {
+      return null
+    }
+  }
 }
