@@ -4,12 +4,14 @@ export default class Profile {
     this.displayName = args.displayName
     this.userid = args.userid
     this.locked = args.locked
+    this.note = args.note
   }
   static fromAccount (account) {
     const avatar = account.avatar
     const displayName = account.display_name
     const userid = account.acct
     const locked = account.locked
-    return new Profile({ avatar, displayName, userid, locked })
+    const note = account.note
+    return new Profile({ avatar, displayName, userid, locked, note })
   }
 }
