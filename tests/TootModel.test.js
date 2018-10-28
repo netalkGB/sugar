@@ -6,7 +6,7 @@ describe('Toot', () => {
   it('should be convert correctly', () => {
     const toot = tootData[0]
     const converted = Toot.fromMastodon(toot)
-    expect(converted.profile !== undefined).toBe(true)
+    expect(converted.profile.userid).toBe('netalkGB@example.com')
     expect(converted.content).toBe('\u003cp\u003emastodon\u003c/p\u003e')
     expect(converted.favorited).toBe(false)
     expect(converted.boosted).toBe(false)
@@ -25,7 +25,7 @@ describe('Toot', () => {
     expect(converted.favorited).toBe(true)
     expect(converted.boosted).toBe(true)
     expect(converted.boostedBy.userid).toBe('netalkGB')
-    expect(converted.profile !== undefined).toBe(true)
+    expect(converted.profile.userid).toBe('netalkGB2@example.com')
     expect(converted.content).toBe('\u003cp\u003eboost\u003c/p\u003e')
     expect(converted.date.toString()).toBe(new Date(converted.date).toString())
     expect(converted.boostsCount).toBe(20)
@@ -42,7 +42,7 @@ describe('Toot', () => {
     const converted = Toot.fromMastodonNotification(toot)
     expect(converted.favorited).toBe(false)
     expect(converted.boosted).toBe(false)
-    expect(converted.profile !== undefined).toBe(true)
+    expect(converted.profile.userid).toBe('gb@www1.example.com')
     expect(converted.content).toBe(`<p>ok</p>`)
     expect(converted.date.toString()).toBe(new Date(converted.date).toString())
     expect(converted.boostsCount).toBe(0)
