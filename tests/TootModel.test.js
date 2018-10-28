@@ -1,9 +1,10 @@
 import Toot from '@/renderer/other/Toot'
-import data from './toot.data.json'
+import tootData from './toot.data.json'
+import notificationData from './notification.data.json'
 
 describe('Toot', () => {
   it('should be convert correctly', () => {
-    const toot = data[0]
+    const toot = tootData[0]
     const converted = Toot.fromMastodon(toot)
     expect(converted.profile !== undefined).toBe(true)
     expect(converted.content).toBe('\u003cp\u003emastodon\u003c/p\u003e')
@@ -14,11 +15,12 @@ describe('Toot', () => {
     expect(converted.favoritesCount).toBe(0)
     expect(converted.repliesCount).toBe(0)
     expect(converted.id).toBe('100758336134175190')
+    expect(converted.originalId).toBe('100758336134175190')
     expect(converted.visibility).toBe('unlisted')
     expect(converted.medium !== undefined).toBe(true)
   })
   it('should be convert correctly(reblog))', () => {
-    const toot = data[2]
+    const toot = tootData[2]
     const converted = Toot.fromMastodon(toot)
     expect(converted.favorited).toBe(true)
     expect(converted.boosted).toBe(true)
@@ -30,8 +32,65 @@ describe('Toot', () => {
     expect(converted.favoritesCount).toBe(7)
     expect(converted.repliesCount).toBe(1)
     expect(converted.id).toBe('100746825497024042')
+    expect(converted.originalId).toBe('100746825497024042')
     expect(converted.boostId).toBe('100759428363243322')
     expect(converted.visibility).toBe('unlisted')
     expect(converted.medium !== undefined).toBe(true)
+  })
+  it('should be convert correctly(notification-reply))', () => {
+    const toot = notificationData[0]
+    const converted = Toot.fromMastodonNotification(toot)
+    expect(converted.favorited).toBe(false)
+    expect(converted.boosted).toBe(false)
+    expect(converted.profile !== undefined).toBe(true)
+    expect(converted.content).toBe(`<p>ok</p>`)
+    expect(converted.date.toString()).toBe(new Date(converted.date).toString())
+    expect(converted.boostsCount).toBe(0)
+    expect(converted.favoritesCount).toBe(0)
+    expect(converted.repliesCount).toBe(0)
+    expect(converted.id).toBe('43781233')
+    expect(converted.originalId).toBe('100962823526170080')
+    expect(converted.visibility).toBe('public')
+    expect(converted.medium !== undefined).toBe(true)
+  })
+  it('should be convert correctly(notification-favorite))', () => {
+    const toot = notificationData[1]
+    const converted = Toot.fromMastodonNotification(toot)
+    expect(converted.favorited).toBe(false)
+    expect(converted.boosted).toBe(false)
+    expect(converted.profile.userid).toBe('netalkGB')
+    expect(converted.content).toBe('ok')
+    expect(converted.date.toString()).toBe(new Date(converted.date).toString())
+    expect(converted.boostsCount).toBe(0)
+    expect(converted.favoritesCount).toBe(1)
+    expect(converted.repliesCount).toBe(0)
+    expect(converted.id).toBe('43633462')
+    expect(converted.originalId).toBe('100946880147251231')
+    expect(converted.visibility).toBe('public')
+    expect(converted.medium !== undefined).toBe(true)
+  })
+  it('should be convert correctly(notification-boost))', () => {
+    const toot = notificationData[2]
+    const converted = Toot.fromMastodonNotification(toot)
+    expect(converted.favorited).toBe(false)
+    expect(converted.boosted).toBe(false)
+    expect(converted.boostedBy.userid).toBe('kaziki')
+    expect(converted.profile.userid).toBe('netalkGB')
+    expect(converted.content).toBe('<p>もう朝じゃないか・・・</p>')
+    expect(converted.date.toString()).toBe(new Date(converted.date).toString())
+    expect(converted.boostsCount).toBe(1)
+    expect(converted.favoritesCount).toBe(1)
+    expect(converted.repliesCount).toBe(0)
+    expect(converted.id).toBe('43201605')
+    expect(converted.originalId).toBe('100901501511089762')
+    expect(converted.visibility).toBe('public')
+    expect(converted.medium !== undefined).toBe(true)
+  })
+  it('should be convert correctly(notification-follow))', () => {
+    const toot = notificationData[3]
+    const converted = Toot.fromMastodonNotification(toot)
+    expect(converted.followedBy.userid).toBe('kazikituna')
+    expect(converted.date.toString()).toBe(new Date(converted.date).toString())
+    expect(converted.id).toBe('42837140')
   })
 })

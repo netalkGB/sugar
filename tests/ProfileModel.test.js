@@ -9,6 +9,7 @@ describe('Profile', () => {
     )
     expect(converted.displayName).toBe('')
     expect(converted.userid).toBe('netalkGB@example.com')
+    expect(converted.note).toBe('\u003cp\u003e\u003c/p\u003e')
     expect(converted.locked).toBe(false)
 
     converted = Profile.fromAccount(data[1].account)
