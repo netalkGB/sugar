@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import log4js from 'log4js'
 import ipc from './ipc'
+import setupMenu from './Menu'
 let mainWindow
 
 const logger = log4js.getLogger('main')
@@ -8,6 +9,7 @@ const level = process.env.NODE_ENV === 'development' ? 'all' : 'warn'
 logger.level = level
 logger.debug('development mode.')
 ipc(logger, mainWindow)
+
 function createWindow () {
   mainWindow = new BrowserWindow({
     width: 320,
@@ -27,6 +29,7 @@ function createWindow () {
   mainWindow.on('closed', function () {
     mainWindow = null
   })
+  setupMenu()
 }
 
 app.on('ready', createWindow)
