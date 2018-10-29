@@ -58,7 +58,7 @@ export default {
       this.loadingPrev = false
     })
   },
-  destroyed () {
+  beforeDestroy () {
     this.$off('loadOldTootDone')
   }
 }
