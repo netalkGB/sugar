@@ -20,7 +20,7 @@ export default {
       })
     }
   },
-  destroyed () {
+  beforeDestroy () {
     for (let a of this.hrefs) {
       a.removeEventListener('click', (e) => { })
     }

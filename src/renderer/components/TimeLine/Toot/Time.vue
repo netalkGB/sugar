@@ -46,7 +46,7 @@ export default {
       this.nowDate = Date.now()
     }, 1000)
   },
-  destroyed () {
+  beforeDestroy () {
     clearInterval(this.timer)
   }
 }
