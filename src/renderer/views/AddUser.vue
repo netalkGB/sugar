@@ -1,34 +1,14 @@
 <template>
-  <div>
+  <div ref="adduser">
     <div id="main">
       <h1>ユーザを追加</h1>
       <h2>Step 1. ホスト名を入力してください</h2>
-      <!-- <b-field>
-        <b-input placeholder="mstdn.jp"
-            type="search"
-            v-model="host"
-        >
-        </b-input>
-        <p class="control">
-            <button class="button is-primary" @click="login">ログイン</button>
-        </p>
-      </b-field> -->
       <input placeholder="mstdn.jp" v-model="host">
       <p class="control">
         <button @click="login">ログイン</button>
       </p>
       <p v-if="invalidHostName">ホストに接続できません</p>
       <h2>Step 2. ブラウザが開くので表示されたPINコードをペーストしてください</h2>
-      <!-- <b-field>
-          <b-input placeholder="PINコード"
-              type="search"
-              v-model="pin"
-          >
-          </b-input>
-          <p class="control">
-              <button :disabled="!canPushDone" class="button is-success" @click="done">完了</button>
-          </p>
-      </b-field> -->
       <input placeholder="PINコード" v-model="pin">
         <p class="control">
           <button :disabled="!canPushDone" @click="done">完了</button>
@@ -40,9 +20,9 @@
 
 <script>
 import logger from '../other/Logger'
-import { shell, ipcRenderer } from 'electron'
+import { shell, ipcRenderer, remote } from 'electron'
 import { mapActions, mapGetters } from 'vuex'
-
+import contextMenu from '../other/contextMenu'
 export default {
   data () {
     return {
@@ -62,6 +42,16 @@ export default {
   },
   created () {
     ipcRenderer.send('changeWindowSize', 'adduser')
+  },
+  mounted () {
+    const menu = contextMenu(remote)
+    this.$refs.adduser.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+      menu.popup(remote.getCurrentWindow())
+    })
+  },
+  beforeDestroy () {
+    this.$refs.adduser.removeEventListener('contextmenu', () => {})
   },
   computed: {
     ...mapGetters('users', { userList: 'getUserList' })

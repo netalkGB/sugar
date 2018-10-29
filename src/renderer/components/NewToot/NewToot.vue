@@ -32,11 +32,12 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import Images from './Images'
 import logger from '../../other/Logger'
 import FileState from '../../other/FileState'
 import File from '../../other/File'
+import contextMenu from '../../other/contextMenu'
 import MtButton from '../Form/MtButton'
 import MtSelect from '../Form/MtSelect'
 const maxTootLength = 500
@@ -245,7 +246,15 @@ export default {
       logger.error(error)
     })
   },
-  destroyed () {
+  mounted () {
+    const menu = contextMenu(remote)
+    this.$refs.toottext.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+      menu.popup(remote.getCurrentWindow())
+    })
+  },
+  beforeDestroy () {
+    this.$refs.toottext.removeListener('contextmenu', () => {})
     ipcRenderer.removeListener('openDialog-success', () => {})
     ipcRenderer.removeListener('postToot-success', () => {})
     ipcRenderer.removeListener('postToot-error', () => {})
