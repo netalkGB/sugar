@@ -1,0 +1,23 @@
+<template>
+  <span>{{name}}</span>
+</template>
+
+<script>
+export default {
+  props: ['profile'],
+  computed: {
+    name: function () {
+      const { userid, displayName } = this.profile
+      if (displayName.length > 0) {
+        return displayName
+      } else {
+        const splited = userid.split('@')
+        return splited[0]
+      }
+    }
+  }
+}
+</script>
+
+<style>
+</style>
