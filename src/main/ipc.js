@@ -1,7 +1,7 @@
 import Mastodon from './mastodon/Mastodon'
 import { ipcMain, dialog } from 'electron'
 
-export default logger => {
+export default (logger, windows) => {
   let clients = []
   function getClient (accessToken, host) {
     let client = clients.find(
@@ -210,7 +210,12 @@ export default logger => {
     const { host, accessToken, filePath, uuid } = args
     try {
       const result = await getClient(accessToken, host).uploadFile({ filePath })
-      event.sender.send('uploadFile-success', { result, host, accessToken, uuid })
+      event.sender.send('uploadFile-success', {
+        result,
+        host,
+        accessToken,
+        uuid
+      })
     } catch (e) {
       const { message, name } = e
       event.sender.send('uploadFile-error', {
@@ -231,6 +236,16 @@ export default logger => {
           { name: 'Movies', extensions: ['mp4'] }
         ]
       })
+    )
+  })
+  ipcMain.on('newWindow', (event, url) => {
+    windows.add(
+      url,
+      { url },
+      {
+        width: 320,
+        height: 150
+      }
     )
   })
 }

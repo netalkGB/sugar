@@ -199,10 +199,10 @@ export default {
     reply ({ commit, state }, payload) {
       const { inReplyToID, destination } = payload
       const id = this.getters['users/getCurrentUserId']
-      window.open(
-        `#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`,
-        '_blank',
-        'width=320,height=150'
+      const currentPath = localStorage.getItem('currentPath')
+      ipcRenderer.send(
+        'newWindow',
+        `${currentPath}#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`
       )
     },
     boost ({ commit, state }, payload) {
