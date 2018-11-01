@@ -191,6 +191,9 @@ export default {
         return
       }
       if (result.resp.statusCode === 200) {
+        if (this.copyInReplyToID !== null) {
+          window.close()
+        }
         this.clearForm()
       }
       this.sending = false
@@ -254,13 +257,13 @@ export default {
     })
   },
   beforeDestroy () {
-    this.$refs.toottext.removeListener('contextmenu', () => {})
-    ipcRenderer.removeListener('openDialog-success', () => {})
-    ipcRenderer.removeListener('postToot-success', () => {})
-    ipcRenderer.removeListener('postToot-error', () => {})
-    ipcRenderer.removeListener('uploadFile-success', () => {})
-    ipcRenderer.removeListener('uploadFile-error', () => {})
-    window.removeEventListener('keydown', () => {})
+    this.$refs.toottext.removeListener('contextmenu', () => { })
+    ipcRenderer.removeListener('openDialog-success', () => { })
+    ipcRenderer.removeListener('postToot-success', () => { })
+    ipcRenderer.removeListener('postToot-error', () => { })
+    ipcRenderer.removeListener('uploadFile-success', () => { })
+    ipcRenderer.removeListener('uploadFile-error', () => { })
+    window.removeEventListener('keydown', () => { })
   }
 }
 </script>
