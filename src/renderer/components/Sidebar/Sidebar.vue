@@ -16,6 +16,7 @@
 <script>
 import SortableMenu from './SortableMenu'
 import Icon from './Icon'
+import { ipcRenderer } from 'electron'
 const keyCodeN = 78
 export default {
   components: { SortableMenu, Icon },
@@ -23,7 +24,8 @@ export default {
   methods: {
     newToot () {
       const url = this.$router.resolve(`/newtoot/${this.userId}`).href
-      window.open(url, '_blank', 'width=320,height=150')
+      const currentPath = localStorage.getItem('currentPath')
+      ipcRenderer.send('newWindow', `${currentPath}${url}`)
     }
   },
   mounted () {

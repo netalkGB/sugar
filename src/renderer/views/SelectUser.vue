@@ -8,6 +8,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   async created () {
+    localStorage.setItem('currentPath', location.href.split('').filter((c, i) => i < location.href.length - 2).join(''))
     await this.loadUserConfig()
     logger.debug('select user')
     logger.debug('userList:')
