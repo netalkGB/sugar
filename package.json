@@ -11,12 +11,15 @@
     "dev:build-main": "node script/build.js development main",
     "dev:watch": "node script/watch.js",
     "build": "node script/build.js production",
-    "start": "npm run dev:build-main &&npm run dev:build-renderer && npm run electron",
     "electron": "electron .",
     "lint": "eslint --ext .js,.vue src",
     "fmt": "eslint --ext .js,.vue src --fix",
     "test": "jest",
-    "package": "npm run clean;rm -r dist;npm run package:build-main&&npm run package:build-renderer&&mkdir dist&&node script/packaging.js"
+    "package": "node script/packaging.js all",
+    "package:macos": "node script/packaging.js darwin",
+    "package:mas": "node script/packaging.js mas",
+    "package:linux": "node script/packaging.js linux",
+    "package:win32": "node script/packaging.js win32"
   },
   "jest": {
     "moduleFileExtensions": [
