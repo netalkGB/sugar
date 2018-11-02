@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "npm run clean; npm run dev:build-main && npm run dev:watch-renderer",
-    "dev:build": "mode=development node script/build.js",
-    "dev:build-renderer":"mode=development node script/build.js renderer",
-    "dev:build-main":"mode=development node script/build.js main",
+    "dev:build": "node script/build.js development",
+    "dev:build-renderer":"node script/build.js development renderer",
+    "dev:build-main":"node script/build.js development main",
     "start": "npm run dev:build-main &&npm run dev:build-renderer && npm run electron",
     "electron": "electron .",
     "lint": "eslint --ext .js,.vue src",
