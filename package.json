@@ -7,8 +7,9 @@
   "scripts": {
     "dev": "npm run clean; npm run dev:build-main && npm run dev:watch-renderer",
     "dev:build": "node script/build.js development",
-    "dev:build-renderer":"node script/build.js development renderer",
-    "dev:build-main":"node script/build.js development main",
+    "dev:build-renderer": "node script/build.js development renderer",
+    "dev:build-main": "node script/build.js development main",
+    "build": "node script/build.js production",
     "start": "npm run dev:build-main &&npm run dev:build-renderer && npm run electron",
     "electron": "electron .",
     "lint": "eslint --ext .js,.vue src",
