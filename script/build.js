@@ -19,8 +19,24 @@ const mainProcess = ({ mode }) =>
     })
   })
 
-exports.mainProcess = mainProcess
-exports.rendererProcess = rendererProcess
+const buildAll = async mode => {
+  const [renderer, main] = await Promise.all([
+    rendererProcess({ mode }),
+    mainProcess({ mode })
+  ])
+
+  const reset = '\u001b[0m'
+  const green = '\u001b[32m'
+  const red = '\u001b[31m'
+
+  const mainResult =
+    (main === true ? green + 'success 🙆' : red + 'failed 🙅') + reset
+  const rendererResult =
+    (renderer === true ? green + 'success 🙆' : red + 'failed 🙅') + reset
+  console.log('main:     ' + mainResult)
+  console.log('renderer: ' + rendererResult)
+  return main === true && renderer === true
+}
 
 async function main () {
   const mode = process.argv[2]
@@ -30,20 +46,7 @@ async function main () {
   } else if (target === 'main') {
     process.exit((await mainProcess({ mode })) === true ? 0 : 1)
   } else {
-    const [renderer, main] = await Promise.all([
-      rendererProcess({ mode }),
-      mainProcess({ mode })
-    ])
-    
-    const reset = '\u001b[0m'
-    const green = '\u001b[32m'
-    const red = '\u001b[31m'
-
-    const mainResult = (main === true ? green + 'success 🙆' : red + 'failed 🙅') + reset
-    const rendererResult = (renderer === true ? green + 'success 🙆' : red + 'failed 🙅') + reset
-    console.log('main:     ' + mainResult)
-    console.log('renderer: ' + rendererResult)
-    process.exit(renderer === true && main === true ? 0 : 1)
+    process.exit(await buildAll(mode) ? 0 : 1)
   }
 }
 
