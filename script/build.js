@@ -1,42 +1,7 @@
 const webpack = require('webpack')
 const mainConfig = require('../webpack.config.main.js')
 const rendererConfig = require('../webpack.config.renderer.js')
-
-const yellow = '\u001b[33m'
-const reset = '\u001b[0m'
-const green = '\u001b[32m'
-const red = '\u001b[31m'
-
-const printLog = (target, err, stats) => {
-  let success = true
-  if (err) {
-    success = false
-    console.error(err.stack || err)
-    if (err.details) {
-      for (let d of err.details) {
-        console.error(target + '[err]' + ': ' + red + d + reset)
-      }
-    }
-    return success
-  }
-
-  const info = stats.toJson()
-
-  if (stats.hasWarnings()) {
-    for (let w of info.warnings) {
-      console.warn(target + '[warn]' + ': ' + yellow + w + reset)
-    }
-  }
-
-  if (stats.hasErrors()) {
-    success = false
-    for (let e of info.errors) {
-      console.error(target + '[err]' + ': ' + red + e + reset)
-    }
-  }
-
-  return success
-}
+const printLog = require('./printLog')
 
 const rendererProcess = ({ mode }) =>
   new Promise(resolve => {
@@ -54,6 +19,9 @@ const mainProcess = ({ mode }) =>
     })
   })
 
+exports.mainProcess = mainProcess
+exports.rendererProcess = rendererProcess
+
 async function main () {
   const mode = process.argv[2]
   const target = process.argv[3]
@@ -66,16 +34,15 @@ async function main () {
       rendererProcess({ mode }),
       mainProcess({ mode })
     ])
-    console.log(
-      renderer === true
-        ? green + 'renderer: success' + reset
-        : red + 'renderer: failed' + reset
-    )
-    console.log(
-      main === true
-        ? green + 'main: success' + reset
-        : red + 'main: failed' + reset
-    )
+    
+    const reset = '\u001b[0m'
+    const green = '\u001b[32m'
+    const red = '\u001b[31m'
+
+    const mainResult = (main === true ? green + 'success 🙆' : red + 'failed 🙅') + reset
+    const rendererResult = (renderer === true ? green + 'success 🙆' : red + 'failed 🙅') + reset
+    console.log('main:     ' + mainResult)
+    console.log('renderer: ' + rendererResult)
     process.exit(renderer === true && main === true ? 0 : 1)
   }
 }
