@@ -15,9 +15,6 @@
     "lint": "eslint --ext .js,.vue src",
     "fmt": "eslint --ext .js,.vue src --fix",
     "test": "jest",
-    "clean": "rm -r out/",
-    "package:build-renderer": "webpack --config webpack.config.renderer.js  --mode=production",
-    "package:build-main": "webpack --config webpack.config.main.js  --mode=production",
     "package": "npm run clean;rm -r dist;npm run package:build-main&&npm run package:build-renderer&&mkdir dist&&node script/packaging.js"
   },
   "jest": {
