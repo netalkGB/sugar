@@ -8,7 +8,7 @@ module.exports = (env, argv) => {
     entry: ['./src/main/main.js'],
     output: {
       filename: 'main.js',
-      path: path.join(__dirname, mode === 'development' ? '.out/main/' : 'out/main/')
+      path: path.join(__dirname, mode === 'development' ? 'devOut/main/' : 'prodOut/out/main/')
     },
     resolve: {
       extensions: ['.js', '.json', '.node']
