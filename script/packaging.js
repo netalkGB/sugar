@@ -1,4 +1,6 @@
 const packager = require('electron-packager')
+const { buildAll } = require('./webpack')
+
 const { version } = require(`${__dirname}/../package.json`)
 
 const platform = process.argv[2]
