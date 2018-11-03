@@ -46,7 +46,8 @@ const main = async () => {
       platform,
       dir: './prodOut',
       out: './dist',
-      appVersion: version
+      appVersion: version,
+      asar: true
     })
   } catch (e) {
     console.error(e)
