@@ -57,7 +57,7 @@ const archivePromise = (dirPath, outFname, format) =>
 
 const main = async () => {
   await del(['./dist', './prodOut'])
-  if ((await buildAll()) === false) {
+  if ((await buildAll({mode: 'production'})) === false) {
     process.exit(1)
   }
   const { name, version, description, license } = packagejson
