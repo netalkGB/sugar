@@ -6,7 +6,6 @@ module.exports = (env, argv) => {
   const mode = argv.mode === 'development' ? 'development' : 'production'
   return {
     mode,
-    // mode: 'development',
     target: 'electron-renderer',
     devtool: argv.mode === 'development' ? 'cheap-eval-source-map' : false,
     entry: ['./src/renderer/main.js'],
