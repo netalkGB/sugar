@@ -47,7 +47,13 @@ const archivePromise = (dirPath, outFname, format) =>
           reject(err)
         })
         archive.pipe(output)
-        archive.directory(dirPath, false)
+        if (format === 'zip') {
+          archive.directory(dirPath, false)
+        } else {
+          let unpackDirName = dirPath.split('/')
+          unpackDirName = unpackDirName[unpackDirName.length - 1]
+          archive.directory(dirPath, unpackDirName)
+        }
         archive.finalize()
       }
     })
@@ -130,15 +136,15 @@ const main = async () => {
     if (arch === 'x64' || arch === 'all') {
       archivePromise(
         `./dist/${name}-win32-x64`,
-        `./dist/${nameVersion}-win32-x64.tar.gz`,
-        'tar.gz'
+        `./dist/${nameVersion}-win32-x64.zip`,
+        'zip'
       ).catch(e => console.error(e))
     }
     if (arch === 'ia32' || arch === 'all') {
       archivePromise(
         `./dist/${name}-win32-ia32`,
-        `./dist/${nameVersion}-win32-ia32.tar.gz`,
-        'tar.gz'
+        `./dist/${nameVersion}-win32-ia32.zip`,
+        'zip'
       ).catch(e => console.error(e))
     }
   }
