@@ -47,13 +47,9 @@ const archivePromise = (dirPath, outFname, format) =>
           reject(err)
         })
         archive.pipe(output)
-        if (format === 'zip') {
-          archive.directory(dirPath, false)
-        } else {
-          let unpackDirName = dirPath.split('/')
-          unpackDirName = unpackDirName[unpackDirName.length - 1]
-          archive.directory(dirPath, unpackDirName)
-        }
+        let unpackDirName = dirPath.split('/')
+        unpackDirName = unpackDirName[unpackDirName.length - 1]
+        archive.directory(dirPath, unpackDirName)
         archive.finalize()
       }
     })
