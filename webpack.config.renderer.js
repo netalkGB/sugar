@@ -11,7 +11,7 @@ module.exports = (env, argv) => {
     entry: ['./src/renderer/main.js'],
     output: {
       filename: 'main.js',
-      path: path.join(__dirname, mode === 'development' ? 'devOut/renderer/' : 'prodOut/out/renderer/')
+      path: path.join(__dirname, mode === 'development' ? 'out/renderer/' : 'prodOut/out/renderer/')
     },
     resolve: {
       extensions: ['.vue', '.js']

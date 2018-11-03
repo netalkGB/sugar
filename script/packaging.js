@@ -5,6 +5,8 @@ const { buildAll } = require('./webpack')
 const packagejson = require(`${__dirname}/../package.json`)
 
 const platform = process.argv[2]
+const arch = process.argv[3]
+
 async function main () {
   if ((await buildAll()) === false) {
     process.exit(1)
@@ -20,9 +22,9 @@ async function main () {
   fs.writeFileSync('./prodOut/package.json', JSON.stringify(prodPackagejson))
   try {
     await packager({
-      arch: 'all',
+      arch,
       platform,
-      dir: './out',
+      dir: './prodOut',
       out: './dist',
       appVersion: version
     })

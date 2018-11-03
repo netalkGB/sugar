@@ -1,7 +1,7 @@
 {
   "name": "mastoot",
   "version": "0.0.1",
-  "main": "devOut/main/main.js",
+  "main": "out/main/main.js",
   "description": "mastoot",
   "license": "MIT",
   "scripts": {
@@ -10,16 +10,15 @@
     "dev:build-renderer": "node script/build.js development renderer",
     "dev:build-main": "node script/build.js development main",
     "dev:watch": "node script/watch.js",
-    "build": "node script/build.js production",
     "electron": "electron .",
     "lint": "eslint --ext .js,.vue src",
     "fmt": "eslint --ext .js,.vue src --fix",
     "test": "jest",
-    "package": "node script/packaging.js all",
-    "package:macos": "node script/packaging.js darwin",
-    "package:mas": "node script/packaging.js mas",
-    "package:linux": "node script/packaging.js linux",
-    "package:win32": "node script/packaging.js win32"
+    "package": "node script/packaging.js all all",
+    "package:macos": "node script/packaging.js darwin all",
+    "package:mas": "node script/packaging.js mas all",
+    "package:linux": "node script/packaging.js linux all",
+    "package:win32": "node script/packaging.js win32 all"
   },
   "jest": {
     "moduleFileExtensions": [
