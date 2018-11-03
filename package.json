@@ -1,7 +1,7 @@
 {
   "name": "mastoot",
   "version": "0.0.1",
-  "main": "out/main/main.js",
+  "main": ".out/main/main.js",
   "description": "mastoot",
   "license": "MIT",
   "scripts": {
