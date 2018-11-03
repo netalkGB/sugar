@@ -1,7 +1,7 @@
 const packager = require('electron-packager')
 const fs = require('fs')
 const del = require('del')
-const archiver = require('archiver');
+const archiver = require('archiver')
 const { buildAll } = require('./webpack')
 
 const packagejson = require(`${__dirname}/../package.json`)
@@ -19,40 +19,39 @@ const writeFilePromise = (path, data) =>
     })
   })
 
-const archivePromise = (dirPath, outFname, format) => new Promise((resolve, reject) => {
-  fs.readdir(dirPath, function (err, list) {
-    if (err) {
-      console.log(err + '\nskip');
-      resolve()
-    }
-    else {
-      const output = fs.createWriteStream(outFname);
-      let archive
-      if (format === 'zip') {
-        archive = archiver('zip', {
-          zlib: { level: 9 }
-        });
+const archivePromise = (dirPath, outFname, format) =>
+  new Promise((resolve, reject) => {
+    fs.readdir(dirPath, function (err, list) {
+      if (err) {
+        console.log(err + '\nskip')
+        resolve()
       } else {
-        archive = archiver('tar', {
-          gzip: true,
-          gzipOptions: {
-            level: 1
-          }
-        });
+        const output = fs.createWriteStream(outFname)
+        let archive
+        if (format === 'zip') {
+          archive = archiver('zip', {
+            zlib: { level: 9 }
+          })
+        } else {
+          archive = archiver('tar', {
+            gzip: true,
+            gzipOptions: {
+              level: 1
+            }
+          })
+        }
+        output.on('close', function () {
+          resolve(archive.pointer())
+        })
+        archive.on('error', function (err) {
+          reject(err)
+        })
+        archive.pipe(output)
+        archive.directory(dirPath, false)
+        archive.finalize()
       }
-      output.on('close', function () {
-        resolve(archive.pointer())
-      });
-      archive.on('error', function (err) {
-        reject(err)
-      });
-      archive.pipe(output);
-      archive.directory(dirPath, false);
-      archive.finalize();
-    }
+    })
   })
-})
-
 
 const main = async () => {
   await del(['./dist', './prodOut'])
@@ -90,29 +89,57 @@ const main = async () => {
     process.exit(-1)
   }
   const nameVersion = `${name}-${version}`
-  if(platform === 'darwin' || platform === 'all') {
-    archivePromise(`./dist/${name}-darwin-x64`, `./dist/${nameVersion}-darwin-x64.zip`, 'zip').catch(e => console.error(e))
+  if (platform === 'darwin' || platform === 'all') {
+    archivePromise(
+      `./dist/${name}-darwin-x64`,
+      `./dist/${nameVersion}-darwin-x64.zip`,
+      'zip'
+    ).catch(e => console.error(e))
   }
-  if(platform === 'linux' || platform === 'all') {
-    if(arch === 'x64' || arch==='all') {
-      archivePromise(`./dist/${name}-linux-x64`, `./dist/${nameVersion}-linux-x64.tar.gz`, 'tar.gz').catch(e => console.error(e))
+  if (platform === 'linux' || platform === 'all') {
+    if (arch === 'x64' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-linux-x64`,
+        `./dist/${nameVersion}-linux-x64.tar.gz`,
+        'tar.gz'
+      ).catch(e => console.error(e))
     }
-    if(arch === 'arm64' || arch === 'all') {
-      archivePromise(`./dist/${name}-linux-arm64`, `./dist/${nameVersion}-linux-arm64.tar.gz`, 'tar.gz').catch(e => console.error(e))
+    if (arch === 'arm64' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-linux-arm64`,
+        `./dist/${nameVersion}-linux-arm64.tar.gz`,
+        'tar.gz'
+      ).catch(e => console.error(e))
     }
-    if(arch === 'armv7l' || arch === 'all') {
-      archivePromise(`./dist/${name}-linux-armv7l`, `./dist/${nameVersion}-linux-armv7l.tar.gz`, 'tar.gz').catch(e => console.error(e))
+    if (arch === 'armv7l' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-linux-armv7l`,
+        `./dist/${nameVersion}-linux-armv7l.tar.gz`,
+        'tar.gz'
+      ).catch(e => console.error(e))
     }
-    if(arch === 'ia32' || arch === 'all') {
-      archivePromise(`./dist/${name}-linux-ia32`, `./dist/${nameVersion}-linux-ia32.tar.gz`, 'tar.gz').catch(e => console.error(e))
+    if (arch === 'ia32' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-linux-ia32`,
+        `./dist/${nameVersion}-linux-ia32.tar.gz`,
+        'tar.gz'
+      ).catch(e => console.error(e))
     }
   }
-  if(platform === 'win32' || platform === 'all') {
-    if(arch === 'x64' || arch==='all') {
-      archivePromise(`./dist/${name}-win32-x64`, `./dist/${nameVersion}-win32-x64.tar.gz`, 'tar.gz').catch(e => console.error(e))
+  if (platform === 'win32' || platform === 'all') {
+    if (arch === 'x64' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-win32-x64`,
+        `./dist/${nameVersion}-win32-x64.tar.gz`,
+        'tar.gz'
+      ).catch(e => console.error(e))
     }
-    if(arch === 'ia32' || arch === 'all') {
-      archivePromise(`./dist/${name}-win32-ia32`, `./dist/${nameVersion}-win32-ia32.tar.gz`, 'tar.gz').catch(e => console.error(e))
+    if (arch === 'ia32' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-win32-ia32`,
+        `./dist/${nameVersion}-win32-ia32.tar.gz`,
+        'tar.gz'
+      ).catch(e => console.error(e))
     }
   }
 }
