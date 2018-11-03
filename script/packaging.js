@@ -4,7 +4,10 @@ const { buildAll } = require('./webpack')
 const { version } = require(`${__dirname}/../package.json`)
 
 const platform = process.argv[2]
-async function main () {
+async function main() {
+  if (await buildAll() === false) {
+    process.exit(1)
+  }
   try {
     await packager({
       arch: 'all',
