@@ -7,7 +7,9 @@
       <div class="body">
         <div class="idnametime">
           <Profile :profile="toot.profile" />
-          <Time :date="toot.date" />
+          <div @click="openConversation">
+            <Time :date="toot.date" />
+          </div>
         </div>
         <TlText :content="toot.content" />
         <Images v-if="toot.medium.length > 0" :medium="toot.medium" />
@@ -15,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div  v-else>
+  <div v-else>
     <FollowedBy v-if="toot.followedBy" :followedBy="toot.followedBy" class="notification" />
     <div class="toot follow">
       <ProfileImage :profile="toot.followedBy" />
@@ -40,10 +42,18 @@ import Time from './Time'
 import TlText from './TlText'
 import Action from './Action'
 import Images from './Images'
+import { mapActions } from 'vuex'
 
 export default {
   components: { BoostedBy, FavoritedBy, FollowedBy, ProfileImage, Profile, Time, TlText, Action, Images },
-  props: ['toot']
+  props: ['toot'],
+  methods: {
+    ...mapActions('timelines', ['conversation']),
+    openConversation () {
+      const id = this.toot.originalId
+      this.conversation({ id })
+    }
+  }
 }
 </script>
 

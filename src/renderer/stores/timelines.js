@@ -205,6 +205,15 @@ export default {
         `${currentPath}#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`
       )
     },
+    conversation ({ commit, state }, payload) {
+      const { id } = payload
+      const userid = this.getters['users/getCurrentUserId']
+      const currentPath = localStorage.getItem('currentPath')
+      ipcRenderer.send(
+        'newWindow',
+        `${currentPath}#/conversation/${userid}?id=${id}`
+      )
+    },
     boost ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
