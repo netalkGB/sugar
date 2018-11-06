@@ -8,6 +8,8 @@ import LocalTimeline from './views/LocalTimeline'
 import PublicTimeline from './views/PublicTimeline'
 import Notification from './views/Notification'
 import NewToot from './views/NewToot'
+import Conversation from './views/Conversation'
+
 Vue.use(Router)
 
 export default new Router({
@@ -52,8 +54,21 @@ export default new Router({
     {
       name: 'new_toot',
       path: '/newtoot/:userId',
-      props: route => ({ userId: Number(route.params.userId), inReplyToID: String(route.query.inReplyToID), destination: String(route.query.destination) }),
+      props: route => ({
+        userId: Number(route.params.userId),
+        inReplyToID: String(route.query.inReplyToID),
+        destination: String(route.query.destination)
+      }),
       component: NewToot
+    },
+    {
+      name: 'conversation',
+      path: '/conversation/:userId',
+      props: route => ({
+        userId: Number(route.params.userId),
+        id: String(route.query.id)
+      }),
+      component: Conversation
     }
   ],
   mode: 'hash'
