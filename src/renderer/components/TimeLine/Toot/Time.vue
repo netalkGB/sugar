@@ -56,5 +56,6 @@ export default {
 .time {
   width: 24px;
   text-align: right;
+  cursor: pointer;
 }
 </style>
