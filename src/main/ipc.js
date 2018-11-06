@@ -206,6 +206,34 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('fetchToot', async (event, args) => {
+    const { host, accessToken, id } = args
+    try {
+      const result = await getClient(accessToken, host).fetchToot(id)
+      event.sender.send('fetchToot-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchToot-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
+  ipcMain.on('fetchContext', async (event, args) => {
+    const { host, accessToken, id } = args
+    try {
+      const result = await getClient(accessToken, host).fetchContext(id)
+      event.sender.send('fetchContext-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchContext-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('uploadFile', async (event, args) => {
     const { host, accessToken, filePath, uuid } = args
     try {

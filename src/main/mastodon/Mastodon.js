@@ -124,4 +124,10 @@ export default class Mastodon {
   unBoost (id) {
     return this.mastodon.post(`statuses/${id}/unreblog`)
   }
+  fetchToot (id) {
+    return this.mastodon.get(`statuses/${id}`)
+  }
+  fetchContext (id) {
+    return this.mastodon.get(`statuses/${id}/context`)
+  }
 }
