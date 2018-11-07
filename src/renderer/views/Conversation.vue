@@ -1,13 +1,16 @@
 <template>
   <div id="main" :style="{ width: width + 'px', height: height + 'px' }">
-    userId:{{userId}},id(toot):{{id}}
+    <Conversations ref="conversations" :id="id" />
   </div>
 </template>
 
 <script>
 import logger from '../other/Logger'
 import { mapActions } from 'vuex'
+import Conversations from '../components/Conversations/Conversations'
+
 export default {
+  components: { Conversations },
   props: { userId: Number, id: String },
   data () {
     return {
@@ -16,12 +19,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['setCurrentUserId']),
-    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
+    ...mapActions('users', ['setCurrentUserId', 'loadUserConfig'])
   },
   async created () {
+    await this.loadUserConfig()
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
+    this.$refs.conversations.loadToot()
   },
   mounted () {
     this.width = window.innerWidth
