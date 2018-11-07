@@ -1,5 +1,5 @@
 <template>
-  <TimeLine ref="timeline" :timeline="conversations" />
+  <TimeLine :infiniteMode="false" ref="timeline" :timeline="conversations" />
 </template>
 
 <script>
