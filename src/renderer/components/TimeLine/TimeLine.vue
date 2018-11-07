@@ -14,7 +14,17 @@ import Toot from './Toot/Toot'
 import IosSyncIcon from 'vue-ionicons/dist/ios-sync.vue'
 export default {
   components: { Toot, IosSyncIcon },
-  props: ['timeline'],
+  props: {
+    timeline: {
+      type: Array,
+      required: true
+    },
+    infiniteMode: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
   data () {
     return {
       scrollState: 'loading(next)',
@@ -37,6 +47,9 @@ export default {
   },
   watch: {
     scrollState: function () {
+      if (this.infiniteMode === false) {
+        return
+      }
       switch (this.scrollState) {
         case 'loading(next)':
           break
