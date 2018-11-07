@@ -202,7 +202,8 @@ export default {
       const currentPath = localStorage.getItem('currentPath')
       ipcRenderer.send(
         'newWindow',
-        `${currentPath}#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`
+        `${currentPath}#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`,
+        'newToot'
       )
     },
     conversation ({ commit, state }, payload) {
@@ -211,7 +212,8 @@ export default {
       const currentPath = localStorage.getItem('currentPath')
       ipcRenderer.send(
         'newWindow',
-        `${currentPath}#/conversation/${userid}?id=${id}`
+        `${currentPath}#/conversation/${userid}?id=${id}`,
+        'conversations'
       )
     },
     boost ({ commit, state }, payload) {

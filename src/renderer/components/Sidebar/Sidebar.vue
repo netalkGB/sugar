@@ -25,7 +25,7 @@ export default {
     newToot () {
       const url = this.$router.resolve(`/newtoot/${this.userId}`).href
       const currentPath = localStorage.getItem('currentPath')
-      ipcRenderer.send('newWindow', `${currentPath}${url}`)
+      ipcRenderer.send('newWindow', `${currentPath}${url}`, 'newToot')
     }
   },
   mounted () {
