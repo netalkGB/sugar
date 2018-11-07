@@ -266,14 +266,25 @@ export default (logger, windows) => {
       })
     )
   })
-  ipcMain.on('newWindow', (event, url) => {
-    windows.add(
-      url,
-      { url },
-      {
-        width: 320,
-        height: 150
-      }
-    )
+  ipcMain.on('newWindow', (event, url, type) => {
+    if (type === 'newToot') {
+      windows.add(
+        url,
+        { url },
+        {
+          width: 320,
+          height: 150
+        }
+      )
+    } else {
+      windows.add(
+        url,
+        { url },
+        {
+          width: 280,
+          height: 400
+        }
+      )
+    }
   })
 }
