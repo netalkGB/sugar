@@ -1,14 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import SelectUser from '@/views/SelectUser'
-import AddUser from '@/views/AddUser'
-import Main from '@/views/Main'
-import HomeTimeline from '@/views/HomeTimeline'
-import LocalTimeline from '@/views/LocalTimeline'
-import PublicTimeline from '@/views/PublicTimeline'
-import Notification from '@/views/Notification'
-import NewToot from '@/views/NewToot'
-import Conversation from '@/views/Conversation'
 
 Vue.use(Router)
 
@@ -17,37 +8,37 @@ export default new Router({
     {
       path: '/',
       name: 'SelectUser',
-      component: SelectUser
+      component: () => import('@/views/SelectUser')
     },
     {
       path: '/adduser',
       name: 'adduser',
-      component: AddUser
+      component: () => import('@/views/AddUser')
     },
     {
       path: '/user/:userId',
-      component: Main,
+      component: () => import('@/views/Main'),
       props: route => ({ userId: Number(route.params.userId) }),
       children: [
         {
           name: 'home_timeline',
           path: 'home_timeline',
-          component: HomeTimeline
+          component: () => import('@/views/HomeTimeline')
         },
         {
           name: 'local_timeline',
           path: 'local_timeline',
-          component: LocalTimeline
+          component: () => import('@/views/LocalTimeline')
         },
         {
           name: 'public_timeline',
           path: 'public_timeline',
-          component: PublicTimeline
+          component: () => import('@/views/PublicTimeline')
         },
         {
           name: 'notification',
           path: 'notification',
-          component: Notification
+          component: () => import('@/views/Notification')
         }
       ]
     },
@@ -59,7 +50,7 @@ export default new Router({
         inReplyToID: String(route.query.inReplyToID),
         destination: String(route.query.destination)
       }),
-      component: NewToot
+      component: () => import('@/views/NewToot')
     },
     {
       name: 'conversation',
@@ -68,7 +59,7 @@ export default new Router({
         userId: Number(route.params.userId),
         id: String(route.query.id)
       }),
-      component: Conversation
+      component: () => import('@/views/Conversation')
     }
   ],
   mode: 'hash'
