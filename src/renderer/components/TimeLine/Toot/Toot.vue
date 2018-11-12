@@ -6,10 +6,8 @@
       <ProfileImage :profile="toot.profile" />
       <div class="body">
         <div class="idnametime">
-          <Profile :profile="toot.profile" />
-          <div @click="openConversation">
-            <Time :date="toot.date" />
-          </div>
+          <Profile class="nameandid" :profile="toot.profile" />
+          <Time @click="openConversation" :date="toot.date" />
         </div>
         <TlText :content="toot.content" />
         <Images v-if="toot.medium.length > 0" :medium="toot.medium" />
@@ -58,6 +56,9 @@ export default {
 </script>
 
 <style scoped>
+.nameandid {
+  width: calc(100% - 16px);
+}
 .toot {
   display: flex;
   border-bottom: thin solid #cccccc;

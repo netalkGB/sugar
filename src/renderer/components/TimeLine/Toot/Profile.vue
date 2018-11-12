@@ -1,7 +1,9 @@
 <template>
   <div class="nameandid">
     <div class="name" v-if="profile.displayName">{{profile.displayName}}</div>
-    <div class="protect" v-if="profile.locked"><IosLockIcon :w="'12'" :h="'12'" /></div>
+    <div class="protect" v-if="profile.locked">
+      <IosLockIcon :w="'12'" :h="'12'" />
+    </div>
     <div class="id">{{profile.userid}}</div>
   </div>
 </template>
@@ -18,8 +20,6 @@ export default {
 <style scoped>
 .nameandid {
   display: flex;
-  width: calc(100% - 20px);
-  margin-right: 4px;
 }
 .name {
   font-weight: bolder;

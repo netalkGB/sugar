@@ -1,5 +1,5 @@
 <template>
-  <div class="time" :title="localTime">{{diffAndFormat}}</div>
+  <div class="time" @click="$emit('click')" :title="localTime">{{diffAndFormat}}</div>
 </template>
 
 <script>
