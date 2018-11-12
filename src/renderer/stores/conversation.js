@@ -1,6 +1,6 @@
-import logger from '../other/Logger'
-import Toot from '../other/Toot'
 import { ipcRenderer } from 'electron'
+import logger from '@/other/Logger'
+import Toot from '@/other/Toot'
 
 function loadToot ({ host, accessToken, id }) {
   return new Promise((resolve, reject) => {

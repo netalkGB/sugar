@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ImagePreview from './ImagePreview'
+import ImagePreview from '@/components/NewToot/ImagePreview'
 
 export default {
   props: ['files'],

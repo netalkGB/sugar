@@ -1,5 +1,6 @@
 import { app, ipcMain } from 'electron'
-import Window from './Window'
+import Window from '~/Window'
+
 export default class WindowManager {
   constructor (args) {
     this.windows = []

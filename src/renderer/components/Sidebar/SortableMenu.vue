@@ -9,9 +9,10 @@
 </template>
 
 <script>
-import logger from '../../other/Logger'
-import Icon from './Icon'
 import draggable from 'vuedraggable'
+import logger from '@/other/Logger'
+import Icon from '@/components/Sidebar/Icon'
+
 export default {
   components: { Icon, draggable },
   data () {

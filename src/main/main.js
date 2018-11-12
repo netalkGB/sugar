@@ -1,8 +1,9 @@
 import { app } from 'electron'
-import WindowManager from './WindowManager'
 import log4js from 'log4js'
-import ipc from './ipc'
-import setupMenu from './Menu'
+import WindowManager from '~/WindowManager'
+import ipc from '~/ipc'
+import setupMenu from '~/Menu'
+
 let windows = new WindowManager({
   devMode: process.env.NODE_ENV === 'development'
 })

@@ -3,10 +3,11 @@
 </template>
 
 <script>
-import TimeLine from '../components/TimeLine/TimeLine'
-import TimelineType from '../other/TimelineType'
 import { mapGetters, mapActions, mapState } from 'vuex'
-import logger from '../other/Logger'
+import TimeLine from '@/components/TimeLine/TimeLine'
+import TimelineType from '@/other/TimelineType'
+import logger from '@/other/Logger'
+
 export default {
   components: { TimeLine },
   computed: {

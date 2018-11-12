@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import SelectUser from './views/SelectUser'
-import AddUser from './views/AddUser'
-import Main from './views/Main'
-import HomeTimeline from './views/HomeTimeline'
-import LocalTimeline from './views/LocalTimeline'
-import PublicTimeline from './views/PublicTimeline'
-import Notification from './views/Notification'
-import NewToot from './views/NewToot'
-import Conversation from './views/Conversation'
+import SelectUser from '@/views/SelectUser'
+import AddUser from '@/views/AddUser'
+import Main from '@/views/Main'
+import HomeTimeline from '@/views/HomeTimeline'
+import LocalTimeline from '@/views/LocalTimeline'
+import PublicTimeline from '@/views/PublicTimeline'
+import Notification from '@/views/Notification'
+import NewToot from '@/views/NewToot'
+import Conversation from '@/views/Conversation'
 
 Vue.use(Router)
 

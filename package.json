@@ -30,7 +30,8 @@
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     },
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@/(.*)$": "<rootDir>/src/renderer/$1",
+      "^~/(.*)$": "<rootDir>/src/main/$1"
     }
   },
   "dependencies": {

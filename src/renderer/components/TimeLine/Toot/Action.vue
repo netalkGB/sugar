@@ -42,7 +42,7 @@ import IosStarIcon from 'vue-ionicons/dist/ios-star.vue'
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import IosMailIcon from 'vue-ionicons/dist/ios-mail.vue'
 import { mapActions } from 'vuex'
-import logger from '../../../other/Logger'
+import logger from '@/other/Logger'
 
 export default {
   components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon },

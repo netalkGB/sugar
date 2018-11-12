@@ -1,4 +1,4 @@
-import Toot from '@/renderer/other/Toot'
+import Toot from '@/other/Toot'
 import tootData from './toot.data.json'
 import notificationData from './notification.data.json'
 

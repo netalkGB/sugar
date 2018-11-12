@@ -1,4 +1,4 @@
-import Media from '@/renderer/other/Media'
+import Media from '@/other/Media'
 import data from './toot.data.json'
 
 describe('Media', () => {

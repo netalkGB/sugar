@@ -31,15 +31,15 @@
 </template>
 
 <script>
-import BoostedBy from './BoostedBy'
-import FavoritedBy from './FavoritedBy'
-import FollowedBy from './FollowedBy'
-import ProfileImage from './ProfileImage'
-import Profile from './Profile'
-import Time from './Time'
-import TlText from './TlText'
-import Action from './Action'
-import Images from './Images'
+import BoostedBy from '@/components/TimeLine/Toot/BoostedBy'
+import FavoritedBy from '@/components/TimeLine/Toot/FavoritedBy'
+import FollowedBy from '@/components/TimeLine/Toot/FollowedBy'
+import ProfileImage from '@/components/TimeLine/Toot/ProfileImage'
+import Profile from '@/components/TimeLine/Toot/Profile'
+import Time from '@/components/TimeLine/Toot/Time'
+import TlText from '@/components/TimeLine/Toot/TlText'
+import Action from '@/components/TimeLine/Toot/Action'
+import Images from '@/components/TimeLine/Toot/Images'
 import { mapActions } from 'vuex'
 
 export default {

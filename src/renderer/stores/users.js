@@ -1,6 +1,6 @@
-import logger from '../other/Logger'
 import { ipcRenderer } from 'electron'
-import Settings from '../other/Settings'
+import logger from '@/other/Logger'
+import Settings from '@/other/Settings'
 
 export default {
   namespaced: true,

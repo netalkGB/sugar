@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import TimeLine from '../TimeLine/TimeLine'
 import { mapActions, mapGetters } from 'vuex'
+import TimeLine from '@/components/TimeLine/TimeLine'
+
 export default {
   components: { TimeLine },
   props: ['id'],

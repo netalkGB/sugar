@@ -14,9 +14,10 @@
 </template>
 
 <script>
-import SortableMenu from './SortableMenu'
-import Icon from './Icon'
 import { ipcRenderer } from 'electron'
+import SortableMenu from '@/components/Sidebar/SortableMenu'
+import Icon from '@/components/Sidebar/Icon'
+
 const keyCodeN = 78
 export default {
   components: { SortableMenu, Icon },

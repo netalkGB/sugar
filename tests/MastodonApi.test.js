@@ -1,4 +1,4 @@
-import Mastodon from '@/main/mastodon/Mastodon'
+import Mastodon from '~/mastodon/Mastodon'
 import testconfig from './testconfig'
 const { accessToken, host } = testconfig
 
