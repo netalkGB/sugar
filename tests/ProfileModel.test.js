@@ -1,4 +1,4 @@
-import Profile from '@/renderer/other/Profile'
+import Profile from '@/other/Profile'
 import data from './toot.data.json'
 
 describe('Profile', () => {

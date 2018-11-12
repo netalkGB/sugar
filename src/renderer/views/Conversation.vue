@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import logger from '../other/Logger'
 import { mapActions } from 'vuex'
-import Conversations from '../components/Conversations/Conversations'
+import logger from '@/other/Logger'
+import Conversations from '@/components/Conversations/Conversations'
 
 export default {
   components: { Conversations },

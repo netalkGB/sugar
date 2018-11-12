@@ -1,4 +1,4 @@
-import Mastodon from './mastodon/Mastodon'
+import Mastodon from '~/mastodon/Mastodon'
 import { ipcMain, dialog } from 'electron'
 
 export default (logger, windows) => {

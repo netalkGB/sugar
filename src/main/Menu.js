@@ -1,4 +1,5 @@
 import { Menu, app } from 'electron'
+
 export default () => {
   const nodeEnv = process.env.NODE_ENV
   const platform = process.platform

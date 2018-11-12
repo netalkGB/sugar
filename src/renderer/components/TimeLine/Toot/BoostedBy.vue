@@ -7,7 +7,7 @@
 
 <script>
 import MdRepeatIcon from 'vue-ionicons/dist/md-repeat.vue'
-import NotificationName from './NotificationName'
+import NotificationName from '@/components/TimeLine/Toot/NotificationName'
 
 export default {
   components: { MdRepeatIcon, NotificationName },

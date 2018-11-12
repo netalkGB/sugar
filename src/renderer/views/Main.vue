@@ -8,11 +8,12 @@
 </template>
 
 <script>
-import logger from '../other/Logger'
-import TimelineType from '../other/TimelineType'
-import Sidebar from '../components/Sidebar/Sidebar'
 import { mapActions } from 'vuex'
 import { ipcRenderer } from 'electron'
+import logger from '@/other/Logger'
+import TimelineType from '@/other/TimelineType'
+import Sidebar from '@/components/Sidebar/Sidebar'
+
 export default {
   props: { userId: Number },
   components: {

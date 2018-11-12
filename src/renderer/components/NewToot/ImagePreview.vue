@@ -31,6 +31,7 @@
 <script>
 import IosSyncIcon from 'vue-ionicons/dist/ios-sync.vue'
 import IosCloseIcon from 'vue-ionicons/dist/ios-close.vue'
+
 export default {
   components: {
     IosSyncIcon,

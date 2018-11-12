@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import logger from '../other/Logger'
 import { mapActions, mapGetters } from 'vuex'
+import logger from '@/other/Logger'
 
 export default {
   async created () {

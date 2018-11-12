@@ -8,10 +8,16 @@ module.exports = (env, argv) => {
     entry: ['./src/main/main.js'],
     output: {
       filename: 'main.js',
-      path: path.join(__dirname, mode === 'development' ? 'out/main/' : 'prodOut/out/main/')
+      path: path.join(
+        __dirname,
+        mode === 'development' ? 'out/main/' : 'prodOut/out/main/'
+      )
     },
     resolve: {
-      extensions: ['.js', '.json', '.node']
+      extensions: ['.js', '.json', '.node'],
+      alias: {
+        '~': path.resolve(__dirname, 'src/main/')
+      }
     },
     optimization: {
       nodeEnv: mode

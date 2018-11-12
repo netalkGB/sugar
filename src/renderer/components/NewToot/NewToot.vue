@@ -33,14 +33,16 @@
 <script>
 import { mapActions } from 'vuex'
 import { ipcRenderer, remote } from 'electron'
-import Images from './Images'
-import logger from '../../other/Logger'
-import FileState from '../../other/FileState'
-import File from '../../other/File'
-import contextMenu from '../../other/contextMenu'
-import MtButton from '../Form/MtButton'
-import MtSelect from '../Form/MtSelect'
+import Images from '@/components/NewToot/Images'
+import logger from '@/other/Logger'
+import FileState from '@/other/FileState'
+import File from '@/other/File'
+import contextMenu from '@/other/contextMenu'
+import MtButton from '@/components/Form/MtButton'
+import MtSelect from '@/components/Form/MtSelect'
+
 const maxTootLength = 500
+
 export default {
   components: {
     MtButton,

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Toot from './Toot/Toot'
+import Toot from '@/components/TimeLine/Toot/Toot'
 import IosSyncIcon from 'vue-ionicons/dist/ios-sync.vue'
 export default {
   components: { Toot, IosSyncIcon },

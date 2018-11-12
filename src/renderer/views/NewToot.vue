@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import NewToot from '../components/NewToot/NewToot'
+import NewToot from '@/components/NewToot/NewToot'
 const padding = 4
 const defaultWindowHeight = 138
 const defaultWindowWidth = 330

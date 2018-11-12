@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import logger from '../other/Logger'
 import { shell, ipcRenderer, remote } from 'electron'
 import { mapActions, mapGetters } from 'vuex'
-import contextMenu from '../other/contextMenu'
+import logger from '@/other/Logger'
+import contextMenu from '@/other/contextMenu'
 export default {
   data () {
     return {
