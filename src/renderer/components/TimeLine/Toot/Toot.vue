@@ -9,7 +9,7 @@
           <Profile class="nameandid" :profile="toot.profile" />
           <Time @click="openConversation" :date="toot.date" />
         </div>
-        <TlText :content="toot.content" />
+        <TlText class="text" :content="toot.content" />
         <Images v-if="toot.medium.length > 0" :medium="toot.medium" />
         <Action :userid="toot.profile.userid" :id="toot.originalId" :favorited="toot.favorited" :boosted="toot.boosted" :visibility="toot.visibility" :favoritesCount="toot.favoritesCount" :boostsCount="toot.boostsCount" :repliesCount="toot.repliesCount" />
       </div>
@@ -24,7 +24,7 @@
           <Profile :profile="toot.followedBy" />
           <Time :date="toot.date" />
         </div>
-        <div v-html="toot.followedBy.note"></div>
+        <div class="text" v-html="toot.followedBy.note"></div>
       </div>
     </div>
   </div>
@@ -79,5 +79,9 @@ export default {
 .notification {
   margin-left: 40px;
   font-size: 10px;
+}
+.text {
+  overflow-wrap: break-word;
+  width: 100%;
 }
 </style>
