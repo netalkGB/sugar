@@ -62,7 +62,6 @@ export default {
 .toot {
   display: flex;
   border-bottom: thin solid #cccccc;
-  padding: 2px 4px 0px 4px;
 }
 .follow {
   padding-bottom: 4px;
