@@ -72,7 +72,6 @@ export default {
 .idnametime {
   display: flex;
   justify-content: space-between;
-  padding-left: 4px;
   padding-right: 4px;
 }
 .notification {
