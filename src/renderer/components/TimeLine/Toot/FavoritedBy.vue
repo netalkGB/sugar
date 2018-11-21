@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <IosStarIcon :w="'12'" :h="'12'" class="favorited" />
-    <NotificationName :profile="favoritedBy" />さんがお気に入りに追加
+  <div class="container">
+    <div class="icon">
+      <IosStarIcon :w="'12'" :h="'12'" class="favorited" />
+    </div>
+    <div class="message">
+      <NotificationName :profile="favoritedBy" />さんがお気に入りに追加
+    </div>
   </div>
 </template>
 
@@ -14,7 +18,22 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
+:root {
+  --icon-size: 12px;
+}
+.container {
+  display: flex;
+}
+.icon {
+  width: var(--icon-size);
+  height: 15px;
+  display: flex;
+  align-items: center;
+}
+.message {
+  width: calc(100% - var(--icon-size));
+}
 .favorited {
   color: #ffaa00;
 }

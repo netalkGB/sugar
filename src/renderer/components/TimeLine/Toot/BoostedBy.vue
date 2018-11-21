@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <MdRepeatIcon :w="'12'" :h="'12'" class="boosted" />
-    <NotificationName :profile="boostedBy" />さんがブースト
+  <div class="container">
+    <div class="icon">
+      <MdRepeatIcon :w="'12'" :h="'12'" class="boosted" />
+    </div>
+    <div class="message">
+      <NotificationName :profile="boostedBy" />さんがブースト
+    </div>
   </div>
 </template>
 
@@ -15,7 +19,22 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
+:root {
+  --icon-size: 12px;
+}
+.container {
+  display: flex;
+}
+.icon {
+  width: var(--icon-size);
+  height: 15px;
+  display: flex;
+  align-items: center;
+}
+.message {
+  width: calc(100% - var(--icon-size));
+}
 .boosted {
   color: #0000ff;
 }

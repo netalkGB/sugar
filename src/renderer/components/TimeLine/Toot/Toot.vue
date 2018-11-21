@@ -78,6 +78,6 @@ export default {
 }
 .notification {
   margin-left: 40px;
-  font-size: 85%;
+  font-size: 10px;
 }
 </style>
