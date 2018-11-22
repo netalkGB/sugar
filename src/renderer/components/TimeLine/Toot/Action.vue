@@ -1,35 +1,47 @@
 <template>
-  <div class="actions flex" >
-    <div class="action flex" @click="replyToot">
-      <IosUndoIcon :w="'18'" :h="'18'"/>
-      <div class="count">{{repliesCount}}</div>
+  <div class="actions flex">
+    <div class="action flex">
+      <div class="button" @click="replyToot">
+        <IosUndoIcon w="17" h="17" />
+      </div>
+      <div class="count">
+        <div>{{repliesCount}}</div>
+      </div>
     </div>
     <template v-if="visibility === 'public' || visibility === 'unlisted'">
-      <div class="action flex" :class="{boosted:displayBoosted}" @click="boostToot">
-        <MdRepeatIcon :w="'18'" :h="'18'" />
+      <div class="action flex" :class="{boosted:displayBoosted}">
+        <div class="button" @click="boostToot">
+          <MdRepeatIcon w="17" h="17" />
+        </div>
         <div class="count">
-          <span v-if="displayBoostsCount > 0">
+          <div v-if="displayBoostsCount > 0">
             {{displayBoostsCount}}
-          </span>
+          </div>
         </div>
       </div>
     </template>
     <template v-else-if="visibility === 'private'">
       <div class="action flex">
-        <IosLockIcon :w="'18'" :h="'18'" />
+        <div class="button">
+          <IosLockIcon w="17" h="17" />
+        </div>
         <div class="count"></div>
       </div>
     </template>
     <template v-else>
       <div class="action flex">
-        <IosMailIcon :w="'18'" :h="'18'" />
+        <div class="button">
+          <IosMailIcon w="17" h="17" />
+        </div>
         <div class="count"></div>
       </div>
     </template>
-    <div class="action flex" :class="{favorited:displayFavorited}" @click="favoriteToot">
-      <IosStarIcon :w="'18'" :h="'18'" />
+    <div class="action flex" :class="{favorited:displayFavorited}">
+      <div class="button" @click="favoriteToot">
+        <IosStarIcon w="17" h="17" />
+      </div>
       <div class="count">
-        <span v-if="displayFavoritesCount > 0">{{displayFavoritesCount}}</span>
+        <div v-if="displayFavoritesCount > 0">{{displayFavoritesCount}}</div>
       </div>
     </div>
   </div>
@@ -111,7 +123,9 @@ export default {
 }
 .actions {
   flex-wrap: wrap;
-  margin: 4px 0;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  height: 17px;
 }
 .favorited {
   color: #ffaa00;
@@ -120,10 +134,15 @@ export default {
   color: #0000ff;
 }
 
-.action {
+.button {
+  width: 17px;
   cursor: pointer;
 }
 .count {
   width: 32px;
+  padding-left: 2px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
 }
 </style>
