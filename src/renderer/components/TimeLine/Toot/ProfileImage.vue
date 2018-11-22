@@ -20,5 +20,6 @@ export default {
   margin-top: 10px;
   width: 32px;
   height: 32px;
+  border-radius: 2px;
 }
 </style>
