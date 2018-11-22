@@ -1,6 +1,8 @@
 <template>
   <div class="images">
-    <img class="image" v-for="(image, index) in medium" :key="index" :src="image.previewUrl">
+    <div class="image">
+      <img class="img" v-for="(image, index) in medium" :key="index" :src="image.previewUrl">
+    </div>
   </div>
 </template>
 
@@ -12,14 +14,12 @@ export default {
 
 <style scoped>
 .images {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
 }
-.image {
-  max-width: calc(50% - 8px);
-  padding-bottom: 4px;
-  max-height: 80px;
+.img {
+  height: 80px;
+  margin: 2px;
 }
 </style>
