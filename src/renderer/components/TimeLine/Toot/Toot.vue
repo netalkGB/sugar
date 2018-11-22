@@ -75,7 +75,7 @@ export default {
   padding-right: 4px;
 }
 .notification {
-  margin-left: 40px;
+  margin-left: 28px;
   font-size: 10px;
 }
 .text {
