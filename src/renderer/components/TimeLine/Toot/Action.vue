@@ -1,6 +1,6 @@
 <template>
   <div class="actions flex">
-    <div class="action flex">
+    <div class="flex">
       <div class="button" @click="replyToot">
         <IosUndoIcon w="17" h="17" />
       </div>
@@ -9,7 +9,7 @@
       </div>
     </div>
     <template v-if="visibility === 'public' || visibility === 'unlisted'">
-      <div class="action flex" :class="{boosted:displayBoosted}">
+      <div class="flex" :class="{boosted:displayBoosted}">
         <div class="button" @click="boostToot">
           <MdRepeatIcon w="17" h="17" />
         </div>
@@ -21,7 +21,7 @@
       </div>
     </template>
     <template v-else-if="visibility === 'private'">
-      <div class="action flex">
+      <div class="flex">
         <div class="button">
           <IosLockIcon w="17" h="17" />
         </div>
@@ -29,14 +29,14 @@
       </div>
     </template>
     <template v-else>
-      <div class="action flex">
+      <div class="flex">
         <div class="button">
           <IosMailIcon w="17" h="17" />
         </div>
         <div class="count"></div>
       </div>
     </template>
-    <div class="action flex" :class="{favorited:displayFavorited}">
+    <div class="flex" :class="{favorited:displayFavorited}">
       <div class="button" @click="favoriteToot">
         <IosStarIcon w="17" h="17" />
       </div>
