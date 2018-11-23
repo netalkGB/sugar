@@ -24,7 +24,7 @@
           <Profile :profile="toot.followedBy" />
           <Time :date="toot.date" />
         </div>
-        <div class="text" v-html="toot.followedBy.note"></div>
+        <TlText class="text" :content="toot.followedBy.note" />
       </div>
     </div>
   </div>
