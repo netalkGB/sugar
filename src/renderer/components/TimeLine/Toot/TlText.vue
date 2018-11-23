@@ -46,11 +46,12 @@ export default {
     for (let link of this.links) {
       link.addEventListener('click', e => {
         e.preventDefault()
-        if (link.textContent && link.textContent.split('')[0] !== '@') {
-          const href = link.href
-          logger.debug(href)
-          shell.openExternal(href)
+        if (link.textContent && link.textContent.split('')[0] === '@') {
+          return
         }
+        const href = link.href
+        logger.debug(href)
+        shell.openExternal(href)
       })
     }
   },
