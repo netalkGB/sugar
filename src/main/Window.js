@@ -17,6 +17,9 @@ export default class Window {
     this.browserWindow.webContents.on('new-window', e => {
       e.preventDefault()
     })
+    this.browserWindow.webContents.on('will-navigate', e => {
+      e.preventDefault()
+    })
   }
   loadFile (fname) {
     this.browserWindow.loadFile(fname)
