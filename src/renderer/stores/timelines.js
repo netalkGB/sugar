@@ -244,6 +244,19 @@ export default {
         ipcRenderer.send('unBoost', { host, accessToken, id })
       })
     },
+    deleteOwnToot ({ commit, state }, payload) {
+      const { id } = payload
+      const { accessToken, host } = this.getters['users/getCurrentUser']
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once('deleteOwnToot-success', (_, data) => {
+          resolve()
+        })
+        ipcRenderer.once('deleteOwnToot-error', (_, e) => {
+          reject(e)
+        })
+        ipcRenderer.send('deleteOwnToot', { host, accessToken, id })
+      })
+    },
     favorite ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']

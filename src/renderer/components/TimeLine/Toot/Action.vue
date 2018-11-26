@@ -121,6 +121,7 @@ export default {
   methods: {
     deleteToot () {
       logger.debug('delete')
+      this.deleteOwnToot({ id: this.id })
     },
     replyToot () {
       logger.debug('reply')
@@ -160,7 +161,7 @@ export default {
         })
       }
     },
-    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost', 'reply'])
+    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost', 'reply', 'deleteOwnToot'])
   }
 }
 </script>
