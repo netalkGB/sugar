@@ -1,11 +1,18 @@
 <template>
-  <div id="main" :style="{ width: width + 'px', height: height + 'px' }">
-    <Conversations ref="conversations" :id="id" />
+  <div
+    id="main"
+    ref="top"
+    :style="{ width: width + 'px', height: height + 'px' }"
+  >
+    <Conversations
+      ref="conversations"
+      :id="id"
+    />
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import logger from '@/other/Logger'
 import Conversations from '@/components/Conversations/Conversations'
 
@@ -19,12 +26,25 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['setCurrentUserId', 'loadUserConfig'])
+    ...mapActions('users', ['setCurrentUserId', 'loadUserConfig']),
+    ...mapActions('conversation', ['removeToot'])
+  },
+  computed: {
+    ...mapGetters('users', { userid: 'getCurrentUserId' })
   },
   async created () {
     await this.loadUserConfig()
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
+    window.addEventListener('storage', event => {
+      console.log(this.userId, event)
+      if (event.key === 'user' + this.userId) {
+        const val = JSON.parse(event.newValue)
+        if (val.type === 'deleteToot') {
+          this.removeToot({ id: val.id })
+        }
+      }
+    })
     this.$refs.conversations.loadToot()
   },
   mounted () {
@@ -38,6 +58,7 @@ export default {
   },
   beforeDestroy () {
     window.removeEventListener('resize', () => { })
+    window.removeEventListener('storage', () => { })
   }
 }
 </script>

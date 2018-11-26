@@ -449,6 +449,7 @@ export default {
     startStreaming ({ commit, state }, payload) {
       const { type } = payload
       const { host, accessToken, user } = this.getters['users/getCurrentUser']
+      const userNum = this.getters['users/getCurrentUserId']
       if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('streamHomeTimeline-error', (_, e) => {
@@ -470,6 +471,13 @@ export default {
               commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
+
+              // Notify delete toot to other windows(modals)
+              localStorage['user' + userNum] = JSON.stringify({
+                type: 'deleteToot',
+                id
+              })
+
               commit('removeTootFromTl', { host, accessToken, type, id })
               commit('removeTootFromNotification', { host, accessToken, id })
             } else if (msg.event === 'notification') {
