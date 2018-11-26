@@ -44,7 +44,6 @@ export default {
     removeTootFromTl (state, payload) {
       const { id } = payload
       const roundedId = parseInt(id, 10)
-      console.log(state.conversations)
       state.conversations = state.conversations.filter(
         toot => parseInt(toot.id) !== roundedId
       )
