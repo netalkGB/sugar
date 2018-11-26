@@ -1,17 +1,32 @@
 <template>
   <div class="actions flex">
     <div class="flex">
-      <div class="button" @click="replyToot">
-        <IosUndoIcon w="17" h="17" />
+      <div
+        class="button"
+        @click="replyToot"
+      >
+        <IosUndoIcon
+          w="17"
+          h="17"
+        />
       </div>
       <div class="count">
         <div>{{repliesCount}}</div>
       </div>
     </div>
     <template v-if="visibility === 'public' || visibility === 'unlisted'">
-      <div class="flex" :class="{boosted:displayBoosted}">
-        <div class="button" @click="boostToot">
-          <MdRepeatIcon w="17" h="17" />
+      <div
+        class="flex"
+        :class="{boosted:displayBoosted}"
+      >
+        <div
+          class="button"
+          @click="boostToot"
+        >
+          <MdRepeatIcon
+            w="17"
+            h="17"
+          />
         </div>
         <div class="count">
           <div v-if="displayBoostsCount > 0">
@@ -23,7 +38,10 @@
     <template v-else-if="visibility === 'private'">
       <div class="flex">
         <div class="button">
-          <IosLockIcon w="17" h="17" />
+          <IosLockIcon
+            w="17"
+            h="17"
+          />
         </div>
         <div class="count"></div>
       </div>
@@ -31,17 +49,43 @@
     <template v-else>
       <div class="flex">
         <div class="button">
-          <IosMailIcon w="17" h="17" />
+          <IosMailIcon
+            w="17"
+            h="17"
+          />
         </div>
         <div class="count"></div>
       </div>
     </template>
-    <div class="flex" :class="{favorited:displayFavorited}">
-      <div class="button" @click="favoriteToot">
-        <IosStarIcon w="17" h="17" />
+    <div
+      class="flex"
+      :class="{favorited:displayFavorited}"
+    >
+      <div
+        class="button"
+        @click="favoriteToot"
+      >
+        <IosStarIcon
+          w="17"
+          h="17"
+        />
       </div>
       <div class="count">
         <div v-if="displayFavoritesCount > 0">{{displayFavoritesCount}}</div>
+      </div>
+    </div>
+    <div
+      class="flex"
+      v-if="isTootByOwn"
+    >
+      <div
+        class="button"
+        @click="deleteToot"
+      >
+        <MdTrashIcon
+          w="17"
+          h="17"
+        />
       </div>
     </div>
   </div>
@@ -53,12 +97,13 @@ import MdRepeatIcon from 'vue-ionicons/dist/md-repeat.vue'
 import IosStarIcon from 'vue-ionicons/dist/ios-star.vue'
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import IosMailIcon from 'vue-ionicons/dist/ios-mail.vue'
+import MdTrashIcon from 'vue-ionicons/dist/md-trash.vue'
 import { mapActions } from 'vuex'
 import logger from '@/other/Logger'
 
 export default {
-  components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon },
-  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount', 'favorited', 'boosted', 'id', 'userid'],
+  components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon, MdTrashIcon },
+  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount', 'favorited', 'boosted', 'id', 'userid', 'isTootByOwn'],
   data () {
     return {
       displayBoosted: false,
@@ -74,6 +119,9 @@ export default {
     this.displayBoostsCount = this.boostsCount
   },
   methods: {
+    deleteToot () {
+      logger.debug('delete')
+    },
     replyToot () {
       logger.debug('reply')
       this.reply({ inReplyToID: this.id, destination: this.userid })
