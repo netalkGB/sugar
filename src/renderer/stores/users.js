@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
 import logger from '@/other/Logger'
 import Settings from '@/other/Settings'
-
+import Profile from '@/other/Profile'
 export default {
   namespaced: true,
   state: {
@@ -32,7 +32,8 @@ export default {
         clientSecret: payload.clientSecret,
         accessToken: payload.accessToken,
         host: payload.host,
-        userNumber: state.nextUserId++
+        userNumber: state.nextUserId++,
+        user: payload.user
       }
       logger.debug(user)
       state.userList.push(user)
@@ -62,8 +63,24 @@ export default {
       return new Promise((resolve, reject) => {
         ipcRenderer.once('login2-success', (_, tokens) => {
           const { clientId, clientSecret, accessToken, host } = tokens
-          commit('add', { clientId, clientSecret, accessToken, host })
-          resolve()
+          ipcRenderer.once('fetchOwnAccount-success', (ev, user) => {
+            if (user.resp.statusCode !== 200) {
+              reject(user)
+              return
+            }
+            commit('add', {
+              clientId,
+              clientSecret,
+              accessToken,
+              host,
+              user: Profile.fromAccount(user.data)
+            })
+            resolve()
+          })
+          ipcRenderer.once('fetchOwnAccount-error', (_, e) => {
+            reject(e)
+          })
+          ipcRenderer.send('fetchOwnAccount', { host, accessToken })
         })
         ipcRenderer.once('login2-error', (_, e) => {
           reject(e)

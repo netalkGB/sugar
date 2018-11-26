@@ -37,6 +37,9 @@ export default class Mastodon {
       api_url: `https://${host}/api/v1/`
     })
   }
+  fetchOwnAccount () {
+    return this.mastodon.get('accounts/verify_credentials', {})
+  }
   fetchHomeTimeline (appendParams) {
     let params = {}
     if (appendParams && appendParams.maxID) {
