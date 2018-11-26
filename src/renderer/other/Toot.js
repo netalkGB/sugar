@@ -79,7 +79,7 @@ export default class Toot {
       const favorited = data.status.favourited
       const boosted = data.status.reblogged
       const originalId = data.status.id
-      const isTootByOwn = ownUser && ownUser.userid === profile.userid
+      const isTootByOwn = false
       let obj = {
         profile,
         date,
@@ -114,7 +114,7 @@ export default class Toot {
       const boosted = data.status.reblogged
       const boostedBy = Profile.fromAccount(data.account)
       const originalId = data.status.id
-      const isTootByOwn = ownUser && ownUser.userid === profile.userid
+      const isTootByOwn = true
       let obj = {
         profile,
         date,
@@ -150,7 +150,7 @@ export default class Toot {
       const boosted = data.status.reblogged
       const favoritedBy = Profile.fromAccount(data.account)
       const originalId = data.status.id
-      const isTootByOwn = ownUser && ownUser.userid === profile.userid
+      const isTootByOwn = true
       let obj = {
         profile,
         date,
