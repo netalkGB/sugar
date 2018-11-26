@@ -64,7 +64,7 @@ export default {
       }
     },
     setTimeline (state, payload) {
-      const { type, data, host, accessToken } = payload
+      const { type, data, host, accessToken, user } = payload
       const timeline = {
         host,
         accessToken,
@@ -72,13 +72,13 @@ export default {
         active: false,
         data:
           type !== TimelineType.notification
-            ? data.data.map(item => Toot.fromMastodon(item))
-            : data.data.map(item => Toot.fromMastodonNotification(item))
+            ? data.data.map(item => Toot.fromMastodon(item, user))
+            : data.data.map(item => Toot.fromMastodonNotification(item, user))
       }
       state.timelines = [...state.timelines, timeline]
     },
     prependNotification (state, payload) {
-      const { data, host, accessToken } = payload
+      const { data, host, accessToken, user } = payload
       for (let timeline of state.timelines) {
         if (
           timeline.host === host &&
@@ -86,7 +86,7 @@ export default {
           timeline.type === TimelineType.notification
         ) {
           timeline.data = [
-            Toot.fromMastodonNotification(data),
+            Toot.fromMastodonNotification(data, user),
             ...timeline.data
           ]
           break
@@ -94,20 +94,20 @@ export default {
       }
     },
     prependTootTimeline (state, payload) {
-      const { type, data, host, accessToken } = payload
+      const { type, data, host, accessToken, user } = payload
       for (let timeline of state.timelines) {
         if (
           timeline.host === host &&
           timeline.accessToken === accessToken &&
           timeline.type === type
         ) {
-          timeline.data = [Toot.fromMastodon(data), ...timeline.data]
+          timeline.data = [Toot.fromMastodon(data, user), ...timeline.data]
           break
         }
       }
     },
     appendNotificationTimeline (state, payload) {
-      const { data, host, accessToken } = payload
+      const { data, host, accessToken, user } = payload
       for (let timeline of state.timelines) {
         if (
           timeline.host === host &&
@@ -116,14 +116,14 @@ export default {
         ) {
           timeline.data = [
             ...timeline.data,
-            ...data.data.map(d => Toot.fromMastodonNotification(d))
+            ...data.data.map(d => Toot.fromMastodonNotification(d, user))
           ]
           break
         }
       }
     },
     appendTootsTimeline (state, payload) {
-      const { type, data, host, accessToken } = payload
+      const { type, data, host, accessToken, user } = payload
       for (let timeline of state.timelines) {
         if (
           timeline.host === host &&
@@ -132,7 +132,7 @@ export default {
         ) {
           timeline.data = [
             ...timeline.data,
-            ...data.data.map(d => Toot.fromMastodon(d))
+            ...data.data.map(d => Toot.fromMastodon(d, user))
           ]
           break
         }
@@ -273,7 +273,7 @@ export default {
       })
     },
     loadOldToot ({ commit, state }, payload) {
-      const { host, accessToken } = this.getters['users/getCurrentUser']
+      const { host, accessToken, user } = this.getters['users/getCurrentUser']
       const { type, maxID } = payload
       if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
@@ -281,6 +281,7 @@ export default {
             commit('appendTootsTimeline', {
               host,
               accessToken,
+              user,
               type,
               maxID,
               data
@@ -298,6 +299,7 @@ export default {
             commit('appendTootsTimeline', {
               host,
               accessToken,
+              user,
               type,
               maxID,
               data
@@ -315,6 +317,7 @@ export default {
             commit('appendTootsTimeline', {
               host,
               accessToken,
+              user,
               type,
               maxID,
               data
@@ -332,6 +335,7 @@ export default {
             commit('appendNotificationTimeline', {
               host,
               accessToken,
+              user,
               maxID,
               data
             })
@@ -345,12 +349,12 @@ export default {
       }
     },
     firstFetch ({ commit, state }, payload) {
-      const { host, accessToken } = this.getters['users/getCurrentUser']
+      const { host, accessToken, user } = this.getters['users/getCurrentUser']
       const { type } = payload
       if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('fetchHomeTimeline-success', (_, data) => {
-            commit('setTimeline', { host, accessToken, type, data })
+            commit('setTimeline', { host, accessToken, type, data, user })
             resolve()
           })
           ipcRenderer.once('fetchHomeTimeline-error', (_, e) => {
@@ -431,7 +435,7 @@ export default {
     },
     startStreaming ({ commit, state }, payload) {
       const { type } = payload
-      const { host, accessToken } = this.getters['users/getCurrentUser']
+      const { host, accessToken, user } = this.getters['users/getCurrentUser']
       if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
           ipcRenderer.once('streamHomeTimeline-error', (_, e) => {
@@ -443,7 +447,13 @@ export default {
           ipcRenderer.on('streamHomeTimeline-onMessage', (e, msg) => {
             if (msg.event === 'update') {
               const data = msg.data
-              commit('prependTootTimeline', { host, accessToken, type, data })
+              commit('prependTootTimeline', {
+                host,
+                accessToken,
+                type,
+                data,
+                user
+              })
               commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
@@ -454,6 +464,7 @@ export default {
               commit('prependNotification', {
                 host,
                 accessToken,
+                user,
                 data
               })
             }
@@ -471,7 +482,13 @@ export default {
           ipcRenderer.on('streamLocalTimeline-onMessage', (e, msg) => {
             if (msg.event === 'update') {
               const data = msg.data
-              commit('prependTootTimeline', { host, accessToken, type, data })
+              commit('prependTootTimeline', {
+                host,
+                accessToken,
+                type,
+                data,
+                user
+              })
               commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
@@ -491,7 +508,13 @@ export default {
           ipcRenderer.on('streamPublicTimeline-onMessage', (e, msg) => {
             if (msg.event === 'update') {
               const data = msg.data
-              commit('prependTootTimeline', { host, accessToken, type, data })
+              commit('prependTootTimeline', {
+                host,
+                accessToken,
+                type,
+                data,
+                user
+              })
               commit('cleaningTl', { host, accessToken })
             } else if (msg.event === 'delete') {
               const id = msg.data
