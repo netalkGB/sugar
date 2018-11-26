@@ -1,6 +1,5 @@
 <template>
   <div v-if="!toot.followedBy">
-    {{toot.isTootByOwn}}bb
     <BoostedBy v-if="toot.boostedBy" :boostedBy="toot.boostedBy" class="notification" />
     <FavoritedBy v-if="toot.favoritedBy" :favoritedBy="toot.favoritedBy" class="notification" />
     <div class="toot">
@@ -17,7 +16,6 @@
     </div>
   </div>
   <div v-else>
-    a
     <FollowedBy v-if="toot.followedBy" :followedBy="toot.followedBy" class="notification" />
     <div class="toot follow">
       <ProfileImage :profile="toot.followedBy" />
