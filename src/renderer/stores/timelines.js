@@ -446,7 +446,7 @@ export default {
         })
       }
     },
-    startStreaming ({ commit, state }, payload) {
+    startStreaming ({ commit, state, dispatch }, payload) {
       const { type } = payload
       const { host, accessToken, user } = this.getters['users/getCurrentUser']
       const userNum = this.getters['users/getCurrentUserId']
@@ -478,6 +478,7 @@ export default {
                 id
               })
 
+              dispatch('conversation/removeToot', id, { root: true })
               commit('removeTootFromTl', { host, accessToken, type, id })
               commit('removeTootFromNotification', { host, accessToken, id })
             } else if (msg.event === 'notification') {
