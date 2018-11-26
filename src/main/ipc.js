@@ -216,6 +216,20 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('deleteOwnToot', async (event, args) => {
+    const { host, accessToken, id } = args
+    try {
+      const result = await getClient(accessToken, host).deleteOwnToot(id)
+      event.sender.send('deleteOwnToot-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('deleteOwnToot-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('fetchToot', async (event, args) => {
     const { host, accessToken, id } = args
     try {

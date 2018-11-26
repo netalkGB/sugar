@@ -115,6 +115,9 @@ export default class Mastodon {
     })
     return response
   }
+  deleteOwnToot (id) {
+    return this.mastodon.delete(`statuses/${id}`)
+  }
   favorite (id) {
     return this.mastodon.post(`statuses/${id}/favourite`)
   }
