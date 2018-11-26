@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import logger from '@/other/Logger'
 import Conversations from '@/components/Conversations/Conversations'
 
@@ -29,15 +29,11 @@ export default {
     ...mapActions('users', ['setCurrentUserId', 'loadUserConfig']),
     ...mapActions('conversation', ['removeToot'])
   },
-  computed: {
-    ...mapGetters('users', { userid: 'getCurrentUserId' })
-  },
   async created () {
     await this.loadUserConfig()
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
     window.addEventListener('storage', event => {
-      console.log(this.userId, event)
       if (event.key === 'user' + this.userId) {
         const val = JSON.parse(event.newValue)
         if (val.type === 'deleteToot') {
