@@ -17,8 +17,9 @@ export default class Toot {
     this.boostedBy = args.boostedBy
     this.followedBy = args.followedBy
     this.originalId = args.originalId
+    this.isTootByOwn = args.isTootByOwn
   }
-  static fromMastodon (data) {
+  static fromMastodon (data, ownUser) {
     let item
     if (data.reblog !== null) {
       item = data.reblog
@@ -36,6 +37,8 @@ export default class Toot {
     const visibility = item.visibility
     const favorited = item.favourited
     const boosted = item.reblogged
+    const isTootByOwn = ownUser && ownUser.userid === profile.userid
+
     let obj = {
       profile,
       date,
@@ -47,7 +50,8 @@ export default class Toot {
       id,
       favorited,
       boosted,
-      originalId
+      originalId,
+      isTootByOwn
     }
     if (item.media_attachments) {
       obj = {
@@ -62,7 +66,7 @@ export default class Toot {
     }
     return new Toot(obj)
   }
-  static fromMastodonNotification (data) {
+  static fromMastodonNotification (data, ownUser) {
     if (data.type === 'mention') {
       const profile = Profile.fromAccount(data.account)
       const date = new Date(data.created_at)
@@ -75,6 +79,7 @@ export default class Toot {
       const favorited = data.status.favourited
       const boosted = data.status.reblogged
       const originalId = data.status.id
+      const isTootByOwn = ownUser && ownUser.userid === profile.userid
       let obj = {
         profile,
         date,
@@ -86,7 +91,8 @@ export default class Toot {
         id,
         favorited,
         boosted,
-        originalId
+        originalId,
+        isTootByOwn
       }
       if (data.status.media_attachments) {
         obj = {
@@ -108,6 +114,7 @@ export default class Toot {
       const boosted = data.status.reblogged
       const boostedBy = Profile.fromAccount(data.account)
       const originalId = data.status.id
+      const isTootByOwn = ownUser && ownUser.userid === profile.userid
       let obj = {
         profile,
         date,
@@ -120,7 +127,8 @@ export default class Toot {
         favorited,
         boosted,
         boostedBy,
-        originalId
+        originalId,
+        isTootByOwn
       }
       if (data.status.media_attachments) {
         obj = {
@@ -142,6 +150,7 @@ export default class Toot {
       const boosted = data.status.reblogged
       const favoritedBy = Profile.fromAccount(data.account)
       const originalId = data.status.id
+      const isTootByOwn = ownUser && ownUser.userid === profile.userid
       let obj = {
         profile,
         date,
@@ -154,7 +163,8 @@ export default class Toot {
         favorited,
         boosted,
         favoritedBy,
-        originalId
+        originalId,
+        isTootByOwn
       }
       if (data.status.media_attachments) {
         obj = {
