@@ -48,6 +48,16 @@ export default (logger, windows) => {
       event.sender.send('login2-error', { message, name })
     }
   })
+  ipcMain.on('fetchOwnAccount', async (event, args) => {
+    try {
+      const { host, accessToken } = args
+      const result = await getClient(accessToken, host).fetchOwnAccount()
+      event.sender.send('fetchOwnAccount-success', result)
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchOwnAccount-error', { message, name })
+    }
+  })
   ipcMain.on('fetchHomeTimeline', async (event, args) => {
     try {
       const { host, accessToken, maxID } = args
