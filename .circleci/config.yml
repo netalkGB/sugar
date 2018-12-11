@@ -10,9 +10,13 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
+      - run: apt update
+      - run: apt install -y wine
       - run: yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}        
       - run: yarn test
+      - run: yarn package
+      - run: node script/release.js
