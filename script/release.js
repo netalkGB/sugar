@@ -1,10 +1,12 @@
 const { request } = require('https')
 const fsPromises = require('fs').promises
 const fs = require('fs')
+const branch = require('node-current-branch')
 const packagejson = require('../package.json')
 const token = process.env.github_token
 const { name, version } = packagejson
 const nameVersion = `${name}-${version}-`
+const currentBranch = branch()
 
 const makeRequest = (options, reject, resolve) => {
   return request(options, res => {
@@ -105,7 +107,7 @@ const upload = async (uploadURL, fname) => {
 const release = async files => {
   const uploadURL = await generateUploadURL({
     tag_name: version,
-    name: `${name}-${version}`,
+    name: `${name}-${version}-${currentBranch}`,
     draft: true,
     prerelease: true
   })

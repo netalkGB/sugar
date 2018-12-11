@@ -71,6 +71,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^4.7.1",
     "jest": "^23.6.0",
+    "node-current-branch": "^1.0.1",
     "node-loader": "^0.6.0",
     "vue-jest": "^2.6.0",
     "vue-loader": "^15.4.2",
