@@ -10,8 +10,8 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
-      - run: apt update
-      - run: apt install -y wine
+      - run: sudo apt update
+      - run: sudo apt install -y wine
       - run: yarn install
       - save_cache:
           paths:
