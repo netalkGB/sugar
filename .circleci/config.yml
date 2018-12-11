@@ -10,8 +10,9 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
+      - run: sudo dpkg --add-architecture i386
       - run: sudo apt update
-      - run: sudo apt install -y wine
+      - run: sudo apt install -y wine32
       - run: yarn install
       - save_cache:
           paths:
