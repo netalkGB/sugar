@@ -12,7 +12,7 @@ jobs:
           - v1-dependencies-
       - run: sudo dpkg --add-architecture i386
       - run: sudo apt update
-      - run: sudo apt install -y wine32
+      - run: sudo apt install -y wine32 wine
       - run: yarn install
       - save_cache:
           paths:
