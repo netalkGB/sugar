@@ -5765,6 +5765,11 @@ node-cache@^4.1.1:
     clone "2.x"
     lodash "4.x"
 
+node-current-branch@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/node-current-branch/-/node-current-branch-1.0.1.tgz#a9c1b1f0f32b828d5c915780df2f914bde97b2ab"
+  integrity sha512-i0r6HxdNqCveBbtl0/NYTpEs2oDc9hhdQTTB3xRhzLzs2kWI2AHQngTiPnkuBmFRT5h9DjE9+3RD8mgczlM84Q==
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
