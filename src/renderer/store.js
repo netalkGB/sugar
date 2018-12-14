@@ -6,6 +6,7 @@ import conversation from '@/stores/conversation'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   modules: {
     users,
     timelines,
