@@ -60,6 +60,15 @@ export default new Router({
         id: String(route.query.id)
       }),
       component: () => import('@/views/Conversation')
+    },
+    {
+      name: 'profile',
+      path: '/profile/:userId/:acct',
+      props: route => ({
+        userId: Number(route.params.userId),
+        acct: String(route.params.acct)
+      }),
+      component: () => import('@/views/Profile')
     }
   ],
   mode: 'hash'

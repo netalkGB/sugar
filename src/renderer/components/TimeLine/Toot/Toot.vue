@@ -1,22 +1,60 @@
 <template>
   <div v-if="!toot.followedBy">
-    <BoostedBy v-if="toot.boostedBy" :boostedBy="toot.boostedBy" class="notification" />
-    <FavoritedBy v-if="toot.favoritedBy" :favoritedBy="toot.favoritedBy" class="notification" />
+    <BoostedBy
+      v-if="toot.boostedBy"
+      :boostedBy="toot.boostedBy"
+      class="notification"
+    />
+    <FavoritedBy
+      v-if="toot.favoritedBy"
+      :favoritedBy="toot.favoritedBy"
+      class="notification"
+    />
     <div class="toot">
-      <ProfileImage :profile="toot.profile" />
+      <ProfileImage
+        :profile="toot.profile"
+        @click="openProfile"
+      />
       <div class="body">
         <div class="idnametime">
-          <Profile class="nameandid" :profile="toot.profile" />
-          <Time @click="openConversation" :date="toot.date" />
+          <Profile
+            class="nameandid"
+            :profile="toot.profile"
+            @click="openProfile"
+          />
+          <Time
+            @click="openConversation"
+            :date="toot.date"
+          />
         </div>
-        <TlText class="text" :content="toot.content" />
-        <Images v-if="toot.medium.length > 0" :medium="toot.medium" />
-        <Action :isTootByOwn="toot.isTootByOwn" :userid="toot.profile.userid" :id="toot.originalId" :favorited="toot.favorited" :boosted="toot.boosted" :visibility="toot.visibility" :favoritesCount="toot.favoritesCount" :boostsCount="toot.boostsCount" :repliesCount="toot.repliesCount" />
+        <TlText
+          class="text"
+          :content="toot.content"
+        />
+        <Images
+          v-if="toot.medium.length > 0"
+          :medium="toot.medium"
+        />
+        <Action
+          :isTootByOwn="toot.isTootByOwn"
+          :userid="toot.profile.userid"
+          :id="toot.originalId"
+          :favorited="toot.favorited"
+          :boosted="toot.boosted"
+          :visibility="toot.visibility"
+          :favoritesCount="toot.favoritesCount"
+          :boostsCount="toot.boostsCount"
+          :repliesCount="toot.repliesCount"
+        />
       </div>
     </div>
   </div>
   <div v-else>
-    <FollowedBy v-if="toot.followedBy" :followedBy="toot.followedBy" class="notification" />
+    <FollowedBy
+      v-if="toot.followedBy"
+      :followedBy="toot.followedBy"
+      class="notification"
+    />
     <div class="toot follow">
       <ProfileImage :profile="toot.followedBy" />
       <div class="body">
@@ -24,7 +62,10 @@
           <Profile :profile="toot.followedBy" />
           <Time :date="toot.date" />
         </div>
-        <TlText class="text" :content="toot.followedBy.note" />
+        <TlText
+          class="text"
+          :content="toot.followedBy.note"
+        />
       </div>
     </div>
   </div>
@@ -46,10 +87,14 @@ export default {
   components: { BoostedBy, FavoritedBy, FollowedBy, ProfileImage, Profile, Time, TlText, Action, Images },
   props: ['toot'],
   methods: {
-    ...mapActions('timelines', ['conversation']),
+    ...mapActions('timelines', ['conversation', 'profile']),
     openConversation () {
       const id = this.toot.originalId
       this.conversation({ id })
+    },
+    openProfile () {
+      const acct = this.toot.profile.userid
+      this.profile({ acct })
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="nameandid">
+  <div class="nameandid" @click="$emit('click')">
     <div class="name" v-if="profile.displayName">{{profile.displayName}}</div>
     <div class="protect" v-if="profile.locked">
       <IosLockIcon :w="'12'" :h="'12'" />

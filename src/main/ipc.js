@@ -300,13 +300,22 @@ export default (logger, windows) => {
           height: 150
         }
       )
-    } else {
+    } else if (type === 'conversation') {
       windows.add(
         url,
         { url },
         {
           width: 280,
           height: 400
+        }
+      )
+    } else {
+      windows.add(
+        url,
+        { url },
+        {
+          width: 300,
+          height: 550
         }
       )
     }
