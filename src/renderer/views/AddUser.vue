@@ -20,9 +20,11 @@
 
 <script>
 import { shell, ipcRenderer, remote } from 'electron'
-import { mapActions, mapGetters } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import logger from '@/other/Logger'
 import contextMenu from '@/other/contextMenu'
+const { mapActions, mapGetters } = createNamespacedHelpers('users')
+
 export default {
   data () {
     return {
@@ -54,10 +56,10 @@ export default {
     this.$refs.adduser.removeEventListener('contextmenu', () => {})
   },
   computed: {
-    ...mapGetters('users', { userList: 'getUserList' })
+    ...mapGetters({ userList: 'getUserList' })
   },
   methods: {
-    ...mapActions('users', ['getPIN', 'addUser', 'saveUserConfig']),
+    ...mapActions(['getPIN', 'addUser', 'saveUserConfig']),
     login () {
       this.getPIN(this.host).then(obj => {
         this.clientId = obj.clientId

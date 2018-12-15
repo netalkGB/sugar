@@ -1,22 +1,50 @@
 <template>
   <div class="newToot">
-    <div v-if="isCW" class="contentWarning">
-      <input class="cw" v-model="spoilerText" :disabled="sending" placeholder="ここに警告を書いてください">
+    <div
+      v-if="isCW"
+      class="contentWarning"
+    >
+      <input
+        class="cw"
+        v-model="spoilerText"
+        :disabled="sending"
+        placeholder="ここに警告を書いてください"
+      >
     </div>
     <div class="inputToot">
-      <textarea :value="toot" ref="toottext" :disabled="sending" @input="handleInput" class="toot" autofocus placeholder="今何してる？"></textarea>
+      <textarea
+        :value="toot"
+        ref="toottext"
+        :disabled="sending"
+        @input="handleInput"
+        class="toot"
+        autofocus
+        placeholder="今何してる？"
+      ></textarea>
     </div>
     <div class="menu">
       <div>
-        <MtButton class="item addFile" @click.native="addFile" :disabled="files.length >= 4 || sending">写真を追加</MtButton>
-        <MtSelect class="item permission" :disabled="sending" v-model='visibility'>
+        <MtButton
+          class="item addFile"
+          @click.native="addFile"
+          :disabled="files.length >= 4 || sending"
+        >写真を追加</MtButton>
+        <MtSelect
+          class="item permission"
+          :disabled="sending"
+          v-model='visibility'
+        >
           <option value="public">公開</option>
           <option value="unlisted">未収載</option>
           <option value="private">フォロワー限定</option>
           <option value="direct">ダイレクト</option>
         </MtSelect>
         <label class="item iscw">
-          CW:<input type="checkbox" :disabled="sending" v-model="isCW">
+          CW:<input
+            type="checkbox"
+            :disabled="sending"
+            v-model="isCW"
+          >
         </label>
       </div>
       <div class="tootlength">
@@ -24,14 +52,23 @@
       </div>
     </div>
     <div class="menu">
-      <MtButton :disabled="isCanToot === false" @click.native="postToot" type="submit" class="item">トゥート</MtButton>
+      <MtButton
+        :disabled="isCanToot === false"
+        @click.native="postToot"
+        type="submit"
+        class="item"
+      >トゥート</MtButton>
     </div>
-    <Images :files="files" @removeFile="removeFile" class="imgs" />
+    <Images
+      :files="files"
+      @removeFile="removeFile"
+      class="imgs"
+    />
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import { ipcRenderer, remote } from 'electron'
 import Images from '@/components/NewToot/Images'
 import logger from '@/other/Logger'
@@ -41,6 +78,7 @@ import contextMenu from '@/other/contextMenu'
 import MtButton from '@/components/Form/MtButton'
 import MtSelect from '@/components/Form/MtSelect'
 
+const { mapActions } = createNamespacedHelpers('users')
 const maxTootLength = 500
 
 export default {
@@ -51,7 +89,7 @@ export default {
   },
   props: { userId: Number, inReplyToID: String, destination: String },
   methods: {
-    ...mapActions('users', ['loadUserConfig', 'setCurrentUserId']),
+    ...mapActions(['loadUserConfig', 'setCurrentUserId']),
     postToot () {
       this.sending = true
       const { accessToken, host } = this.keys

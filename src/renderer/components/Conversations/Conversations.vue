@@ -1,19 +1,23 @@
 <template>
-  <TimeLine :infiniteMode="false" ref="timeline" :timeline="conversations" />
+  <TimeLine
+    :infiniteMode="false"
+    ref="timeline"
+    :timeline="conversations"
+  />
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import TimeLine from '@/components/TimeLine/TimeLine'
-
+const { mapActions, mapGetters } = createNamespacedHelpers('conversation')
 export default {
   components: { TimeLine },
   props: ['id'],
   computed: {
-    ...mapGetters('conversation', { conversations: 'getConversations' })
+    ...mapGetters({ conversations: 'getConversations' })
   },
   methods: {
-    ...mapActions('conversation', ['loadConversations']),
+    ...mapActions(['loadConversations']),
     loadToot () {
       this.loadConversations({ tootId: this.id })
     }

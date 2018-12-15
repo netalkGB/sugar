@@ -81,13 +81,14 @@ import Time from '@/components/TimeLine/Toot/Time'
 import TlText from '@/components/TimeLine/Toot/TlText'
 import Action from '@/components/TimeLine/Toot/Action'
 import Images from '@/components/TimeLine/Toot/Images'
-import { mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('timelines')
 
 export default {
   components: { BoostedBy, FavoritedBy, FollowedBy, ProfileImage, Profile, Time, TlText, Action, Images },
   props: ['toot'],
   methods: {
-    ...mapActions('timelines', ['conversation', 'profile']),
+    ...mapActions(['conversation', 'profile']),
     openConversation () {
       const id = this.toot.originalId
       this.conversation({ id })
