@@ -300,7 +300,7 @@ export default (logger, windows) => {
           height: 150
         }
       )
-    } else if (type === 'conversation') {
+    } else if (type === 'conversations') {
       windows.add(
         url,
         { url },
