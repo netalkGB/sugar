@@ -20,6 +20,7 @@ export default {
 <style scoped>
 .nameandid {
   display: flex;
+  cursor: pointer;
 }
 .name {
   font-weight: bolder;
