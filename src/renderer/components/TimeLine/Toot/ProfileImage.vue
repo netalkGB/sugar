@@ -15,12 +15,12 @@ export default {
   width: 40px;
   display: flex;
   justify-content: center;
-  cursor: pointer;
 }
 .img {
   margin-top: 10px;
   width: 32px;
   height: 32px;
   border-radius: 2px;
+  cursor: pointer;
 }
 </style>
