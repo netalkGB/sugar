@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import logger from '@/other/Logger'
+const { mapActions, mapGetters } = createNamespacedHelpers('users')
 
 export default {
   async created () {
@@ -22,10 +23,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['loadUserConfig'])
+    ...mapActions(['loadUserConfig'])
   },
   computed: {
-    ...mapGetters('users', { userList: 'getUserList' })
+    ...mapGetters({ userList: 'getUserList' })
   }
 }
 </script>

@@ -98,8 +98,10 @@ import IosStarIcon from 'vue-ionicons/dist/ios-star.vue'
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import IosMailIcon from 'vue-ionicons/dist/ios-mail.vue'
 import MdTrashIcon from 'vue-ionicons/dist/md-trash.vue'
-import { mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import logger from '@/other/Logger'
+
+const { mapActions } = createNamespacedHelpers('timelines')
 
 export default {
   components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon, MdTrashIcon },
@@ -161,7 +163,7 @@ export default {
         })
       }
     },
-    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost', 'reply', 'deleteOwnToot'])
+    ...mapActions(['favorite', 'unFavorite', 'boost', 'unBoost', 'reply', 'deleteOwnToot'])
   }
 }
 </script>
