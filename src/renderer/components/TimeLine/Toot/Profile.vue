@@ -1,10 +1,24 @@
 <template>
-  <div class="nameandid" @click="$emit('click')">
-    <div class="name" v-if="profile.displayName">{{profile.displayName}}</div>
-    <div class="protect" v-if="profile.locked">
-      <IosLockIcon :w="'12'" :h="'12'" />
+  <div class="nameandid">
+    <div
+      class="name clickable"
+      @click="$emit('click')"
+      v-if="profile.displayName"
+    >{{profile.displayName}}</div>
+    <div
+      class="protect clickable"
+      @click="$emit('click')"
+      v-if="profile.locked"
+    >
+      <IosLockIcon
+        :w="'12'"
+        :h="'12'"
+      />
     </div>
-    <div class="id">{{profile.userid}}</div>
+    <div
+      class="id clickable"
+      @click="$emit('click')"
+    >{{profile.userid}}</div>
   </div>
 </template>
 
@@ -20,7 +34,6 @@ export default {
 <style scoped>
 .nameandid {
   display: flex;
-  cursor: pointer;
 }
 .name {
   font-weight: bolder;
@@ -32,5 +45,8 @@ export default {
 .id {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.clickable {
+  cursor: pointer;
 }
 </style>
