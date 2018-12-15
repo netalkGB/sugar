@@ -216,6 +216,16 @@ export default {
         'conversations'
       )
     },
+    profile (_, payload) {
+      const { acct } = payload
+      const userid = this.getters['users/getCurrentUserId']
+      const currentPath = localStorage.getItem('currentPath')
+      ipcRenderer.send(
+        'newWindow',
+        `${currentPath}#/profile/${userid}/${acct}`,
+        'profile'
+      )
+    },
     boost ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']

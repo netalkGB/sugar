@@ -1,6 +1,6 @@
 <template>
   <div class="profileImg">
-    <img class="img" :src="profile.avatar">
+    <img class="img" :src="profile.avatar" @click="$emit('click')">
   </div>
 </template>
 
