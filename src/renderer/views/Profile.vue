@@ -1,10 +1,10 @@
 <template>
-  <div>{{userId}}/{{acct}}</div>
+  <div>{{userId}}/{{internalId}}</div>
 </template>
 
 <script>
 export default {
-  props: ['userId', 'acct']
+  props: ['userId', 'internalId']
 }
 </script>
 

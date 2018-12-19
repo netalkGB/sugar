@@ -217,12 +217,12 @@ export default {
       )
     },
     profile (_, payload) {
-      const { acct } = payload
+      const { internalid } = payload
       const userid = this.getters['users/getCurrentUserId']
       const currentPath = localStorage.getItem('currentPath')
       ipcRenderer.send(
         'newWindow',
-        `${currentPath}#/profile/${userid}/${acct}`,
+        `${currentPath}#/profile/${userid}/${internalid}`,
         'profile'
       )
     },

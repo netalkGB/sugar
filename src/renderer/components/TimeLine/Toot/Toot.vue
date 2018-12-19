@@ -94,8 +94,8 @@ export default {
       this.conversation({ id })
     },
     openProfile () {
-      const acct = this.toot.profile.userid
-      this.profile({ acct })
+      const internalid = this.toot.profile.internalid
+      this.profile({ internalid })
     }
   }
 }
