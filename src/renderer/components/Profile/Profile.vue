@@ -13,7 +13,6 @@ export default {
     async fetch () {
       const internalId = this.internalId
       await this.fetchProfile({ internalId })
-      console.log(this.profile)
     }
   },
   computed: {
