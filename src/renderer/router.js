@@ -63,10 +63,10 @@ export default new Router({
     },
     {
       name: 'profile',
-      path: '/profile/:userId/:acct',
+      path: '/profile/:userId/:internalId',
       props: route => ({
         userId: Number(route.params.userId),
-        acct: String(route.params.acct)
+        internalId: String(route.params.internalId)
       }),
       component: () => import('@/views/Profile')
     }
