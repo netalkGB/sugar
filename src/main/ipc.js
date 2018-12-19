@@ -258,6 +258,20 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('fetchProfile', async (event, args) => {
+    const { host, accessToken, id } = args
+    try {
+      const result = await getClient(accessToken, host).fetchProfile(id)
+      event.sender.send('fetchProfile-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchProfile-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('uploadFile', async (event, args) => {
     const { host, accessToken, filePath, uuid } = args
     try {
