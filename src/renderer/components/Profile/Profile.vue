@@ -1,5 +1,7 @@
 <template>
-  <div>{{profile}}</div>
+  <div style="word-wrap: break-word;">
+    {{profile}}
+  </div>
 </template>
 
 <script>
