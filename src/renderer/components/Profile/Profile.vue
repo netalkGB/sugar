@@ -1,10 +1,24 @@
 <template>
-    <div>{{userId}}/{{internalId}}</div>
+  <div>{{profile}}</div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions, mapState } = createNamespacedHelpers('profile')
+
 export default {
-  props: ['internalId', 'userId']
+  props: ['internalId', 'userId'],
+  methods: {
+    ...mapActions(['fetchProfile']),
+    async fetch () {
+      const internalId = this.internalId
+      await this.fetchProfile({ internalId })
+      console.log(this.profile)
+    }
+  },
+  computed: {
+    ...mapState({ profile: state => state.profile })
+  }
 }
 </script>
 

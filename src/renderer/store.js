@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import users from '@/stores/users'
 import timelines from '@/stores/timelines'
 import conversation from '@/stores/conversation'
+import profile from '@/stores/profile'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -10,7 +11,8 @@ const store = new Vuex.Store({
   modules: {
     users,
     timelines,
-    conversation
+    conversation,
+    profile
   }
 })
 export default store
