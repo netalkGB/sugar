@@ -272,6 +272,23 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('fetchProfileTimeline', async (event, args) => {
+    const { host, accessToken, id, maxID } = args
+    try {
+      const result = await getClient(accessToken, host).fetchProfileTimeline(
+        id,
+        { maxID }
+      )
+      event.sender.send('fetchProfileTimeline-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchProfileTimeline-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('uploadFile', async (event, args) => {
     const { host, accessToken, filePath, uuid } = args
     try {

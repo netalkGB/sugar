@@ -1,6 +1,6 @@
 <template>
   <div style="word-wrap: break-word;">
-    {{profile}}
+    [WIP]<br>{{profile}}<br>{{timeline}}
   </div>
 </template>
 
@@ -11,14 +11,14 @@ const { mapActions, mapState } = createNamespacedHelpers('profile')
 export default {
   props: ['internalId', 'userId'],
   methods: {
-    ...mapActions(['fetchProfile']),
+    ...mapActions(['fetchProfile', 'fetchProfileTimeline']),
     async fetch () {
       const internalId = this.internalId
-      await this.fetchProfile({ internalId })
+      await Promise.all([this.fetchProfile({ internalId }), this.fetchProfileTimeline({ internalId })])
     }
   },
   computed: {
-    ...mapState({ profile: state => state.profile })
+    ...mapState({ profile: state => state.profile, timeline: state => state.timeline })
   }
 }
 </script>
