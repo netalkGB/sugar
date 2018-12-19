@@ -11,7 +11,10 @@ describe('Profile', () => {
     expect(converted.userid).toBe('netalkGB@example.com')
     expect(converted.note).toBe('\u003cp\u003e\u003c/p\u003e')
     expect(converted.locked).toBe(false)
-
+    expect(converted.internalid).toBe('610998')
+    expect(converted.followersCount).toBe(1)
+    expect(converted.followingCount).toBe(0)
+    expect(converted.statusesCount).toBe(3)
     converted = Profile.fromAccount(data[1].account)
     expect(converted.avatar).toBe(
       'https://media.2.example.com/images/accounts/avatars/000/564/253/original/9052ecef6bbb94e3.jpg'
