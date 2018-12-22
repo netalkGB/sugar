@@ -3,6 +3,7 @@
     <TimeLine
       @wantOldToot="wantOldToot"
       :timeline="timeline"
+      ref="timeline"
     />
   </div>
 </template>
@@ -16,6 +17,9 @@ export default {
     wantOldToot (args) {
       const { maxID } = args
       this.$emit('wantOldToot', maxID)
+    },
+    loadOldTootDone () {
+      this.$refs.timeline.$emit('loadOldTootDone', true)
     }
   }
 }

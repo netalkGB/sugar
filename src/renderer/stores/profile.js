@@ -16,6 +16,10 @@ export default {
     setTimeline (state, payload) {
       const { timeline } = payload
       state.timeline = timeline
+    },
+    appendTimeline (state, payload) {
+      const { timeline } = payload
+      state.timeline = [...state.timeline, ...timeline]
     }
   },
   actions: {
@@ -33,18 +37,38 @@ export default {
         })
       })
     },
-    async fetchProfileTimeline ({ commit }, { internalId, maxId }) {
+    async fetchProfileTimeline ({ commit }, { internalId }) {
+      const { accessToken, host } = this.getters['users/getCurrentUser']
+      return new Promise((resolve, reject) => {
+        ipcRenderer.send('fetchProfileTimeline', {
+          host,
+          accessToken,
+          id: internalId
+        })
+        ipcRenderer.once('fetchProfileTimeline-success', (_, data) => {
+          const toots = data.result.data
+          commit('setTimeline', {
+            timeline: toots.map(d => Toot.fromMastodon(d))
+          })
+          resolve()
+        })
+        ipcRenderer.once('fetchProfileTimeline-error', (_, e) => {
+          reject(e)
+        })
+      })
+    },
+    async loadOldToot ({ commit }, { internalId, maxID }) {
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
         ipcRenderer.send('fetchProfileTimeline', {
           host,
           accessToken,
           id: internalId,
-          maxId
+          maxID
         })
         ipcRenderer.once('fetchProfileTimeline-success', (_, data) => {
           const toots = data.result.data
-          commit('setTimeline', {
+          commit('appendTimeline', {
             timeline: toots.map(d => Toot.fromMastodon(d))
           })
           resolve()
