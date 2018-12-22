@@ -1,7 +1,14 @@
 <template>
-  <div class="container">
+  <div
+    class="container"
+    @click="$emit('click')"
+  >
     <div class="icon">
-      <IosStarIcon :w="'12'" :h="'12'" class="favorited" />
+      <IosStarIcon
+        :w="'12'"
+        :h="'12'"
+        class="favorited"
+      />
     </div>
     <div class="message">
       <NotificationName :profile="favoritedBy" />さんがお気に入りに追加
@@ -24,6 +31,7 @@ export default {
 }
 .container {
   display: flex;
+  cursor: pointer;
 }
 .icon {
   width: var(--icon-size);

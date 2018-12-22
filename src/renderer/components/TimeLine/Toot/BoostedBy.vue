@@ -1,7 +1,14 @@
 <template>
-  <div class="container">
+  <div
+    class="container"
+    @click="$emit('click')"
+  >
     <div class="icon">
-      <MdRepeatIcon :w="'12'" :h="'12'" class="boosted" />
+      <MdRepeatIcon
+        :w="'12'"
+        :h="'12'"
+        class="boosted"
+      />
     </div>
     <div class="message">
       <NotificationName :profile="boostedBy" />さんがブースト
@@ -25,6 +32,7 @@ export default {
 }
 .container {
   display: flex;
+  cursor: pointer;
 }
 .icon {
   width: var(--icon-size);
