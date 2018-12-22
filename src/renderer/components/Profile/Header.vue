@@ -12,7 +12,13 @@
         >
       </div>
       <div class="idnameContainer">
-        <div class="idname">{{profile.displayName}}{{profile.locked}}</div>
+        <div class="idname">{{profile.displayName}}
+          <IosLockIcon
+            :w="'12'"
+            :h="'12'"
+            v-if="profile.locked"
+          />
+        </div>
         <div class="idname">{{profile.userid}}</div>
       </div>
     </div>
@@ -39,8 +45,12 @@
 </template>
 
 <script>
+import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 export default {
-  props: ['profile']
+  props: ['profile'],
+  components: {
+    IosLockIcon
+  }
 }
 </script>
 
