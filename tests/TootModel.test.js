@@ -5,6 +5,8 @@ import notificationData from './notification.data.json'
 
 const user = Profile.fromAccount(tootData[0].account)
 const user2 = Profile.fromAccount(tootData[2].reblog.account)
+const user3 = Profile.fromAccount(tootData[3].account)
+
 describe('Toot', () => {
   it('should be convert correctly', () => {
     const toot = tootData[0]
@@ -46,6 +48,29 @@ describe('Toot', () => {
     converted = Toot.fromMastodon(toot, user)
     expect(converted.isTootByOwn).toBe(false)
   })
+  it('should be convert correctly(mention))', () => {
+    const toot = tootData[3]
+    const converted = Toot.fromMastodon(toot, user3)
+    expect(converted.profile.userid).toBe('netalkGB')
+    expect(converted.content).toBe(
+      '\u003cp\u003e\u003cspan class="h-card"\u003e\u003ca href="https://example.com/@kaziki" class="u-url mention"\u003e@\u003cspan\u003ekaziki\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e test\u003c/p\u003e'
+    )
+    expect(converted.favorited).toBe(false)
+    expect(converted.isTootByOwn).toBe(true)
+    expect(converted.boosted).toBe(false)
+    expect(converted.date.toString()).toBe(new Date(converted.date).toString())
+    expect(converted.boostsCount).toBe(0)
+    expect(converted.favoritesCount).toBe(0)
+    expect(converted.repliesCount).toBe(0)
+    expect(converted.id).toBe('101286092409948289')
+    expect(converted.originalId).toBe('101286092409948289')
+    expect(converted.visibility).toBe('direct')
+    expect(converted.mentions[0].id).toBe('524257')
+    expect(converted.mentions[0].username).toBe('kaziki')
+    expect(converted.mentions[0].url).toBe('https://example.com/@kaziki')
+    expect(converted.mentions[0].acct).toBe('kaziki')
+    expect(converted.medium !== undefined).toBe(true)
+  })
   it('should be convert correctly(notification-reply))', () => {
     const toot = notificationData[0]
     const converted = Toot.fromMastodonNotification(toot)
@@ -61,6 +86,10 @@ describe('Toot', () => {
     expect(converted.id).toBe('43781233')
     expect(converted.originalId).toBe('100962823526170080')
     expect(converted.visibility).toBe('public')
+    expect(converted.mentions[0].id).toBe('564253')
+    expect(converted.mentions[0].username).toBe('netalkGB')
+    expect(converted.mentions[0].url).toBe('https://www2.example.com/@netalkGB')
+    expect(converted.mentions[0].acct).toBe('netalkGB')
     expect(converted.medium !== undefined).toBe(true)
   })
   it('should be convert correctly(notification-favorite))', () => {

@@ -1,12 +1,16 @@
 <template>
-  <div ref="tltext" v-html="content"></div>
+  <div
+    ref="tltext"
+    v-html="content"
+  ></div>
 </template>
 
 <script>
 import { shell } from 'electron'
+import { mapActions } from 'vuex'
 import logger from '@/other/Logger'
 export default {
-  props: ['content'],
+  props: ['content', 'mentions'],
   data () {
     return {
       users: null,
@@ -14,6 +18,9 @@ export default {
       links: null,
       atag: null
     }
+  },
+  methods: {
+    ...mapActions('timelines', ['profile'])
   },
   mounted () {
     const tltext = this.$refs.tltext
@@ -30,6 +37,14 @@ export default {
         const href = user.href
         const split = href.split('/')
         logger.debug('user', split[2], split[3], href)
+        console.log(this.mentions)
+        if (this.mentions) {
+          const mention = this.mentions.find(m => m.url === href)
+          console.log(mention.id)
+          if (mention) {
+            this.profile({ internalid: mention.id })
+          }
+        }
       })
     }
     this.hashtags = tltext.querySelectorAll('a.hashtag')

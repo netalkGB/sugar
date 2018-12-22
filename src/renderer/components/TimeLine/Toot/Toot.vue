@@ -32,6 +32,7 @@
         <TlText
           class="text"
           :content="toot.content"
+          :mentions="toot.mentions"
         />
         <Images
           v-if="toot.medium.length > 0"
