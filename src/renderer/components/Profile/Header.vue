@@ -45,9 +45,6 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  height: 80px;
-}
 .imageContainer {
   height: calc(100% / 2);
   display: flex;
