@@ -11,7 +11,7 @@
       ref="timeline"
       :timeline="timeline"
       :style="{ height: `calc(100% - ${profileHeight})`}"
-      @wantOldToot="loadOldToot"
+      @wantOldToot="wantOldToot"
     />
   </div>
 </template>
@@ -35,16 +35,20 @@ export default {
   },
   props: ['internalId', 'userId'],
   methods: {
-    ...mapActions(['fetchProfile', 'fetchProfileTimeline']),
+    ...mapActions(['fetchProfile', 'fetchProfileTimeline', 'loadOldToot']),
     fetch () {
       const internalId = this.internalId
-      this.fetchProfileTimeline({ internalId }).then(() => { })
+      this.fetchProfileTimeline({ internalId }).catch((e) => { logger.error(e) })
       this.fetchProfile({ internalId }).then(() => {
         this.profileHeight = this.$refs.profile.$el.clientHeight + 'px'
-      })
+      }).catch((e) => { logger.error(e) })
     },
-    loadOldToot (maxID) {
+    wantOldToot (maxID) {
       logger.debug('load old toots maxID:', maxID)
+      const internalId = this.internalId
+      this.loadOldToot({ internalId, maxID }).then(() => {
+        this.$refs.timeline.loadOldTootDone()
+      }).catch((e) => { logger.error(e) })
     }
   },
   computed: {
