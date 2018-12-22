@@ -1,5 +1,8 @@
 <template>
-  <div class="headerContainer">
+  <div
+    ref="a"
+    class="headerContainer"
+  >
     <div
       class="header"
       ref="header"
