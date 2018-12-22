@@ -10,7 +10,7 @@
     <Timeline
       ref="timeline"
       :timeline="timeline"
-      :style="{ height: `calc(100% - ${profileHeight}px)`}"
+      :style="{ height: `calc(100% - ${profileHeight})`}"
     />
   </div>
 </template>
@@ -27,17 +27,18 @@ export default {
   },
   data () {
     return {
-      profileHeight: 50
+      profileHeight: '50%'
     }
   },
   props: ['internalId', 'userId'],
   methods: {
     ...mapActions(['fetchProfile', 'fetchProfileTimeline']),
-    async fetch () {
+    fetch () {
       const internalId = this.internalId
-      await Promise.all([this.fetchProfile({ internalId }), this.fetchProfileTimeline({ internalId })])
-      this.profileHeight = this.$refs.profile.$el.clientHeight
-      console.log(this.timelineHeight)
+      this.fetchProfileTimeline({ internalId }).then(() => { })
+      this.fetchProfile({ internalId }).then(() => {
+        this.profileHeight = this.$refs.profile.$el.clientHeight + 'px'
+      })
     }
   },
   computed: {
