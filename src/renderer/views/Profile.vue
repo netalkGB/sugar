@@ -1,6 +1,7 @@
 <template>
   <div :style="{ width: width + 'px', height: height + 'px' }">
     <Profile
+      class="profileContainer"
       :userId="userId"
       :internalId="internalId"
       ref="profile"
@@ -46,4 +47,10 @@ export default {
 </script>
 
 <style scoped>
+.profileContainer {
+  font-size: 12px;
+  padding: 8px;
+  height: calc(100% - 16px);
+  width: calc(100% - 16px);
+}
 </style>
