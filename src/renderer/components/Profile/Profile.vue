@@ -11,6 +11,7 @@
       ref="timeline"
       :timeline="timeline"
       :style="{ height: `calc(100% - ${profileHeight})`}"
+      @wantOldToot="loadOldToot"
     />
   </div>
 </template>
@@ -18,6 +19,8 @@
 <script>
 import Header from './Header'
 import Timeline from './Timeline'
+import logger from '@/other/Logger'
+
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('profile')
 
@@ -39,6 +42,9 @@ export default {
       this.fetchProfile({ internalId }).then(() => {
         this.profileHeight = this.$refs.profile.$el.clientHeight + 'px'
       })
+    },
+    loadOldToot (maxID) {
+      logger.debug('load old toots maxID:', maxID)
     }
   },
   computed: {
