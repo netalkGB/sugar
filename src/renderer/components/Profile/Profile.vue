@@ -1,7 +1,17 @@
 <template>
-  <div class="profile">
-    <Header :profile="profile" />
-    <Timeline class="tl" :timeline="timeline" />
+  <div
+    ref="container"
+    class="profile"
+  >
+    <Header
+      ref="profile"
+      :profile="profile"
+    />
+    <Timeline
+      ref="timeline"
+      :timeline="timeline"
+      :style="{ height: `calc(100% - ${profileHeight}px)`}"
+    />
   </div>
 </template>
 
@@ -15,12 +25,19 @@ export default {
   components: {
     Header, Timeline
   },
+  data () {
+    return {
+      profileHeight: 50
+    }
+  },
   props: ['internalId', 'userId'],
   methods: {
     ...mapActions(['fetchProfile', 'fetchProfileTimeline']),
     async fetch () {
       const internalId = this.internalId
       await Promise.all([this.fetchProfile({ internalId }), this.fetchProfileTimeline({ internalId })])
+      this.profileHeight = this.$refs.profile.$el.clientHeight
+      console.log(this.timelineHeight)
     }
   },
   computed: {
@@ -30,7 +47,4 @@ export default {
 </script>
 
 <style scoped>
-.tl {
-  height: 100%;
-}
 </style>
