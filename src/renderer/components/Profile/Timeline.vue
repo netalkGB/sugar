@@ -1,6 +1,9 @@
 <template>
   <div class="timeline">
-    <TimeLine :infiniteMode="false" :timeline="timeline" />
+    <TimeLine
+      @wantOldToot="wantOldToot"
+      :timeline="timeline"
+    />
   </div>
 </template>
 
@@ -8,7 +11,13 @@
 import TimeLine from '@/components/TimeLine/TimeLine'
 export default {
   props: ['timeline'],
-  components: { TimeLine }
+  components: { TimeLine },
+  methods: {
+    wantOldToot (args) {
+      const { maxID } = args
+      this.$emit('wantOldToot', maxID)
+    }
+  }
 }
 </script>
 
