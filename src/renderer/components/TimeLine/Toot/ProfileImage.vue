@@ -1,6 +1,11 @@
 <template>
   <div class="profileImg">
-    <img class="img" :src="profile.avatar" @click="$emit('click')">
+    <div class="image" @click="$emit('click')">
+      <img
+        class="img"
+        :src="profile.avatar"
+      >
+    </div>
   </div>
 </template>
 
@@ -16,11 +21,14 @@ export default {
   display: flex;
   justify-content: center;
 }
+.image {
+  cursor: pointer;
+}
 .img {
   margin-top: 10px;
   width: 32px;
   height: 32px;
   border-radius: 2px;
-  cursor: pointer;
+  pointer-events: none;
 }
 </style>
