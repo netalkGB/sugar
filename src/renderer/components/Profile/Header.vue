@@ -16,7 +16,7 @@
           >
         </div>
         <div class="idnameContainer">
-          <div class="idname">{{profile.displayName}}
+          <div class="idname"><span class="id">{{profile.displayName}}</span>
             <IosLockIcon
               :w="'12'"
               :h="'12'"
@@ -101,6 +101,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.id {
+  font-weight: bolder;
 }
 .countContainer {
   display: grid;
