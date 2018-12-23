@@ -258,6 +258,37 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('fetchProfile', async (event, args) => {
+    const { host, accessToken, id } = args
+    try {
+      const result = await getClient(accessToken, host).fetchProfile(id)
+      event.sender.send('fetchProfile-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchProfile-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
+  ipcMain.on('fetchProfileTimeline', async (event, args) => {
+    const { host, accessToken, id, maxID } = args
+    try {
+      const result = await getClient(accessToken, host).fetchProfileTimeline(
+        id,
+        { maxID }
+      )
+      event.sender.send('fetchProfileTimeline-success', { result, host, accessToken })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchProfileTimeline-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('uploadFile', async (event, args) => {
     const { host, accessToken, filePath, uuid } = args
     try {
@@ -314,8 +345,8 @@ export default (logger, windows) => {
         url,
         { url },
         {
-          width: 300,
-          height: 550
+          width: 256,
+          height: 500
         }
       )
     }

@@ -3,24 +3,26 @@
     <BoostedBy
       v-if="toot.boostedBy"
       :boostedBy="toot.boostedBy"
+      @click="openProfile(toot.boostedBy)"
       class="notification"
     />
     <FavoritedBy
       v-if="toot.favoritedBy"
       :favoritedBy="toot.favoritedBy"
+      @click="openProfile(toot.favoritedBy)"
       class="notification"
     />
     <div class="toot">
       <ProfileImage
         :profile="toot.profile"
-        @click="openProfile"
+        @click="openProfile(toot.profile)"
       />
       <div class="body">
         <div class="idnametime">
           <Profile
             class="nameandid"
             :profile="toot.profile"
-            @click="openProfile"
+            @click="openProfile(toot.profile)"
           />
           <Time
             @click="openConversation"
@@ -30,6 +32,7 @@
         <TlText
           class="text"
           :content="toot.content"
+          :mentions="toot.mentions"
         />
         <Images
           v-if="toot.medium.length > 0"
@@ -56,10 +59,16 @@
       class="notification"
     />
     <div class="toot follow">
-      <ProfileImage :profile="toot.followedBy" />
+      <ProfileImage
+        @click="openProfile(toot.followedBy)"
+        :profile="toot.followedBy"
+      />
       <div class="body">
         <div class="idnametime">
-          <Profile :profile="toot.followedBy" />
+          <Profile
+            :profile="toot.followedBy"
+            @click="openProfile(toot.followedBy)"
+          />
           <Time :date="toot.date" />
         </div>
         <TlText
@@ -93,9 +102,9 @@ export default {
       const id = this.toot.originalId
       this.conversation({ id })
     },
-    openProfile () {
-      const acct = this.toot.profile.userid
-      this.profile({ acct })
+    openProfile (profile) {
+      const internalid = profile.internalid
+      this.profile({ internalid })
     }
   }
 }

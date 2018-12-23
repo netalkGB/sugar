@@ -40,6 +40,16 @@ export default class Mastodon {
   fetchOwnAccount () {
     return this.mastodon.get('accounts/verify_credentials', {})
   }
+  fetchProfile (id) {
+    return this.mastodon.get('accounts/' + id)
+  }
+  fetchProfileTimeline (id, appendParams) {
+    let params = {}
+    if (appendParams && appendParams.maxID) {
+      params = { ...params, max_id: appendParams.maxID }
+    }
+    return this.mastodon.get('accounts/' + id + '/statuses', params)
+  }
   fetchHomeTimeline (appendParams) {
     let params = {}
     if (appendParams && appendParams.maxID) {

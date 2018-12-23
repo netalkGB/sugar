@@ -18,6 +18,7 @@ export default class Toot {
     this.followedBy = args.followedBy
     this.originalId = args.originalId
     this.isTootByOwn = args.isTootByOwn
+    this.mentions = args.mentions
   }
   static fromMastodon (data, ownUser) {
     let item
@@ -38,7 +39,6 @@ export default class Toot {
     const favorited = item.favourited
     const boosted = item.reblogged
     const isTootByOwn = ownUser && ownUser.userid === profile.userid
-
     let obj = {
       profile,
       date,
@@ -52,6 +52,18 @@ export default class Toot {
       boosted,
       originalId,
       isTootByOwn
+    }
+    if (item.mentions) {
+      const mentions = item.mentions.map(m => ({
+        id: m.id,
+        acct: m.acct,
+        username: m.username,
+        url: m.url
+      }))
+      obj = {
+        ...obj,
+        mentions
+      }
     }
     if (item.media_attachments) {
       obj = {
@@ -100,6 +112,18 @@ export default class Toot {
           medium: Media.fromMediaAttachments(data.status.media_attachments)
         }
       }
+      if (data.status.mentions) {
+        const mentions = data.status.mentions.map(m => ({
+          id: m.id,
+          acct: m.acct,
+          username: m.username,
+          url: m.url
+        }))
+        obj = {
+          ...obj,
+          mentions
+        }
+      }
       return obj
     } else if (data.type === 'reblog') {
       const profile = Profile.fromAccount(data.status.account)
@@ -136,6 +160,18 @@ export default class Toot {
           medium: Media.fromMediaAttachments(data.status.media_attachments)
         }
       }
+      if (data.status.mentions) {
+        const mentions = data.status.mentions.map(m => ({
+          id: m.id,
+          acct: m.acct,
+          username: m.username,
+          url: m.url
+        }))
+        obj = {
+          ...obj,
+          mentions
+        }
+      }
       return obj
     } else if (data.type === 'favourite') {
       const profile = Profile.fromAccount(data.status.account)
@@ -170,6 +206,18 @@ export default class Toot {
         obj = {
           ...obj,
           medium: Media.fromMediaAttachments(data.status.media_attachments)
+        }
+      }
+      if (data.status.mentions) {
+        const mentions = data.status.mentions.map(m => ({
+          id: m.id,
+          acct: m.acct,
+          username: m.username,
+          url: m.url
+        }))
+        obj = {
+          ...obj,
+          mentions
         }
       }
       return obj
