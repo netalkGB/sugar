@@ -41,7 +41,6 @@ export default {
   },
   beforeDestroy () {
     window.removeEventListener('resize', () => { })
-    window.removeEventListener('storage', () => { })
   }
 }
 </script>
