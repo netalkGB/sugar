@@ -128,6 +128,7 @@ export default {
 }
 .image {
   cursor: pointer;
+  border-radius: 2px;
 }
 .idnameContainer {
   height: calc(100% / 2);
