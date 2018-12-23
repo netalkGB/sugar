@@ -20,6 +20,7 @@ body {
   padding: 0;
   color: #3e3e3e;
   user-select: none;
+  cursor: default;
 }
 *::-webkit-scrollbar {
   width: 8px;
