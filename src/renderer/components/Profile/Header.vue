@@ -49,7 +49,7 @@
           class="status"
           @click="toggleShortMode"
         >
-          <div class="title">ツイート</div>
+          <div class="title">トゥート</div>
           <div class="count">{{profile.statusesCount}}</div>
         </div>
         <div class="following">
