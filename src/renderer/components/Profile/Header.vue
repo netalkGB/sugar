@@ -87,6 +87,11 @@ export default {
 .border {
   border-bottom: 1px solid #cccccc;
   padding: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.count {
+  padding-left: 2px;
 }
 .imageContainer {
   height: calc(100% / 2);
