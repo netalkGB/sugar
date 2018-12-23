@@ -37,10 +37,8 @@ export default {
         const href = user.href
         const split = href.split('/')
         logger.debug('user', split[2], split[3], href)
-        console.log(this.mentions)
         if (this.mentions) {
           const mention = this.mentions.find(m => m.url === href)
-          console.log(mention.id)
           if (mention) {
             this.profile({ internalid: mention.id })
           }
