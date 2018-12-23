@@ -25,10 +25,10 @@
         <div class="idname">{{profile.userid}}</div>
       </div>
     </div>
-    <div
-      class="note"
-      v-html="profile.note"
-    ></div>
+    <MastodonHTML
+      @click="handleClick"
+      :html="profile.note"
+    />
     <div class="countContainer">
       <div class="status">
         <div class="title">ツイート</div>
@@ -49,15 +49,38 @@
 
 <script>
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
+import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
+import logger from '@/other/Logger'
+import { shell } from 'electron'
 export default {
   props: ['profile'],
   components: {
-    IosLockIcon
+    IosLockIcon,
+    MastodonHTML
+  },
+  methods: {
+    handleClick (ev) {
+      const { type } = ev
+      if (type === 'hashtag') {
+        const { href, tag } = ev
+        logger.debug('[hashtag]', href, tag)
+      } else if (type === 'user') {
+        const { href } = ev
+        logger.debug('[user]', href)
+        shell.openExternal(href)
+      } else {
+        const { href } = ev
+        shell.openExternal(href)
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
+.headerContainer {
+  word-wrap: break-word;
+}
 .imageContainer {
   height: calc(100% / 2);
   display: flex;
