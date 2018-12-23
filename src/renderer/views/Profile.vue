@@ -38,9 +38,6 @@ export default {
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
     })
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', () => { })
   }
 }
 </script>
