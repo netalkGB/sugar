@@ -6,6 +6,7 @@
     <Header
       ref="profile"
       :profile="profile"
+      @wantRecalculateHeight="calculateHeight"
     />
     <Timeline
       ref="timeline"
@@ -40,7 +41,7 @@ export default {
       const internalId = this.internalId
       this.fetchProfileTimeline({ internalId }).catch((e) => { logger.error(e) })
       this.fetchProfile({ internalId }).then(() => {
-        this.profileHeight = this.$refs.profile.$el.clientHeight + 'px'
+        this.calculateHeight()
       }).catch((e) => { logger.error(e) })
     },
     wantOldToot (maxID) {
@@ -49,6 +50,9 @@ export default {
       this.loadOldToot({ internalId, maxID }).then(() => {
         this.$refs.timeline.loadOldTootDone()
       }).catch((e) => { logger.error(e) })
+    },
+    calculateHeight () {
+      this.profileHeight = this.$refs.profile.$el.clientHeight + 'px'
     }
   },
   computed: {
