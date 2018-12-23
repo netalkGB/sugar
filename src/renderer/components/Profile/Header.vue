@@ -8,30 +8,46 @@
         class="header"
         ref="header"
       >
-        <div class="imageContainer">
+        <div
+          class="imageContainer"
+          v-if="shortMode === false"
+        >
           <img
+            class="image"
             :src="profile.avatar"
             width="40"
             height="40"
+            @click="toggleShortMode"
           >
         </div>
         <div class="idnameContainer">
-          <div class="idname"><span class="id">{{profile.displayName}}</span>
+          <div
+            class="idname"
+            @click="toggleShortMode"
+          >
+            <span class="id">{{profile.displayName}}</span>
             <IosLockIcon
               :w="'12'"
               :h="'12'"
               v-if="profile.locked"
             />
           </div>
-          <div class="idname">{{profile.userid}}</div>
+          <div
+            class="idname"
+            @click="toggleShortMode"
+          >{{profile.userid}}</div>
         </div>
       </div>
       <MastodonHTML
         @click="handleClick"
         :html="profile.note"
+        v-if="shortMode === false"
       />
       <div class="countContainer">
-        <div class="status">
+        <div
+          class="status"
+          @click="toggleShortMode"
+        >
           <div class="title">ツイート</div>
           <div class="count">{{profile.statusesCount}}</div>
         </div>
@@ -60,6 +76,11 @@ export default {
     IosLockIcon,
     MastodonHTML
   },
+  data () {
+    return {
+      shortMode: false
+    }
+  },
   methods: {
     handleClick (ev) {
       const { type } = ev
@@ -74,6 +95,12 @@ export default {
         const { href } = ev
         shell.openExternal(href)
       }
+    },
+    toggleShortMode () {
+      this.shortMode = !this.shortMode
+      this.$nextTick(function () {
+        this.$emit('wantRecalculateHeight')
+      })
     }
   }
 }
@@ -99,6 +126,9 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.image {
+  cursor: pointer;
+}
 .idnameContainer {
   height: calc(100% / 2);
 }
@@ -106,6 +136,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+.status {
+  cursor: pointer;
 }
 .id {
   font-weight: bolder;
