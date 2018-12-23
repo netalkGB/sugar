@@ -12,13 +12,14 @@
           class="imageContainer"
           v-if="shortMode === false"
         >
-          <img
-            class="image"
-            :src="profile.avatar"
-            width="40"
-            height="40"
-            @click="toggleShortMode"
-          >
+          <div class="image" @click="toggleShortMode">
+            <img
+              class="img"
+              :src="profile.avatar"
+              width="40"
+              height="40"
+            >
+          </div>
         </div>
         <div class="idnameContainer">
           <div
@@ -128,7 +129,11 @@ export default {
 }
 .image {
   cursor: pointer;
+}
+.img {
+  cursor: pointer;
   border-radius: 2px;
+  pointer-events: none;
 }
 .idnameContainer {
   height: calc(100% / 2);

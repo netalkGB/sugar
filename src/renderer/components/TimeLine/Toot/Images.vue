@@ -1,7 +1,12 @@
 <template>
   <div class="images">
     <div class="image">
-      <img class="img" v-for="(image, index) in medium" :key="index" :src="image.previewUrl">
+      <img
+        class="img"
+        v-for="(image, index) in medium"
+        :key="index"
+        :src="image.previewUrl"
+      >
     </div>
   </div>
 </template>
@@ -22,5 +27,6 @@ export default {
   height: 80px;
   margin: 2px;
   border-radius: 2px;
+  pointer-events: none;
 }
 </style>
