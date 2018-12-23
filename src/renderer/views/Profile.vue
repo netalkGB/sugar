@@ -45,8 +45,7 @@ export default {
 <style scoped>
 .profileContainer {
   font-size: 12px;
-  padding: 8px;
-  height: calc(100% - 16px);
-  width: calc(100% - 16px);
+  height: 100%;
+  width: 100%;
 }
 </style>

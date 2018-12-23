@@ -3,46 +3,48 @@
     ref="a"
     class="headerContainer"
   >
-    <div
-      class="header"
-      ref="header"
-    >
-      <div class="imageContainer">
-        <img
-          :src="profile.avatar"
-          width="40"
-          height="40"
-        >
-      </div>
-      <div class="idnameContainer">
-        <div class="idname">{{profile.displayName}}
-          <IosLockIcon
-            :w="'12'"
-            :h="'12'"
-            v-if="profile.locked"
-          />
+    <div class="border">
+      <div
+        class="header"
+        ref="header"
+      >
+        <div class="imageContainer">
+          <img
+            :src="profile.avatar"
+            width="40"
+            height="40"
+          >
         </div>
-        <div class="idname">{{profile.userid}}</div>
+        <div class="idnameContainer">
+          <div class="idname">{{profile.displayName}}
+            <IosLockIcon
+              :w="'12'"
+              :h="'12'"
+              v-if="profile.locked"
+            />
+          </div>
+          <div class="idname">{{profile.userid}}</div>
+        </div>
       </div>
-    </div>
-    <MastodonHTML
-      @click="handleClick"
-      :html="profile.note"
-    />
-    <div class="countContainer">
-      <div class="status">
-        <div class="title">ツイート</div>
-        <div class="count">{{profile.statusesCount}}</div>
+      <MastodonHTML
+        @click="handleClick"
+        :html="profile.note"
+      />
+      <div class="countContainer">
+        <div class="status">
+          <div class="title">ツイート</div>
+          <div class="count">{{profile.statusesCount}}</div>
+        </div>
+        <div class="following">
+          <div class="title">フォロー</div>
+          <div class="count">{{profile.followingCount}}</div>
+        </div>
+        <div class="followers">
+          <div class="title">フォロワー</div>
+          <div class="count">{{profile.followersCount}}</div>
+        </div>
+        <div class="other"></div>
       </div>
-      <div class="following">
-        <div class="title">フォロー</div>
-        <div class="count">{{profile.followingCount}}</div>
-      </div>
-      <div class="followers">
-        <div class="title">フォロワー</div>
-        <div class="count">{{profile.followersCount}}</div>
-      </div>
-      <div class="other"></div>
     </div>
   </div>
 </template>
@@ -80,6 +82,11 @@ export default {
 <style scoped>
 .headerContainer {
   word-wrap: break-word;
+  background-color: #fcfcfc;
+}
+.border {
+  border-bottom: 1px solid #cccccc;
+  padding: 8px;
 }
 .imageContainer {
   height: calc(100% / 2);
