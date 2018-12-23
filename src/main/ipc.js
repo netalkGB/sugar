@@ -345,8 +345,8 @@ export default (logger, windows) => {
         url,
         { url },
         {
-          width: 300,
-          height: 550
+          width: 256,
+          height: 500
         }
       )
     }
