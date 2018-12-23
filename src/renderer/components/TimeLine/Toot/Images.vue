@@ -1,12 +1,7 @@
 <template>
   <div class="images">
     <div class="image">
-      <img
-        class="img"
-        v-for="(image, index) in medium"
-        :key="index"
-        :src="image.previewUrl"
-      >
+      <img class="img" v-for="(image, index) in medium" :key="index" :src="image.previewUrl">
     </div>
   </div>
 </template>
