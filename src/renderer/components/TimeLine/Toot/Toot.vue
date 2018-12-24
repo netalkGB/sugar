@@ -48,6 +48,7 @@
           :favoritesCount="toot.favoritesCount"
           :boostsCount="toot.boostsCount"
           :repliesCount="toot.repliesCount"
+          :mentions="toot.mentions"
         />
       </div>
     </div>

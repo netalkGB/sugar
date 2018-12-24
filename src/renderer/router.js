@@ -48,7 +48,7 @@ export default new Router({
       props: route => ({
         userId: Number(route.params.userId),
         inReplyToID: String(route.query.inReplyToID),
-        destination: String(route.query.destination)
+        destinations: String(route.query.destinations)
       }),
       component: () => import('@/views/NewToot')
     },

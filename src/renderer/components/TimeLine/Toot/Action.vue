@@ -105,7 +105,7 @@ const { mapActions } = createNamespacedHelpers('timelines')
 
 export default {
   components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon, MdTrashIcon },
-  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount', 'favorited', 'boosted', 'id', 'userid', 'isTootByOwn'],
+  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount', 'favorited', 'boosted', 'id', 'userid', 'isTootByOwn', 'mentions'],
   data () {
     return {
       displayBoosted: false,
@@ -127,7 +127,10 @@ export default {
     },
     replyToot () {
       logger.debug('reply')
-      this.reply({ inReplyToID: this.id, destination: this.userid })
+      // console.log(this.userid)
+      // console.log(this.mentions)
+      // console.log()
+      this.reply({ inReplyToID: this.id, destinations: [this.userid, ...this.mentions.filter(m => m.acct !== 'netalkGB').map(m => m.acct)].join(',') })
     },
     favoriteToot () {
       if (this.displayFavorited) {

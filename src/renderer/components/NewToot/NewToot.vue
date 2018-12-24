@@ -87,7 +87,7 @@ export default {
     MtSelect,
     Images
   },
-  props: { userId: Number, inReplyToID: String, destination: String },
+  props: { userId: Number, inReplyToID: String, destinations: String },
   methods: {
     ...mapActions(['loadUserConfig', 'setCurrentUserId']),
     postToot () {
@@ -206,16 +206,18 @@ export default {
   async created () {
     await this.loadUserConfig()
     this.setCurrentUserId(this.userId)
-    this.copyDestination = this.destination
+    this.copyDestination = this.destinations
+    console.log(this.destinations)
     this.copyInReplyToID = this.inReplyToID
-    if (location.href.search('destination=') < 0) {
+    if (location.href.search('destinations=') < 0) {
       this.copyDestination = null
     }
     if (location.href.search('inReplyToID=') < 0) {
       this.copyInReplyToID = null
     }
     if (this.copyDestination !== null) {
-      this.toot = '@' + this.copyDestination + ' '
+      console.log(this.copyDestination)
+      this.toot = '@' + this.copyDestination.replace(',', ' @') + ' '
     }
     const { accessToken, host } = this.$store.getters['users/getCurrentUser']
     this.keys.accessToken = accessToken

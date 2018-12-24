@@ -197,12 +197,12 @@ export default {
   },
   actions: {
     reply ({ commit, state }, payload) {
-      const { inReplyToID, destination } = payload
+      const { inReplyToID, destinations } = payload
       const id = this.getters['users/getCurrentUserId']
       const currentPath = localStorage.getItem('currentPath')
       ipcRenderer.send(
         'newWindow',
-        `${currentPath}#/newtoot/${id}?inReplyToID=${inReplyToID}&destination=${destination}`,
+        `${currentPath}#/newtoot/${id}?inReplyToID=${inReplyToID}&destinations=${destinations}`,
         'newToot'
       )
     },
