@@ -1,9 +1,19 @@
 <template>
-  <NewToot class="newtoot" @requireHeightChange="changeHeight" :style="{ width: width + 'px', height: height + 'px',padding: padding + 'px' }" :destinations="destinations" :inReplyToID="inReplyToID" :userId="userId"></NewToot>
+  <NewToot
+    class="newtoot"
+    @requireHeightChange="changeHeight"
+    :style="{ width: width + 'px', height: height + 'px',padding: padding + 'px' }"
+    :destinations="destinations"
+    :inReplyToID="inReplyToID"
+    :userId="userId"
+    ref="nt"
+  ></NewToot>
 </template>
 
 <script>
 import NewToot from '@/components/NewToot/NewToot'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('users')
 const padding = 4
 const defaultWindowHeight = 138
 const defaultWindowWidth = 330
@@ -22,6 +32,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['loadUserConfig', 'setCurrentUserId']),
     changeHeight (ev) {
       const { cw, fileList } = ev
       let deltaHeight = 0
@@ -35,6 +46,8 @@ export default {
     }
   },
   created () {
+    this.loadUserConfig()
+    this.setCurrentUserId(this.userId)
     this.marginH = window.outerHeight - window.innerHeight
     this.marginW = window.outerWidth - window.innerWidth
     window.resizeTo(this.defaultWindowWidth + this.marginW, this.defaultWindowHeight + this.marginH)
@@ -44,6 +57,9 @@ export default {
       this.width = window.innerWidth - this.padding * 2
       this.height = window.innerHeight - this.padding * 2
     })
+  },
+  mounted () {
+    this.$refs.nt.setup()
   },
   beforeDestroy () {
     window.removeEventListener('resize', () => { })
