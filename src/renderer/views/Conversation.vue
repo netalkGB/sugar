@@ -29,8 +29,8 @@ export default {
     ...mapActions('users', ['setCurrentUserId', 'loadUserConfig']),
     ...mapActions('conversation', ['removeToot'])
   },
-  async created () {
-    await this.loadUserConfig()
+  created () {
+    this.loadUserConfig()
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
     window.addEventListener('storage', event => {
@@ -41,9 +41,9 @@ export default {
         }
       }
     })
-    this.$refs.conversations.loadToot()
   },
   mounted () {
+    this.$refs.conversations.loadToot()
     this.width = window.innerWidth
     this.height = window.innerHeight
     window.addEventListener('resize', e => {
