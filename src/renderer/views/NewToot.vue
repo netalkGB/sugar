@@ -1,5 +1,5 @@
 <template>
-  <NewToot class="newtoot" @requireHeightChange="changeHeight" :style="{ width: width + 'px', height: height + 'px',padding: padding + 'px' }" :destination="destination" :inReplyToID="inReplyToID" :userId="userId"></NewToot>
+  <NewToot class="newtoot" @requireHeightChange="changeHeight" :style="{ width: width + 'px', height: height + 'px',padding: padding + 'px' }" :destinations="destinations" :inReplyToID="inReplyToID" :userId="userId"></NewToot>
 </template>
 
 <script>
@@ -9,7 +9,7 @@ const defaultWindowHeight = 138
 const defaultWindowWidth = 330
 export default {
   components: { NewToot },
-  props: { userId: Number, inReplyToID: String, destination: String },
+  props: { userId: Number, inReplyToID: String, destinations: String },
   data () {
     return {
       width: 0,
