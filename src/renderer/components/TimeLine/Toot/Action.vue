@@ -98,10 +98,8 @@ import IosStarIcon from 'vue-ionicons/dist/ios-star.vue'
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import IosMailIcon from 'vue-ionicons/dist/ios-mail.vue'
 import MdTrashIcon from 'vue-ionicons/dist/md-trash.vue'
-import { createNamespacedHelpers } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import logger from '@/other/Logger'
-
-const { mapActions } = createNamespacedHelpers('timelines')
 
 export default {
   components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon, MdTrashIcon },
@@ -120,6 +118,12 @@ export default {
     this.displayFavoritesCount = this.favoritesCount
     this.displayBoostsCount = this.boostsCount
   },
+  computed: {
+    ...mapGetters('users', { currentUser: 'getCurrentUser' }),
+    myID () {
+      return this.currentUser.user.userid
+    }
+  },
   methods: {
     deleteToot () {
       logger.debug('delete')
@@ -127,7 +131,7 @@ export default {
     },
     replyToot () {
       logger.debug('reply')
-      this.reply({ inReplyToID: this.id, destinations: [this.userid, ...this.mentions.filter(m => m.acct !== 'netalkGB').map(m => m.acct)].join(',') })
+      this.reply({ inReplyToID: this.id, destinations: [this.userid, ...this.mentions.filter(m => m.acct !== this.myID).map(m => m.acct)].join(',') })
     },
     favoriteToot () {
       if (this.displayFavorited) {
@@ -163,7 +167,7 @@ export default {
         })
       }
     },
-    ...mapActions(['favorite', 'unFavorite', 'boost', 'unBoost', 'reply', 'deleteOwnToot'])
+    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost', 'reply', 'deleteOwnToot'])
   }
 }
 </script>
