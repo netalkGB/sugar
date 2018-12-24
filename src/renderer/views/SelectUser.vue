@@ -19,7 +19,11 @@ export default {
       this.$router.push('/adduser')
     }
     if (this.userList.length === 1) {
-      this.$router.push('/user/1/home_timeline')
+      if (!this.userList[0].menu) {
+        this.$router.push('/user/1/home_timeline')
+      } else {
+        this.$router.push(this.userList[0].menu[0].to)
+      }
     }
   },
   methods: {
