@@ -26,12 +26,12 @@ export default {
     ...mapActions('users', ['setCurrentUserId', 'loadUserConfig']),
     ...mapActions('profile', ['removeToot'])
   },
-  async created () {
-    await this.loadUserConfig()
+  created () {
+    this.loadUserConfig()
     this.setCurrentUserId(this.userId)
-    this.$refs.profile.fetch()
   },
   mounted () {
+    this.$refs.profile.fetch()
     this.width = window.innerWidth
     this.height = window.innerHeight
     window.addEventListener('resize', e => {
