@@ -1,8 +1,18 @@
 <template>
   <div class="sortablemenu">
-    <draggable v-model="menu" @start="drag=true" @end="drag=false">
-      <div v-for="item in menu" :key="item.icon">
-        <Icon :to="item.to" :icon="item.icon"/>
+    <draggable
+      v-model="menu"
+      @start="drag=true"
+      @end="drag=false"
+    >
+      <div
+        v-for="item in menu"
+        :key="item.icon"
+      >
+        <Icon
+          :to="item.to"
+          :icon="item.icon"
+        />
       </div>
     </draggable>
   </div>
@@ -15,6 +25,7 @@ import Icon from '@/components/Sidebar/Icon'
 
 export default {
   components: { Icon, draggable },
+  props: ['items'],
   data () {
     return {
       drag: false,
@@ -26,10 +37,28 @@ export default {
       ]
     }
   },
-  methods: {},
+  created () {
+    this.merge()
+  },
+  methods: {
+    merge () {
+      const menu = this.menu
+      let items = this.items
+      if (!items) {
+        return
+      }
+      for (let i of menu) {
+        const r = this.items.find(item => item.icon === i.icon)
+        if (!r) {
+          items = [...items, r]
+        }
+      }
+      this.menu = items
+    }
+  },
   watch: {
     menu (newVal) {
-      logger.debug('menu', JSON.stringify(newVal))
+      this.$emit('onChanged', newVal)
     },
     drag (newVal) {
       logger.debug('newVal', newVal)
