@@ -30,14 +30,6 @@ export default {
     await this.loadUserConfig()
     this.setCurrentUserId(this.userId)
     this.$refs.profile.fetch()
-    window.addEventListener('storage', event => {
-      if (event.key === 'user' + this.userId) {
-        const val = JSON.parse(event.newValue)
-        if (val.type === 'deleteToot') {
-          this.removeToot({ id: val.id })
-        }
-      }
-    })
   },
   mounted () {
     this.width = window.innerWidth
@@ -46,6 +38,14 @@ export default {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
+    })
+    window.addEventListener('storage', event => {
+      if (event.key === 'user' + this.userId) {
+        const val = JSON.parse(event.newValue)
+        if (val.type === 'deleteToot') {
+          this.removeToot({ id: val.id })
+        }
+      }
     })
   },
   beforeDestroy () {
