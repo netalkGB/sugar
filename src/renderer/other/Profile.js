@@ -1,6 +1,7 @@
 export default class Profile {
   constructor (args) {
     this.avatar = args.avatar
+    this.header = args.header
     this.displayName = args.displayName
     this.userid = args.userid
     this.locked = args.locked
@@ -12,6 +13,7 @@ export default class Profile {
   }
   static fromAccount (account) {
     const avatar = account.avatar
+    const header = account.header
     const displayName = account.display_name
     const userid = account.acct
     const locked = account.locked
@@ -22,6 +24,7 @@ export default class Profile {
     const statusesCount = account.statuses_count
     return new Profile({
       avatar,
+      header,
       displayName,
       userid,
       locked,

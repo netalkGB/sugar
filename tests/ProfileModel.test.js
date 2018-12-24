@@ -7,6 +7,9 @@ describe('Profile', () => {
     expect(converted.avatar).toBe(
       'https://2.example.com/avatars/original/missing.png'
     )
+    expect(converted.header).toBe(
+      'https://2.example.com/headers/original/missing.png'
+    )
     expect(converted.displayName).toBe('')
     expect(converted.userid).toBe('netalkGB@example.com')
     expect(converted.note).toBe('\u003cp\u003e\u003c/p\u003e')
