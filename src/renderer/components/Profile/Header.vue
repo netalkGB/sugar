@@ -7,12 +7,16 @@
       <div
         class="header"
         ref="header"
+        :style="profile.header ? { background: `#fcfcfc url(${profile.header}) no-repeat center center`} : {}"
       >
         <div
           class="imageContainer"
           v-if="shortMode === false"
         >
-          <div class="image" @click="toggleShortMode">
+          <div
+            class="image"
+            @click="toggleShortMode"
+          >
             <img
               class="img"
               :src="profile.avatar"
@@ -39,12 +43,14 @@
           >{{profile.userid}}</div>
         </div>
       </div>
-      <MastodonHTML
-        @click="handleClick"
-        :html="profile.note"
-        v-if="shortMode === false"
-      />
-      <div class="countContainer">
+      <div class="paddingLR">
+        <MastodonHTML
+          @click="handleClick"
+          :html="profile.note"
+          v-if="shortMode === false"
+        />
+      </div>
+      <div class="countContainer paddingLR">
         <div
           class="status"
           @click="toggleShortMode"
@@ -108,20 +114,25 @@ export default {
 </script>
 
 <style scoped>
+.paddingLR {
+  padding-left: 8px;
+  padding-right: 8px;
+}
 .headerContainer {
   word-wrap: break-word;
   background-color: #fcfcfc;
 }
+.header {
+  background-size: cover;
+}
 .border {
   border-bottom: 1px solid #cccccc;
-  padding: 8px;
-  padding-top: 4px;
-  padding-bottom: 4px;
 }
 .count {
   padding-left: 2px;
 }
 .imageContainer {
+  padding-top: 4px;
   height: calc(100% / 2);
   display: flex;
   justify-content: center;
