@@ -89,7 +89,6 @@ export default {
   methods: {
     setup () {
       this.copyDestination = this.destinations
-      console.log(this.destinations)
       this.copyInReplyToID = this.inReplyToID
       if (location.href.search('destinations=') < 0) {
         this.copyDestination = null

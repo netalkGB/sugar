@@ -127,9 +127,6 @@ export default {
     },
     replyToot () {
       logger.debug('reply')
-      // console.log(this.userid)
-      // console.log(this.mentions)
-      // console.log()
       this.reply({ inReplyToID: this.id, destinations: [this.userid, ...this.mentions.filter(m => m.acct !== 'netalkGB').map(m => m.acct)].join(',') })
     },
     favoriteToot () {
