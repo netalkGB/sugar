@@ -7,48 +7,54 @@
       <div
         class="header"
         ref="header"
-        :style="profile.header ? { background: `#fcfcfc url(${profile.header}) no-repeat center center`} : {}"
       >
         <div
-          class="imageContainer"
-          v-if="shortMode === false"
+          class="profileBg"
+          :style="profile.header ? { background: `#fcfcfc url(${profile.header}) no-repeat center center`} : {}"
         >
-          <div
-            class="image"
-            @click="toggleShortMode"
-          >
-            <img
-              class="img"
-              :src="profile.avatar"
-              width="40"
-              height="40"
+          <div class="profileFg">
+            <div
+              class="imageContainer"
+              v-if="shortMode === false"
             >
+              <div
+                class="image"
+                @click="toggleShortMode"
+              >
+                <img
+                  class="img"
+                  :src="profile.avatar"
+                  width="40"
+                  height="40"
+                >
+              </div>
+            </div>
+            <div class="idnameContainer">
+              <div
+                class="idname"
+                @click="toggleShortMode"
+              >
+                <span class="id">{{profile.displayName}}</span>
+                <IosLockIcon
+                  :w="'12'"
+                  :h="'12'"
+                  v-if="profile.locked"
+                />
+              </div>
+              <div
+                class="idname"
+                @click="toggleShortMode"
+              >{{profile.userid}}</div>
+            </div>
+            <div class="paddingLR">
+              <MastodonHTML
+                @click="handleClick"
+                :html="profile.note"
+                v-if="shortMode === false"
+              />
+            </div>
           </div>
         </div>
-        <div class="idnameContainer">
-          <div
-            class="idname"
-            @click="toggleShortMode"
-          >
-            <span class="id">{{profile.displayName}}</span>
-            <IosLockIcon
-              :w="'12'"
-              :h="'12'"
-              v-if="profile.locked"
-            />
-          </div>
-          <div
-            class="idname"
-            @click="toggleShortMode"
-          >{{profile.userid}}</div>
-        </div>
-      </div>
-      <div class="paddingLR">
-        <MastodonHTML
-          @click="handleClick"
-          :html="profile.note"
-          v-if="shortMode === false"
-        />
       </div>
       <div class="countContainer paddingLR">
         <div
@@ -114,6 +120,19 @@ export default {
 </script>
 
 <style scoped>
+.profileBg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+.profileFg {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #333;
+  border-bottom: 1px solid #cccccc;
+  padding-bottom: 2px;
+}
 .paddingLR {
   padding-left: 8px;
   padding-right: 8px;
@@ -166,6 +185,8 @@ export default {
   grid-template:
     "statuse following follower other" 30px
     / 70px 70px 70px 1fr;
+  padding-bottom: 2px;
+  padding-top: 2px;
 }
 .count {
   align-items: center;
