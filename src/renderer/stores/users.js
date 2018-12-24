@@ -1,6 +1,5 @@
 import { ipcRenderer } from 'electron'
 import logger from '@/other/Logger'
-import Settings from '@/other/Settings'
 import Profile from '@/other/Profile'
 export default {
   namespaced: true,
@@ -51,12 +50,11 @@ export default {
       commit('setId', id)
     },
     saveUserConfig ({ getters }) {
-      return Settings.saveUsers(getters['getUsers'])
+      localStorage.mastootConfigUsers = JSON.stringify(getters['getUsers'])
     },
-    async loadUserConfig ({ commit }, _) {
-      const users = await Settings.getUsers()
-      if (users !== null) {
-        commit('set', users)
+    loadUserConfig ({ commit }, _) {
+      if (localStorage.mastootConfigUsers) {
+        commit('set', JSON.parse(localStorage.mastootConfigUsers))
       }
     },
     addUser ({ commit }, payload) {
