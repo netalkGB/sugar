@@ -32,7 +32,8 @@ export default {
         accessToken: payload.accessToken,
         host: payload.host,
         userNumber: state.nextUserId++,
-        user: payload.user
+        user: payload.user,
+        menu: null
       }
       logger.debug(user)
       state.userList.push(user)
@@ -43,6 +44,15 @@ export default {
     set (state, payload) {
       state.userList = payload.userList
       state.nextUserId = payload.nextUserId
+    },
+    setMenu (state, payload) {
+      const menu = payload
+      const user = state.userList.find(
+        item => item.userNumber === state.currentUser
+      )
+      if (user) {
+        user.menu = menu
+      }
     }
   },
   actions: {
@@ -51,6 +61,10 @@ export default {
     },
     saveUserConfig ({ getters }) {
       localStorage.mastootConfigUsers = JSON.stringify(getters['getUsers'])
+    },
+    setMenu ({ commit, dispatch }, menu) {
+      commit('setMenu', menu)
+      dispatch('saveUserConfig')
     },
     loadUserConfig ({ commit }, _) {
       if (localStorage.mastootConfigUsers) {
