@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
 import { ipcRenderer, remote } from 'electron'
 import Images from '@/components/NewToot/Images'
 import logger from '@/other/Logger'
@@ -78,7 +77,6 @@ import contextMenu from '@/other/contextMenu'
 import MtButton from '@/components/Form/MtButton'
 import MtSelect from '@/components/Form/MtSelect'
 
-const { mapActions } = createNamespacedHelpers('users')
 const maxTootLength = 500
 
 export default {
@@ -89,7 +87,91 @@ export default {
   },
   props: { userId: Number, inReplyToID: String, destinations: String },
   methods: {
-    ...mapActions(['loadUserConfig', 'setCurrentUserId']),
+    setup () {
+      this.copyDestination = this.destinations
+      console.log(this.destinations)
+      this.copyInReplyToID = this.inReplyToID
+      if (location.href.search('destinations=') < 0) {
+        this.copyDestination = null
+      }
+      if (location.href.search('inReplyToID=') < 0) {
+        this.copyInReplyToID = null
+      }
+      if (this.copyDestination !== null) {
+        this.toot = '@' + this.copyDestination.replace(',', ' @') + ' '
+      }
+      const { accessToken, host } = this.$store.getters['users/getCurrentUser']
+      this.keys.accessToken = accessToken
+      this.keys.host = host
+      window.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.keyCode === 13 && this.isCanToot) {
+          this.postToot()
+        }
+      })
+      ipcRenderer.addListener('postToot-success', (e, m) => {
+        const { host, accessToken, result } = m
+        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+          return
+        }
+        if (result.resp.statusCode === 200) {
+          if (this.copyInReplyToID !== null) {
+            window.close()
+          }
+          this.clearForm()
+        }
+        this.sending = false
+        this.$nextTick(() => {
+          this.$refs.toottext.focus()
+        })
+      })
+      ipcRenderer.addListener('postToot-error', (e, m) => {
+        const { host, accessToken, error } = m
+        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+          return
+        }
+        this.sending = false
+        logger.error(error)
+      })
+      ipcRenderer.addListener('uploadFile-success', (e, m) => {
+        const { host, accessToken, result, uuid } = m
+        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+          return
+        }
+        if (this.files.find(val => val.uuid === uuid) === null) {
+          return
+        }
+        if (result.resp.statusCode === 200) {
+          const id = result.data.id
+          this.files = this.files.map(
+            val =>
+              val.uuid === uuid
+                ? val.changeState({ newState: FileState.done, id })
+                : val
+          )
+        } else {
+          this.files = this.files.map(
+            val =>
+              val.uuid === uuid
+                ? val.changeState({ newState: FileState.error, id: null })
+                : val
+          )
+          logger.error(result)
+        }
+      })
+      ipcRenderer.addListener('uploadFile-error', (e, m) => {
+        const { host, accessToken, error, uuid } = m
+        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+          return
+        }
+        if (this.files.find(val => val.uuid === uuid) === null) {
+          return
+        }
+        this.files = this.files.map(
+          val => (val.uuid === uuid ? { ...val, state: FileState.error } : val)
+        )
+        logger.error(error)
+      })
+    },
     postToot () {
       this.sending = true
       const { accessToken, host } = this.keys
@@ -202,94 +284,6 @@ export default {
         return true
       }
     }
-  },
-  async created () {
-    await this.loadUserConfig()
-    this.setCurrentUserId(this.userId)
-    this.copyDestination = this.destinations
-    console.log(this.destinations)
-    this.copyInReplyToID = this.inReplyToID
-    if (location.href.search('destinations=') < 0) {
-      this.copyDestination = null
-    }
-    if (location.href.search('inReplyToID=') < 0) {
-      this.copyInReplyToID = null
-    }
-    if (this.copyDestination !== null) {
-      console.log(this.copyDestination)
-      this.toot = '@' + this.copyDestination.replace(',', ' @') + ' '
-    }
-    const { accessToken, host } = this.$store.getters['users/getCurrentUser']
-    this.keys.accessToken = accessToken
-    this.keys.host = host
-    window.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.keyCode === 13 && this.isCanToot) {
-        this.postToot()
-      }
-    })
-    ipcRenderer.addListener('postToot-success', (e, m) => {
-      const { host, accessToken, result } = m
-      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-        return
-      }
-      if (result.resp.statusCode === 200) {
-        if (this.copyInReplyToID !== null) {
-          window.close()
-        }
-        this.clearForm()
-      }
-      this.sending = false
-      this.$nextTick(() => {
-        this.$refs.toottext.focus()
-      })
-    })
-    ipcRenderer.addListener('postToot-error', (e, m) => {
-      const { host, accessToken, error } = m
-      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-        return
-      }
-      this.sending = false
-      logger.error(error)
-    })
-    ipcRenderer.addListener('uploadFile-success', (e, m) => {
-      const { host, accessToken, result, uuid } = m
-      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-        return
-      }
-      if (this.files.find(val => val.uuid === uuid) === null) {
-        return
-      }
-      if (result.resp.statusCode === 200) {
-        const id = result.data.id
-        this.files = this.files.map(
-          val =>
-            val.uuid === uuid
-              ? val.changeState({ newState: FileState.done, id })
-              : val
-        )
-      } else {
-        this.files = this.files.map(
-          val =>
-            val.uuid === uuid
-              ? val.changeState({ newState: FileState.error, id: null })
-              : val
-        )
-        logger.error(result)
-      }
-    })
-    ipcRenderer.addListener('uploadFile-error', (e, m) => {
-      const { host, accessToken, error, uuid } = m
-      if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-        return
-      }
-      if (this.files.find(val => val.uuid === uuid) === null) {
-        return
-      }
-      this.files = this.files.map(
-        val => (val.uuid === uuid ? { ...val, state: FileState.error } : val)
-      )
-      logger.error(error)
-    })
   },
   mounted () {
     const menu = contextMenu(remote)
