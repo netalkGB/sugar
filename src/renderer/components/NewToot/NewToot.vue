@@ -97,7 +97,8 @@ export default {
         this.copyInReplyToID = null
       }
       if (this.copyDestination !== null) {
-        this.toot = '@' + this.copyDestination.replace(',', ' @') + ' '
+        this.toot = '@' + (this.copyDestination.split(',').join(' @')) + ' '
+        this.$refs.toottext.focus()
       }
       const { accessToken, host } = this.$store.getters['users/getCurrentUser']
       this.keys.accessToken = accessToken
