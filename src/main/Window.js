@@ -18,7 +18,6 @@ export default class Window {
     if (this.isDevMode === true) {
       this.browserWindow.webContents.openDevTools()
     }
-    this.browserWindow.webContents.openDevTools()
     this.browserWindow.on('closed', (...arg) =>
       this.onClosed(...arg, this.name)
     )

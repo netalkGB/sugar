@@ -1,4 +1,4 @@
-const { buildAll, rendererProcess, mainProcess } = require('./webpack')
+const { buildAll, rendererProcess, mainProcess, preload } = require('./webpack')
 
 async function main () {
   const mode = process.argv[2]
@@ -7,6 +7,8 @@ async function main () {
     process.exit((await rendererProcess({ mode })) === true ? 0 : 1)
   } else if (target === 'main') {
     process.exit((await mainProcess({ mode })) === true ? 0 : 1)
+  } else if (target === 'preload') {
+    process.exit((await preload({ mode })) === true ? 0 : 1)
   } else {
     process.exit((await buildAll(mode)) ? 0 : 1)
   }
