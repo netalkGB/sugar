@@ -19,12 +19,13 @@
 </template>
 
 <script>
-import { shell, ipcRenderer, remote } from 'electron'
 import { createNamespacedHelpers } from 'vuex'
 import logger from '@/other/Logger'
 import contextMenu from '@/other/contextMenu'
 const { mapActions, mapGetters } = createNamespacedHelpers('users')
-
+const ipcRenderer = window.ipc
+const remote = window.remote
+const shell = window.shell
 export default {
   data () {
     return {

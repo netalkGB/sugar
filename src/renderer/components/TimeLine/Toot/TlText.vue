@@ -6,10 +6,11 @@
 </template>
 
 <script>
-import { shell } from 'electron'
 import { mapActions } from 'vuex'
 import logger from '@/other/Logger'
 import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
+const shell = window.shell
+
 export default {
   props: ['content', 'mentions'],
   components: {

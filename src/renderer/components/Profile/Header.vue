@@ -82,7 +82,7 @@
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
 import logger from '@/other/Logger'
-import { shell } from 'electron'
+const shell = window.shell
 export default {
   props: ['profile'],
   components: {

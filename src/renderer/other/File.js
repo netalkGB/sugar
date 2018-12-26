@@ -1,4 +1,3 @@
-import uuidv4 from 'uuid/v4'
 export default class File {
   constructor ({ filePath, uuid, id, state }) {
     this.filePath = filePath
@@ -11,7 +10,7 @@ export default class File {
     this.state = state
   }
   static setFile ({ filePath, state }) {
-    const uuid = uuidv4()
+    const uuid = window.uuidv4()
     return new File({ filePath, uuid, state })
   }
   changeState ({ newState, id }) {

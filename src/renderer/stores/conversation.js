@@ -1,6 +1,6 @@
-import { ipcRenderer } from 'electron'
 import logger from '@/other/Logger'
 import Toot from '@/other/Toot'
+const ipcRenderer = window.ipc
 
 function loadToot ({ host, accessToken, id }) {
   return new Promise((resolve, reject) => {

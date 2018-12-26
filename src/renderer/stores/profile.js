@@ -1,6 +1,6 @@
 import Profile from '@/other/Profile'
 import Toot from '@/other/Toot'
-import { ipcRenderer } from 'electron'
+const ipcRenderer = window.ipc
 
 export default {
   namespaced: true,
