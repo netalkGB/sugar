@@ -55,8 +55,7 @@ module.exports = (env, argv) => {
     plugins: [
       new VueLoaderPlugin(),
       new CopyWebpackPlugin([
-        { from: 'src/renderer/index.html' },
-        { from: 'src/renderer/preload.js' }
+        { from: 'src/renderer/index.html' }
       ])
     ]
   }

@@ -8,6 +8,7 @@
     "dev": "npm run dev:watch",
     "dev:build": "node script/build.js development",
     "dev:build-renderer": "node script/build.js development renderer",
+    "dev:build-preload": "node script/build.js development preload",
     "dev:build-main": "node script/build.js development main",
     "dev:watch": "node script/watch.js",
     "electron": "electron .",
