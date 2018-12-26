@@ -1,5 +1,5 @@
 process.once('loaded', function () {
-  window.process = process
+  window.NODE_ENV = process.env.NODE_ENV
   window.ipc = require('electron').ipcRenderer
   window.remote = require('electron').remote
   window.shell = require('electron').shell

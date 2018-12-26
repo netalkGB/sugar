@@ -4,10 +4,11 @@ import users from '@/stores/users'
 import timelines from '@/stores/timelines'
 import conversation from '@/stores/conversation'
 import profile from '@/stores/profile'
+const NODE_ENV = window.NODE_ENV
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  strict: process.env.NODE_ENV !== 'production',
+  strict: NODE_ENV !== 'production',
   modules: {
     users,
     timelines,

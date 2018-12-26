@@ -7,13 +7,14 @@ export default class Window {
     this.setBrowserWindow(args)
   }
   setBrowserWindow (args) {
+    const webPreferences = {
+      nodeIntegration: false,
+      contextIsolation: false,
+      preload: path.join(app.getAppPath(), 'out/renderer/preload.js')
+    }
     this.browserWindow = new BrowserWindow({
       ...args,
-      webPreferences: {
-        nodeIntegration: false,
-        contextIsolation: false,
-        preload: path.join(app.getAppPath(), 'out/renderer/preload.js')
-      }
+      webPreferences
     })
     if (this.isDevMode === true) {
       this.browserWindow.webContents.openDevTools()
