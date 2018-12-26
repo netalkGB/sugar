@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import { ipcRenderer, remote } from 'electron'
 import Images from '@/components/NewToot/Images'
 import logger from '@/other/Logger'
 import FileState from '@/other/FileState'
@@ -76,7 +75,8 @@ import File from '@/other/File'
 import contextMenu from '@/other/contextMenu'
 import MtButton from '@/components/Form/MtButton'
 import MtSelect from '@/components/Form/MtSelect'
-
+const ipcRenderer = window.ipc
+const remote = window.remote
 const maxTootLength = 500
 
 export default {

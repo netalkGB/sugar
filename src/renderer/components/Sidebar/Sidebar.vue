@@ -23,13 +23,12 @@
 </template>
 
 <script>
-import { ipcRenderer } from 'electron'
 import SortableMenu from '@/components/Sidebar/SortableMenu'
 import Icon from '@/components/Sidebar/Icon'
 import logger from '@/other/Logger'
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('users')
-
+const ipcRenderer = window.ipc
 const keyCodeN = 78
 export default {
   components: { SortableMenu, Icon },

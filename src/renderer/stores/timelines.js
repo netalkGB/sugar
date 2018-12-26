@@ -1,6 +1,7 @@
-import { ipcRenderer } from 'electron'
 import Toot from '@/other/Toot'
 import TimelineType from '@/other/TimelineType'
+const ipcRenderer = window.ipc
+
 const upperLimitToot = 50
 export default {
   namespaced: true,

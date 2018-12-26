@@ -1,6 +1,7 @@
-import { ipcRenderer } from 'electron'
 import logger from '@/other/Logger'
 import Profile from '@/other/Profile'
+const ipcRenderer = window.ipc
+
 export default {
   namespaced: true,
   state: {

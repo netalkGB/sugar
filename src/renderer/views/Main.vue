@@ -9,10 +9,10 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { ipcRenderer } from 'electron'
 import logger from '@/other/Logger'
 import TimelineType from '@/other/TimelineType'
 import Sidebar from '@/components/Sidebar/Sidebar'
+const ipcRenderer = window.ipc
 
 export default {
   props: { userId: Number },

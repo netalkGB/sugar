@@ -1,5 +1,5 @@
-import { BrowserWindow } from 'electron'
-
+import { BrowserWindow, app } from 'electron'
+import path from 'path'
 export default class Window {
   constructor (name, isDevMode, args) {
     this.name = name
@@ -7,10 +7,18 @@ export default class Window {
     this.setBrowserWindow(args)
   }
   setBrowserWindow (args) {
-    this.browserWindow = new BrowserWindow(args)
+    this.browserWindow = new BrowserWindow({
+      ...args,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: false,
+        preload: path.join(app.getAppPath(), 'out/renderer/preload.js')
+      }
+    })
     if (this.isDevMode === true) {
       this.browserWindow.webContents.openDevTools()
     }
+    this.browserWindow.webContents.openDevTools()
     this.browserWindow.on('closed', (...arg) =>
       this.onClosed(...arg, this.name)
     )
