@@ -3,16 +3,25 @@
     <div id="main">
       <h1>ユーザを追加</h1>
       <h2>Step 1. ホスト名を入力してください</h2>
-      <input placeholder="mstdn.jp" v-model="host">
+      <input
+        placeholder="mstdn.jp"
+        v-model="host"
+      >
       <p class="control">
         <button @click="login">ログイン</button>
       </p>
       <p v-if="invalidHostName">ホストに接続できません</p>
       <h2>Step 2. ブラウザが開くので表示されたPINコードをペーストしてください</h2>
-      <input placeholder="PINコード" v-model="pin">
-        <p class="control">
-          <button :disabled="!canPushDone" @click="done">完了</button>
-        </p>
+      <input
+        placeholder="PINコード"
+        v-model="pin"
+      >
+      <p class="control">
+        <button
+          :disabled="!canPushDone"
+          @click="done"
+        >完了</button>
+      </p>
       <p v-if="invalidPINCode">認証できませんでした</p>
     </div>
   </div>
@@ -25,7 +34,6 @@ import contextMenu from '@/other/contextMenu'
 const { mapActions, mapGetters } = createNamespacedHelpers('users')
 const ipcRenderer = window.ipc
 const remote = window.remote
-const shell = window.shell
 export default {
   data () {
     return {
@@ -54,7 +62,7 @@ export default {
     })
   },
   beforeDestroy () {
-    this.$refs.adduser.removeEventListener('contextmenu', () => {})
+    this.$refs.adduser.removeEventListener('contextmenu', () => { })
   },
   computed: {
     ...mapGetters({ userList: 'getUserList' })
@@ -66,7 +74,7 @@ export default {
         this.clientId = obj.clientId
         this.clientSecret = obj.clientSecret
         logger.debug('url', obj.url)
-        shell.openExternal(obj.url)
+        ipcRenderer.send('openURL', obj.url)
         this.canPushDone = true
       }).catch(e => {
         logger.debug('err')

@@ -82,7 +82,7 @@
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
 import logger from '@/other/Logger'
-const shell = window.shell
+const ipcRenderer = window.ipc
 export default {
   props: ['profile'],
   components: {
@@ -103,10 +103,10 @@ export default {
       } else if (type === 'user') {
         const { href } = ev
         logger.debug('[user]', href)
-        shell.openExternal(href)
+        ipcRenderer.send('openURL', href)
       } else {
         const { href } = ev
-        shell.openExternal(href)
+        ipcRenderer.send('openURL', href)
       }
     },
     toggleShortMode () {
