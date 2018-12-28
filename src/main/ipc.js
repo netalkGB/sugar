@@ -1,5 +1,5 @@
 import Mastodon from '~/mastodon/Mastodon'
-import { ipcMain, dialog } from 'electron'
+import { ipcMain, dialog, shell } from 'electron'
 
 export default (logger, windows) => {
   let clients = []
@@ -272,6 +272,12 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('openURL', (event, arg) => {
+    const isURL = arg.match(/^((^http|^https):\/\/)/g) !== null
+    if (isURL) {
+      shell.openExternal(arg)
+    }
+  })
   ipcMain.on('fetchProfileTimeline', async (event, args) => {
     const { host, accessToken, id, maxID } = args
     try {
@@ -279,7 +285,11 @@ export default (logger, windows) => {
         id,
         { maxID }
       )
-      event.sender.send('fetchProfileTimeline-success', { result, host, accessToken })
+      event.sender.send('fetchProfileTimeline-success', {
+        result,
+        host,
+        accessToken
+      })
     } catch (e) {
       const { message, name } = e
       event.sender.send('fetchProfileTimeline-error', {

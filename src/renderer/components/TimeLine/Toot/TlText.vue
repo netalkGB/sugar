@@ -9,7 +9,7 @@
 import { mapActions } from 'vuex'
 import logger from '@/other/Logger'
 import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
-const shell = window.shell
+const ipcRenderer = window.ipc
 
 export default {
   props: ['content', 'mentions'],
@@ -40,11 +40,11 @@ export default {
             this.profile({ internalid: mention.id })
           }
         } else {
-          shell.openExternal(href)
+          ipcRenderer.send('openURL', href)
         }
       } else {
         const { href } = ev
-        shell.openExternal(href)
+        ipcRenderer.send('openURL', href)
       }
     }
   }
