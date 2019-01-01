@@ -10,6 +10,7 @@ export default class Window {
     const webPreferences = {
       nodeIntegration: false,
       contextIsolation: false,
+      webviewTag: false,
       preload: path.join(app.getAppPath(), 'out/renderer/preload.js')
     }
     this.browserWindow = new BrowserWindow({
