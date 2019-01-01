@@ -18,6 +18,8 @@ describe('Profile', () => {
     expect(converted.followersCount).toBe(1)
     expect(converted.followingCount).toBe(0)
     expect(converted.statusesCount).toBe(3)
+    expect(converted.fields[0].name).toBe('GitHub')
+    expect(converted.fields[0].value).toBe('netalkGB')
     converted = Profile.fromAccount(data[1].account)
     expect(converted.avatar).toBe(
       'https://media.2.example.com/images/accounts/avatars/000/564/253/original/9052ecef6bbb94e3.jpg'

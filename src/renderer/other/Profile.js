@@ -1,3 +1,4 @@
+import Field from '@/other/Field.js'
 export default class Profile {
   constructor (args) {
     this.avatar = args.avatar
@@ -10,6 +11,7 @@ export default class Profile {
     this.followersCount = args.followersCount
     this.followingCount = args.followingCount
     this.statusesCount = args.statusesCount
+    this.fields = args.fields
   }
   static fromAccount (account) {
     const avatar = account.avatar
@@ -22,6 +24,7 @@ export default class Profile {
     const followersCount = account.followers_count
     const followingCount = account.following_count
     const statusesCount = account.statuses_count
+    const fields = Field.fromMastodonFields(account.fields)
     return new Profile({
       avatar,
       header,
@@ -32,7 +35,8 @@ export default class Profile {
       internalid,
       followersCount,
       followingCount,
-      statusesCount
+      statusesCount,
+      fields
     })
   }
 }
