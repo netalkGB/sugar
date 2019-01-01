@@ -50,6 +50,20 @@ export default class Mastodon {
     }
     return this.mastodon.get('accounts/' + id + '/statuses', params)
   }
+  fetchProfileFollowers (id, appendParams) {
+    let params = {}
+    if (appendParams && appendParams.limit) {
+      params = { ...params, limit: appendParams.limit }
+    }
+    return this.mastodon.get('accounts/' + id + '/followers', params)
+  }
+  fetchProfileFollowing (id, appendParams) {
+    let params = {}
+    if (appendParams && appendParams.limit) {
+      params = { ...params, limit: appendParams.limit }
+    }
+    return this.mastodon.get('accounts/' + id + '/following', params)
+  }
   fetchHomeTimeline (appendParams) {
     let params = {}
     if (appendParams && appendParams.maxID) {

@@ -299,6 +299,48 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('fetchProfileFollowers', async (event, args) => {
+    const { host, accessToken, id, limit } = args
+    try {
+      const result = await getClient(accessToken, host).fetchProfileFollowers(
+        id,
+        { limit }
+      )
+      event.sender.send('fetchProfileFollowers-success', {
+        result,
+        host,
+        accessToken
+      })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchProfileFollowers-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
+  ipcMain.on('fetchProfileFollowing', async (event, args) => {
+    const { host, accessToken, id, limit } = args
+    try {
+      const result = await getClient(accessToken, host).fetchProfileFollowing(
+        id,
+        { limit }
+      )
+      event.sender.send('fetchProfileFollowing-success', {
+        result,
+        host,
+        accessToken
+      })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchProfileFollowing-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('uploadFile', async (event, args) => {
     const { host, accessToken, filePath, uuid } = args
     try {
