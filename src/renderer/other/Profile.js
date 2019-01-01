@@ -12,6 +12,7 @@ export default class Profile {
     this.followingCount = args.followingCount
     this.statusesCount = args.statusesCount
     this.fields = args.fields
+    this.bot = args.bot
   }
   static fromAccount (account) {
     const avatar = account.avatar
@@ -25,6 +26,7 @@ export default class Profile {
     const followingCount = account.following_count
     const statusesCount = account.statuses_count
     const fields = Field.fromMastodonFields(account.fields)
+    const bot = account.bot
     return new Profile({
       avatar,
       header,
@@ -36,7 +38,8 @@ export default class Profile {
       followersCount,
       followingCount,
       statusesCount,
-      fields
+      fields,
+      bot
     })
   }
 }

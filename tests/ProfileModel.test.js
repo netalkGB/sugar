@@ -18,6 +18,7 @@ describe('Profile', () => {
     expect(converted.followersCount).toBe(1)
     expect(converted.followingCount).toBe(0)
     expect(converted.statusesCount).toBe(3)
+    expect(converted.bot).toBe(false)
     expect(converted.fields[0].name).toBe('GitHub')
     expect(converted.fields[0].value).toBe('netalkGB')
     converted = Profile.fromAccount(data[1].account)
