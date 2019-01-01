@@ -20,6 +20,7 @@
             :bot="profile.bot"
             :userid="profile.userid"
             :note="profile.note"
+            :fields="profile.fields"
             @toggle="toggleShortMode"
           />
         </div>
