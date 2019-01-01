@@ -1,6 +1,5 @@
 <template>
   <div
-    ref="a"
     class="headerContainer"
   >
     <div class="border">
@@ -12,82 +11,40 @@
           class="profileBg"
           :style="profile.header ? { background: `#fcfcfc url(${profile.header}) no-repeat center center`} : {}"
         >
-          <div class="profileFg">
-            <div
-              class="imageContainer"
-              v-if="shortMode === false"
-            >
-              <div
-                class="image"
-                @click="toggleShortMode"
-              >
-                <img
-                  class="img"
-                  :src="profile.avatar"
-                  width="40"
-                  height="40"
-                >
-              </div>
-            </div>
-            <div class="idnameContainer">
-              <div
-                class="idname"
-                @click="toggleShortMode"
-              >
-                <span class="id">{{profile.displayName}}</span>
-                <IosLockIcon
-                  :w="'12'"
-                  :h="'12'"
-                  v-if="profile.locked"
-                />
-              </div>
-              <div
-                class="idname"
-                @click="toggleShortMode"
-              >{{profile.userid}}</div>
-            </div>
-            <div class="paddingLR">
-              <MastodonHTML
-                @click="handleClick"
-                :html="profile.note"
-                v-if="shortMode === false"
-              />
-            </div>
-          </div>
+          <ProfileFg
+            class="profileFg"
+            :shortMode="shortMode"
+            :avatar="profile.avatar"
+            :displayName="profile.displayName"
+            :locked="profile.locked"
+            :userid="profile.userid"
+            :note="profile.note"
+            @toggle="toggleShortMode"
+          />
         </div>
       </div>
-      <div class="countContainer paddingLR">
-        <div
-          class="status"
-          @click="toggleShortMode"
-        >
-          <div class="title">トゥート</div>
-          <div class="count">{{profile.statusesCount}}</div>
-        </div>
-        <div class="following">
-          <div class="title">フォロー</div>
-          <div class="count">{{profile.followingCount}}</div>
-        </div>
-        <div class="followers">
-          <div class="title">フォロワー</div>
-          <div class="count">{{profile.followersCount}}</div>
-        </div>
-        <div class="other"></div>
-      </div>
+      <Count
+        class="paddingLR"
+        :follower="profile.followersCount"
+        :following="profile.followingCount"
+        :toot="profile.statusesCount"
+        @toggle="toggleShortMode"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
-import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
-import logger from '@/other/Logger'
-const ipcRenderer = window.ipc
+import Count from '@/components/Profile/Count'
+import ProfileFg from '@/components/Profile/ProfileFg'
+
 export default {
   props: ['profile'],
   components: {
     IosLockIcon,
-    MastodonHTML
+    Count,
+    ProfileFg
   },
   data () {
     return {
@@ -95,20 +52,6 @@ export default {
     }
   },
   methods: {
-    handleClick (ev) {
-      const { type } = ev
-      if (type === 'hashtag') {
-        const { href, tag } = ev
-        logger.debug('[hashtag]', href, tag)
-      } else if (type === 'user') {
-        const { href } = ev
-        logger.debug('[user]', href)
-        ipcRenderer.send('openURL', href)
-      } else {
-        const { href } = ev
-        ipcRenderer.send('openURL', href)
-      }
-    },
     toggleShortMode () {
       this.shortMode = !this.shortMode
       this.$nextTick(function () {
@@ -146,52 +89,5 @@ export default {
 }
 .border {
   border-bottom: 1px solid #cccccc;
-}
-.count {
-  padding-left: 2px;
-}
-.imageContainer {
-  padding-top: 4px;
-  height: calc(100% / 2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.image {
-  cursor: pointer;
-}
-.img {
-  cursor: pointer;
-  border-radius: 2px;
-  pointer-events: none;
-}
-.idnameContainer {
-  height: calc(100% / 2);
-}
-.idname {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.status {
-  cursor: pointer;
-}
-.id {
-  font-weight: bolder;
-}
-.countContainer {
-  display: grid;
-  grid-template:
-    "statuse following follower other" 30px
-    / 70px 70px 70px 1fr;
-  padding-bottom: 2px;
-  padding-top: 2px;
-}
-.count {
-  align-items: center;
-}
-.title {
-  font-size: 70%;
 }
 </style>
