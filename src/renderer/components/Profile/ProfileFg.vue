@@ -27,19 +27,21 @@
           :h="'12'"
           v-if="locked"
         />
-        <Bot v-if="bot"/>
+        <Bot v-if="bot" />
       </div>
       <div
         class="idname"
         @click="$emit('toggle')"
       >{{userid}}</div>
     </div>
-    <div class="paddingLR">
+    <div class="paddingLR"  v-if="shortMode === false">
       <MastodonHTML
         @click="handleClick"
         :html="note"
-        v-if="shortMode === false"
       />
+    </div>
+    <div class="paddingLR"  v-if="shortMode === false">
+      <Fields :fields="fields" />
     </div>
   </div>
 </template>
@@ -47,13 +49,15 @@
 <script>
 import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
 import Bot from '@/components/Profile/Bot'
+import Fields from '@/components/Profile/Fields'
 import logger from '@/other/Logger'
 const ipcRenderer = window.ipc
 export default {
-  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot'],
+  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot', 'fields'],
   components: {
     MastodonHTML,
-    Bot
+    Bot,
+    Fields
   },
   methods: {
     handleClick (ev) {
