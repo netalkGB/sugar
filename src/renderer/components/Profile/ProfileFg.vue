@@ -27,6 +27,7 @@
           :h="'12'"
           v-if="locked"
         />
+        <Bot v-if="bot"/>
       </div>
       <div
         class="idname"
@@ -45,12 +46,14 @@
 
 <script>
 import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
+import Bot from '@/components/Profile/Bot'
 import logger from '@/other/Logger'
 const ipcRenderer = window.ipc
 export default {
-  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note'],
+  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot'],
   components: {
-    MastodonHTML
+    MastodonHTML,
+    Bot
   },
   methods: {
     handleClick (ev) {
@@ -92,6 +95,7 @@ export default {
 }
 .id {
   font-weight: bolder;
+  margin-right: 2px;
 }
 .idname {
   display: flex;

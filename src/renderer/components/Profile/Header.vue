@@ -17,6 +17,7 @@
             :avatar="profile.avatar"
             :displayName="profile.displayName"
             :locked="profile.locked"
+            :bot="profile.bot"
             :userid="profile.userid"
             :note="profile.note"
             @toggle="toggleShortMode"
