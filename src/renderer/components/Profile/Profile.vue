@@ -11,6 +11,9 @@
     <Timeline
       ref="timeline"
       :timeline="timeline"
+      :followers="followers"
+      :following="following"
+      :active="active"
       :style="{ height: `calc(100% - ${profileHeight})`}"
       @wantOldToot="wantOldToot"
     />
@@ -36,10 +39,12 @@ export default {
   },
   props: ['internalId', 'userId'],
   methods: {
-    ...mapActions(['fetchProfile', 'fetchProfileTimeline', 'loadOldToot']),
+    ...mapActions(['fetchProfile', 'fetchProfileTimeline', 'loadOldToot', 'fetchProfileFollowers', 'fetchProfileFollowing']),
     fetch () {
       const internalId = this.internalId
       this.fetchProfileTimeline({ internalId }).catch((e) => { logger.error(e) })
+      this.fetchProfileFollowers({ internalId }).then(() => logger.debug(this.followers)).catch(e => logger.error(e))
+      this.fetchProfileFollowing({ internalId }).then(() => logger.debug(this.following)).catch(e => logger.error(e))
       this.fetchProfile({ internalId }).then(() => {
         this.calculateHeight()
       }).catch((e) => { logger.error(e) })
@@ -56,7 +61,7 @@ export default {
     }
   },
   computed: {
-    ...mapState({ profile: state => state.profile, timeline: state => state.timeline })
+    ...mapState({ profile: state => state.profile, timeline: state => state.timeline, followers: state => state.followers, following: state => state.following, active: state => state.active })
   }
 }
 </script>
