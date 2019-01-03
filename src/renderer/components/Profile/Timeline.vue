@@ -12,14 +12,12 @@
         :infiniteMode="false"
         :users="following"
       />
-      <!-- <div>{{following.length}}<br>{{following}}</div> -->
     </template>
     <template v-if="active === 'followers'">
       <UserList
         :infiniteMode="false"
         :users="followers"
       />
-      <!-- <div>{{followers.length}}<br>{{followers}}</div> -->
     </template>
   </div>
 </template>
