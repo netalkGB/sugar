@@ -72,8 +72,7 @@ export default {
         ipcRenderer.send('fetchProfileFollowing', {
           host,
           accessToken,
-          id: internalId,
-          limit: '1000'
+          id: internalId
         })
         ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
           const following = data.result.data
@@ -93,8 +92,7 @@ export default {
         ipcRenderer.send('fetchProfileFollowers', {
           host,
           accessToken,
-          id: internalId,
-          limit: '1000'
+          id: internalId
         })
         ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
           const followers = data.result.data
