@@ -43,8 +43,8 @@ export default {
     fetch () {
       const internalId = this.internalId
       this.fetchProfileTimeline({ internalId }).catch((e) => { logger.error(e) })
-      this.fetchProfileFollowers({ internalId }).then(() => logger.debug(this.followers)).catch(e => logger.error(e))
-      this.fetchProfileFollowing({ internalId }).then(() => logger.debug(this.following)).catch(e => logger.error(e))
+      this.fetchProfileFollowers({ internalId }).then(() => logger.debug(`follower: ${this.followers.length}`)).catch(e => logger.error(e))
+      this.fetchProfileFollowing({ internalId }).then(() => logger.debug(`following: ${this.following.length}`)).catch(e => logger.error(e))
       this.fetchProfile({ internalId }).then(() => {
         this.calculateHeight()
       }).catch((e) => { logger.error(e) })
