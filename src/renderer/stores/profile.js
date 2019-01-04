@@ -2,6 +2,8 @@ import Profile from '@/other/Profile'
 import Toot from '@/other/Toot'
 const ipcRenderer = window.ipc
 
+const userCountlimit = '1000'
+
 export default {
   namespaced: true,
   state: {
@@ -72,7 +74,8 @@ export default {
         ipcRenderer.send('fetchProfileFollowing', {
           host,
           accessToken,
-          id: internalId
+          id: internalId,
+          limit: userCountlimit
         })
         ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
           const following = data.result.data
@@ -92,7 +95,8 @@ export default {
         ipcRenderer.send('fetchProfileFollowers', {
           host,
           accessToken,
-          id: internalId
+          id: internalId,
+          limit: userCountlimit
         })
         ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
           const followers = data.result.data
