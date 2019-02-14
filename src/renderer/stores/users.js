@@ -2,6 +2,8 @@ import logger from '@/other/Logger'
 import Profile from '@/other/Profile'
 const ipcRenderer = window.ipc
 
+const userCountlimit = '1000'
+
 export default {
   namespaced: true,
   state: {
@@ -34,6 +36,8 @@ export default {
         host: payload.host,
         userNumber: state.nextUserId++,
         user: payload.user,
+        followers: [],
+        followings: [],
         menu: null
       }
       logger.debug(user)
@@ -79,7 +83,7 @@ export default {
         host,
         accessToken,
         id: internalid,
-        limit: 65536
+        limit: userCountlimit
       })
       ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
         const followers = data.result.data
@@ -96,7 +100,7 @@ export default {
         host,
         accessToken,
         id: internalid,
-        limit: 65536
+        limit: userCountlimit
       })
       ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
         const followings = data.result.data
