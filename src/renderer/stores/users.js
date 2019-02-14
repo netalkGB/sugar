@@ -40,7 +40,6 @@ export default {
         followings: [],
         menu: null
       }
-      logger.debug(user)
       state.userList.push(user)
     },
     setId (state, payload) {
@@ -57,6 +56,22 @@ export default {
       )
       if (user) {
         user.menu = menu
+      }
+    },
+    setOwnFollowers (state, followers) {
+      const user = state.userList.find(
+        item => item.userNumber === state.currentUser
+      )
+      if (user) {
+        user.followers = followers
+      }
+    },
+    setOwnFollowings (state, followings) {
+      const user = state.userList.find(
+        item => item.userNumber === state.currentUser
+      )
+      if (user) {
+        user.followings = followings
       }
     }
   },
@@ -76,7 +91,16 @@ export default {
         commit('set', JSON.parse(localStorage.mastootConfigUsers))
       }
     },
-    fetchOwnFollower ({ dispatch, getters }) {
+    async fetchOwnFollowerAndFollowing ({ dispatch }) {
+      try {
+        await dispatch('fetchOwnFollower')
+        await dispatch('fetchOwnFollowing')
+        dispatch('saveUserConfig')
+      } catch (e) {
+        logger.error(e)
+      }
+    },
+    fetchOwnFollower ({ commit, getters }) {
       const { accessToken, host, user } = getters['getCurrentUser']
       const { internalid } = user
       ipcRenderer.send('fetchProfileFollowers', {
@@ -85,15 +109,22 @@ export default {
         id: internalid,
         limit: userCountlimit
       })
-      ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
-        const followers = data.result.data
-        logger.debug(followers)
-      })
-      ipcRenderer.once('fetchProfileFollowers-error', (_, e) => {
-        logger.error(e)
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
+          const followers = data.result.data
+          commit(
+            'setOwnFollowers',
+            followers.map(follower => Profile.fromAccount(follower))
+          )
+          resolve()
+        })
+        ipcRenderer.once('fetchProfileFollowers-error', (_, e) => {
+          logger.error(e)
+          reject(e)
+        })
       })
     },
-    fetchOwnFollowing ({ dispatch, getters }) {
+    fetchOwnFollowing ({ commit, getters }) {
       const { accessToken, host, user } = getters['getCurrentUser']
       const { internalid } = user
       ipcRenderer.send('fetchProfileFollowing', {
@@ -102,12 +133,20 @@ export default {
         id: internalid,
         limit: userCountlimit
       })
-      ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
-        const followings = data.result.data
-        logger.debug(followings)
-      })
-      ipcRenderer.once('fetchProfileFollowing-error', (_, e) => {
-        logger.error(e)
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
+          const followings = data.result.data
+          logger.debug(followings)
+          commit(
+            'setOwnFollowings',
+            followings.map(follow => Profile.fromAccount(follow))
+          )
+          resolve()
+        })
+        ipcRenderer.once('fetchProfileFollowing-error', (_, e) => {
+          logger.error(e)
+          reject(e)
+        })
       })
     },
     addUser ({ commit }, payload) {
