@@ -29,15 +29,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['setCurrentUserId', 'fetchOwnFollower', 'fetchOwnFollowing']),
+    ...mapActions('users', ['setCurrentUserId', 'fetchOwnFollowerAndFollowing']),
     ...mapActions('timelines', ['firstFetch', 'startStreaming'])
   },
   async created () {
     ipcRenderer.send('changeWindowSize', 'main')
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
-    this.fetchOwnFollower()
-    this.fetchOwnFollowing()
+    await this.fetchOwnFollowerAndFollowing()
     this.firstFetch({ type: TimelineType.localtl }).then(() => {
       this.startStreaming({ type: TimelineType.localtl }).catch(e => {
         logger.debug(e)
