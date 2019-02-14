@@ -72,6 +72,40 @@ export default {
         commit('set', JSON.parse(localStorage.mastootConfigUsers))
       }
     },
+    fetchOwnFollower ({ dispatch, getters }) {
+      const { accessToken, host, user } = getters['getCurrentUser']
+      const { internalid } = user
+      ipcRenderer.send('fetchProfileFollowers', {
+        host,
+        accessToken,
+        id: internalid,
+        limit: 65536
+      })
+      ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
+        const followers = data.result.data
+        logger.debug(followers)
+      })
+      ipcRenderer.once('fetchProfileFollowers-error', (_, e) => {
+        logger.error(e)
+      })
+    },
+    fetchOwnFollowing ({ dispatch, getters }) {
+      const { accessToken, host, user } = getters['getCurrentUser']
+      const { internalid } = user
+      ipcRenderer.send('fetchProfileFollowing', {
+        host,
+        accessToken,
+        id: internalid,
+        limit: 65536
+      })
+      ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
+        const followings = data.result.data
+        logger.debug(followings)
+      })
+      ipcRenderer.once('fetchProfileFollowing-error', (_, e) => {
+        logger.error(e)
+      })
+    },
     addUser ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         ipcRenderer.once('login2-success', (_, tokens) => {
