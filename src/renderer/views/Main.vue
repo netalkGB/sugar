@@ -1,5 +1,8 @@
 <template>
-  <div id="main" :style="{ width: width + 'px', height: height + 'px' }">
+  <div
+    id="main"
+    :style="{ width: width + 'px', height: height + 'px' }"
+  >
     <div id="menu">
       <Sidebar :userId="userId" />
     </div>
@@ -26,13 +29,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['setCurrentUserId']),
+    ...mapActions('users', ['setCurrentUserId', 'fetchOwnFollower', 'fetchOwnFollowing']),
     ...mapActions('timelines', ['firstFetch', 'startStreaming'])
   },
   async created () {
     ipcRenderer.send('changeWindowSize', 'main')
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
+    this.fetchOwnFollower()
+    this.fetchOwnFollowing()
     this.firstFetch({ type: TimelineType.localtl }).then(() => {
       this.startStreaming({ type: TimelineType.localtl }).catch(e => {
         logger.debug(e)
@@ -48,7 +53,7 @@ export default {
         logger.debug(e)
       })
     })
-    this.firstFetch({ type: TimelineType.notification }).then(() => {})
+    this.firstFetch({ type: TimelineType.notification }).then(() => { })
   },
   mounted () {
     this.width = window.innerWidth
