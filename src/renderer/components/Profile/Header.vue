@@ -21,6 +21,8 @@
             :userid="profile.userid"
             :note="profile.note"
             :fields="profile.fields"
+            :isFollowing="profile.isFollowing"
+            :isFollower="profile.isFollower"
             @toggle="toggleShortMode"
           />
         </div>
