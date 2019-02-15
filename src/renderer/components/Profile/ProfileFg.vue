@@ -33,14 +33,26 @@
         class="idname"
         @click="$emit('toggle')"
       >{{userid}}</div>
+      <FollowStatus
+        class="followstatus"
+        v-if="shortMode === false"
+        :isFollowing="isFollowing"
+        :isFollower="isFollower"
+      />
     </div>
-    <div class="paddingLR"  v-if="shortMode === false">
+    <div
+      class="paddingLR"
+      v-if="shortMode === false"
+    >
       <MastodonHTML
         @click="handleClick"
         :html="note"
       />
     </div>
-    <div class="paddingLR"  v-if="shortMode === false">
+    <div
+      class="paddingLR"
+      v-if="shortMode === false"
+    >
       <Fields :fields="fields" />
     </div>
   </div>
@@ -50,14 +62,16 @@
 import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
 import Bot from '@/components/Profile/Bot'
 import Fields from '@/components/Profile/Fields'
+import FollowStatus from '@/components/Profile/FollowStatus'
 import logger from '@/other/Logger'
 const ipcRenderer = window.ipc
 export default {
-  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot', 'fields'],
+  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot', 'fields', 'isFollowing', 'isFollower'],
   components: {
     MastodonHTML,
     Bot,
-    Fields
+    Fields,
+    FollowStatus
   },
   methods: {
     handleClick (ev) {
@@ -101,7 +115,8 @@ export default {
   font-weight: bolder;
   margin-right: 2px;
 }
-.idname {
+.idname,
+.followstatus {
   display: flex;
   justify-content: center;
   align-items: center;
