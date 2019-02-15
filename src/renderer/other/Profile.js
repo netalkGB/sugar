@@ -13,8 +13,10 @@ export default class Profile {
     this.statusesCount = args.statusesCount
     this.fields = args.fields
     this.bot = args.bot
+    this.isFollower = args.isFollower
+    this.isFollowing = args.isFollowing
   }
-  static fromAccount (account) {
+  static fromAccount (account, follower, following) {
     const avatar = account.avatar
     const header = account.header
     const displayName = account.display_name
@@ -27,6 +29,12 @@ export default class Profile {
     const statusesCount = account.statuses_count
     const fields = Field.fromMastodonFields(account.fields)
     const bot = account.bot
+    const isFollower =
+      follower !== undefined &&
+      follower.find(f => f.internalid === internalid) !== undefined
+    const isFollowing =
+      following !== undefined &&
+      following.find(f => f.internalid === internalid) !== undefined
     return new Profile({
       avatar,
       header,
@@ -39,7 +47,9 @@ export default class Profile {
       followingCount,
       statusesCount,
       fields,
-      bot
+      bot,
+      isFollower,
+      isFollowing
     })
   }
 }
