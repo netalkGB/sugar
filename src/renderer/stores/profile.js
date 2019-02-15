@@ -55,12 +55,17 @@ export default {
       commit('setListType', type)
     },
     async fetchProfile ({ commit }, { internalId }) {
-      const { accessToken, host } = this.getters['users/getCurrentUser']
+      const currentUser = this.getters['users/getCurrentUser']
+      const { accessToken, host } = currentUser
+      const ownFollowers = currentUser.followers
+      const ownFollowings = currentUser.followings
       return new Promise((resolve, reject) => {
         ipcRenderer.send('fetchProfile', { host, accessToken, id: internalId })
         ipcRenderer.once('fetchProfile-success', (_, data) => {
           const account = data.result.data
-          commit('setProfile', { profile: Profile.fromAccount(account) })
+          commit('setProfile', {
+            profile: Profile.fromAccount(account, ownFollowers, ownFollowings)
+          })
           resolve()
         })
         ipcRenderer.once('fetchProfile-error', (_, e) => {
@@ -69,7 +74,11 @@ export default {
       })
     },
     async fetchProfileFollowing ({ commit }, { internalId }) {
-      const { accessToken, host } = this.getters['users/getCurrentUser']
+      const currentUser = this.getters['users/getCurrentUser']
+      const { accessToken, host } = currentUser
+      const ownFollowers = currentUser.followers
+      const ownFollowings = currentUser.followings
+
       return new Promise((resolve, reject) => {
         ipcRenderer.send('fetchProfileFollowing', {
           host,
@@ -80,7 +89,9 @@ export default {
         ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
           const following = data.result.data
           commit('setFollowing', {
-            following: following.map(u => Profile.fromAccount(u))
+            following: following.map(account =>
+              Profile.fromAccount(account, ownFollowers, ownFollowings)
+            )
           })
           resolve()
         })
@@ -90,7 +101,11 @@ export default {
       })
     },
     async fetchProfileFollowers ({ commit }, { internalId }) {
-      const { accessToken, host } = this.getters['users/getCurrentUser']
+      const currentUser = this.getters['users/getCurrentUser']
+      const { accessToken, host } = currentUser
+      const ownFollowers = currentUser.followers
+      const ownFollowings = currentUser.followings
+
       return new Promise((resolve, reject) => {
         ipcRenderer.send('fetchProfileFollowers', {
           host,
@@ -101,7 +116,9 @@ export default {
         ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
           const followers = data.result.data
           commit('setFollowers', {
-            followers: followers.map(u => Profile.fromAccount(u))
+            followers: followers.map(account =>
+              Profile.fromAccount(account, ownFollowers, ownFollowings)
+            )
           })
           resolve()
         })
