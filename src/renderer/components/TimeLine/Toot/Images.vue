@@ -31,6 +31,9 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
+.image {
+  cursor: pointer;
+}
 .img {
   height: 80px;
   margin: 2px;
