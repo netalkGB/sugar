@@ -1,14 +1,27 @@
 <template>
   <div class="images">
-    <div class="image">
-      <img class="img" v-for="(image, index) in medium" :key="index" :src="image.previewUrl">
+    <div
+      class="image"
+      v-for="(image, index) in medium"
+      :key="index"
+    >
+      <div @click="openImage(image.previewUrl)"><img
+          class="img"
+          :src="image.previewUrl"
+        ></div>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
-  props: ['medium']
+  props: ['medium'],
+  methods: {
+    openImage (url) {
+      window.ipc.send('openURL', url)
+    }
+  }
 }
 </script>
 
