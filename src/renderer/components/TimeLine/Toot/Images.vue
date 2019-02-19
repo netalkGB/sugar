@@ -19,7 +19,11 @@ export default {
   props: ['medium'],
   methods: {
     openImage (url) {
-      window.ipc.send('openURL', url)
+      window.ipc.send(
+        'newWindow',
+        url,
+        'imagePreview'
+      )
     }
   }
 }
