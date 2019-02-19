@@ -81,7 +81,7 @@ export default (logger, windows) => {
       })
       stream.on('error', error => {
         event.sender.send('streamHomeTimeline-onError', error)
-        ipcMain.removeListener('streamHomeTimeline', () => {})
+        ipcMain.removeListener('streamHomeTimeline', () => { })
       })
     } catch (e) {
       const { message, name } = e
@@ -179,7 +179,7 @@ export default (logger, windows) => {
       })
       stream.on('error', error => {
         event.sender.send('streamLocalTimeline-onError', error)
-        ipcMain.removeListener('streamLocalTimeline', () => {})
+        ipcMain.removeListener('streamLocalTimeline', () => { })
       })
     } catch (e) {
       const { message, name } = e
@@ -195,7 +195,7 @@ export default (logger, windows) => {
       })
       stream.on('error', error => {
         event.sender.send('streamPublicTimeline-onError', error)
-        ipcMain.removeListener('streamPublicTimeline', () => {})
+        ipcMain.removeListener('streamPublicTimeline', () => { })
       })
     } catch (e) {
       const { message, name } = e
@@ -390,6 +390,15 @@ export default (logger, windows) => {
         {
           width: 280,
           height: 400
+        }
+      )
+    } else if (type === 'imagePreview') {
+      windows.add(
+        url,
+        { url },
+        {
+          width: 640,
+          height: 480
         }
       )
     } else {
