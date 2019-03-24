@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="imagepreview">
     <Preview :url="url"></Preview>
   </div>
 </template>
@@ -15,5 +15,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+
 </style>

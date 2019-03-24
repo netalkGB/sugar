@@ -1,7 +1,9 @@
 <template>
   <div>
     <img
+      class="image"
       :src="url"
+      draggable="false"
       alt=""
     >
   </div>
@@ -14,4 +16,8 @@ export default {
 </script>
 
 <style scoped>
+.image {
+  height: auto;
+  width: 100%;
+}
 </style>
