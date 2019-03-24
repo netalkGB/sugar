@@ -18,10 +18,13 @@
 export default {
   props: ['medium'],
   methods: {
-    openImage (url) {
+    openImage (imageUrl) {
+      const currentPath = localStorage.getItem('currentPath')
+      const fullUrl = `${currentPath}#/imagepreview/${encodeURIComponent(imageUrl)}`
+      console.log(imageUrl)
       window.ipc.send(
         'newWindow',
-        url,
+        fullUrl,
         'imagePreview'
       )
     }

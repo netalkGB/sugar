@@ -69,6 +69,14 @@ export default new Router({
         internalId: String(route.params.internalId)
       }),
       component: () => import('@/views/Profile')
+    },
+    {
+      name: 'image_preview',
+      path: '/imagepreview/:url',
+      props: route => ({
+        url: String(route.params.url)
+      }),
+      component: () => import('@/views/ImagePreview')
     }
   ],
   mode: 'hash'
