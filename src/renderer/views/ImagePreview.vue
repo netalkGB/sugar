@@ -1,11 +1,17 @@
 <template>
-  <div>{{url}}</div>
+  <div>
+    <Preview :url="url"></Preview>
+  </div>
 </template>
 
 <script>
+import Preview from '@/components/ImagePreview/Preview'
 export default {
   name: 'ImagePreview',
-  props: ['url']
+  props: ['url'],
+  components: {
+    Preview
+  }
 }
 </script>
 
