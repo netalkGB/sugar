@@ -5,7 +5,7 @@
       :src="url"
       draggable="false"
       alt=""
-      :style="{ height: height + 'px' }"
+      :style="{ 'height': height + 'px' }"
     >
   </div>
 </template>
@@ -18,8 +18,8 @@ export default {
 
 <style scoped>
 .image {
-  height: auto;
-  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 .preview {
   display: flex;
