@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ width: width + 'px', height: height + 'px' }">
+  <div :style="{ width: width - 8 + 'px', height: height -8 + 'px' }">
     <Preview :url="url" :height="height"></Preview>
   </div>
 </template>
