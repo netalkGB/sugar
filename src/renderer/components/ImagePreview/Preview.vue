@@ -1,23 +1,24 @@
 <template>
-  <div>
+  <div class="preview">
     <img
       class="image"
       :src="url"
       draggable="false"
       alt=""
+      :style="{ height: height - 8 + 'px' }"
     >
   </div>
 </template>
 
 <script>
 export default {
-  props: ['url']
+  props: ['url', 'height']
 }
 </script>
 
 <style scoped>
 .image {
   height: auto;
-  width: 100%;
+  height: 100%;
 }
 </style>
