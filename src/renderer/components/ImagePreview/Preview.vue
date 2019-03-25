@@ -5,7 +5,7 @@
       :src="url"
       draggable="false"
       alt=""
-      :style="{ height: height - 8 + 'px' }"
+      :style="{ height: height + 'px' }"
     >
   </div>
 </template>
@@ -20,5 +20,10 @@ export default {
 .image {
   height: auto;
   height: 100%;
+}
+.preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
