@@ -5,11 +5,12 @@
       :src="url"
       draggable="false"
       alt=""
-      :style="{ 'height': autoHeight, 'width': autoWidth, 'zoom':zoom }"
+      :style="{ 'height': autoHeight, 'width': autoWidth, 'zoom':zoom, 'transform': calcDeg }"
     >
     <div class="tool">
       <div @click="zoomIn">[+]</div>
       <div @click="zoomOut">[-]</div>
+      <div @click="rotate">[r]</div>
     </div>
   </div>
 </template>
@@ -19,7 +20,8 @@ export default {
   props: ['url', 'height'],
   data () {
     return {
-      zoom: 1
+      zoom: 1,
+      rotateMode: 0
     }
   },
   methods: {
@@ -28,6 +30,9 @@ export default {
     },
     zoomOut () {
       this.zoom -= 0.2
+    },
+    rotate () {
+      this.rotateMode = this.rotateMode >= 4 ? 0 : this.rotateMode + 1
     }
   },
   computed: {
@@ -36,6 +41,9 @@ export default {
     },
     autoWidth () {
       return this.zoom === 1.0 ? '100%' : 'auto'
+    },
+    calcDeg () {
+      return `rotate(${this.rotateMode * 90}deg)`
     }
   }
 }
