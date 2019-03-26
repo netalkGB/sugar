@@ -7,6 +7,10 @@
       alt=""
       :style="{ 'height': autoHeight, 'width': autoWidth, 'zoom':zoom }"
     >
+    <div class="tool">
+      <div @click="zoomIn">[+]</div>
+      <div @click="zoomOut">[-]</div>
+    </div>
   </div>
 </template>
 
@@ -16,6 +20,14 @@ export default {
   data () {
     return {
       zoom: 1
+    }
+  },
+  methods: {
+    zoomIn () {
+      this.zoom += 0.2
+    },
+    zoomOut () {
+      this.zoom -= 0.2
     }
   },
   computed: {
@@ -32,10 +44,21 @@ export default {
 <style scoped>
 .image {
   object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-flow: column nowrap;
+}
+.tool {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  left: 0;
 }
 </style>
