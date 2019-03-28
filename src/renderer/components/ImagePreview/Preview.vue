@@ -64,7 +64,7 @@ export default {
   flex-flow: column nowrap;
 }
 .tool {
-  position: absolute;
+  position: fixed;
   z-index: 10;
   bottom: 0;
   left: 0;
