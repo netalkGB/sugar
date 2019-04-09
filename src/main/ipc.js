@@ -320,6 +320,26 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('searchMastodon', async (event, args) => {
+    const { host, accessToken, q } = args
+    try {
+      const result = await getClient(accessToken, host).searchMastodon(
+        q
+      )
+      event.sender.send('searchMastodon-success', {
+        result,
+        host,
+        accessToken
+      })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('searchMastodon-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('fetchProfileFollowing', async (event, args) => {
     const { host, accessToken, id, limit } = args
     try {

@@ -36,12 +36,21 @@ export default class Mastodon {
       timeout_ms: 60 * 1000,
       api_url: `https://${host}/api/v1/`
     })
+    this.mastodon2 = new M({
+      access_token: accessToken,
+      timeout_ms: 60 * 1000,
+      api_url: `https://${host}/api/v2/`
+    })
   }
   fetchOwnAccount () {
     return this.mastodon.get('accounts/verify_credentials', {})
   }
   fetchProfile (id) {
     return this.mastodon.get('accounts/' + id)
+  }
+  searchMastodon (q) {
+    const params = { q }
+    return this.mastodon2.get('search', params)
   }
   fetchProfileTimeline (id, appendParams) {
     let params = {}
