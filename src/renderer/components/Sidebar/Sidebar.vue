@@ -14,10 +14,22 @@
       <div @click="newToot">
         <Icon icon="toot" />
       </div>
-      <Icon
-        to="#"
-        icon="settings"
-      />
+      <div
+        class="showSettingsMenu"
+        @click="openSettingsMenu"
+      >
+        <Icon
+          to="#"
+          icon="settings"
+        />
+      </div>
+    </div>
+    <div
+      ref="settingsMenu"
+      class="settingsMenu"
+      v-show="isShowSettingMenu"
+    >
+      aaaaaaaaaaaa
     </div>
   </div>
 </template>
@@ -38,11 +50,17 @@ export default {
   },
   data () {
     return {
-      menu: null
+      menu: null,
+      isShowSettingMenu: false
     }
   },
   methods: {
     ...mapActions(['setMenu']),
+    openSettingsMenu (e) {
+      this.$nextTick(() => {
+        this.isShowSettingMenu = !this.isShowSettingMenu
+      })
+    },
     newToot () {
       const url = this.$router.resolve(`/newtoot/${this.userId}`).href
       const currentPath = localStorage.getItem('currentPath')
@@ -59,6 +77,11 @@ export default {
     }
   },
   mounted () {
+    window.addEventListener('click', (e) => {
+      if (e.srcElement.className.split && e.srcElement.className !== 'settingsMenu') {
+        this.isShowSettingMenu = false
+      }
+    })
     window.addEventListener('keydown', (e) => {
       if (((e.ctrlKey || e.metaKey) && e.keyCode === keyCodeN)) {
         this.newToot()
@@ -66,7 +89,8 @@ export default {
     })
   },
   beforeDestroy () {
-    window.removeEventListener('input', () => { })
+    window.removeEventListener('keydown', () => { })
+    window.removeEventListener('click', () => { })
   }
 }
 </script>
@@ -79,5 +103,13 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.settingsMenu {
+  position: absolute;
+  width: 100px;
+  height: 200px;
+  background-color: red;
+  bottom: 10px;
+  left: 50px;
 }
 </style>
