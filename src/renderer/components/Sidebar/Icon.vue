@@ -1,14 +1,52 @@
 <template>
-  <router-link v-if="to !== undefined" :to="to">
-    <MdHomeIcon v-if="icon === 'home_timeline'" :w="width" :h="height" class="icon" />
-    <IosPeopleIcon v-if="icon === 'local_timeline'" :w="width" :h="height" class="icon" />
-    <IosGlobeIcon v-if="icon === 'public_timeline'" :w="width" :h="height" class="icon" />
-    <IosNotificationsIcon v-if="icon === 'notifications'" :w="width" :h="height" class="icon" />
-    <IosAddIcon v-if="icon === 'addTab'" :w="width" :h="height" class="icon" />
-    <MdSettingsIcon v-if="icon === 'settings'" :w="width" :h="height" class="icon" />
+  <router-link
+    v-if="to !== undefined"
+    :to="to"
+  >
+    <MdHomeIcon
+      v-if="icon === 'home_timeline'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
+    <IosPeopleIcon
+      v-if="icon === 'local_timeline'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
+    <IosGlobeIcon
+      v-if="icon === 'public_timeline'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
+    <IosNotificationsIcon
+      v-if="icon === 'notifications'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
+    <IosAddIcon
+      v-if="icon === 'addTab'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
+    <MdSettingsIcon
+      v-if="icon === 'settings'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
   </router-link>
   <div v-else>
-    <IosMegaphoneIcon v-if="icon === 'toot'" :w="width" :h="height" class="icon" />
+    <IosMegaphoneIcon
+      v-if="icon === 'toot'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
   </div>
 </template>
 
