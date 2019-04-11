@@ -29,7 +29,15 @@
       class="settingsMenu"
       v-show="isShowSettingMenu"
     >
-      aaaaaaaaaaaa
+      <div class="menuitem">
+        <div
+          class="menuitemchildren"
+          @mouseup="openSearchWindow"
+        >検索</div>
+      </div>
+      <div class="menuitem">
+        <div class="menuitemchildren">設定</div>
+      </div>
     </div>
   </div>
 </template>
@@ -56,10 +64,16 @@ export default {
   },
   methods: {
     ...mapActions(['setMenu']),
-    openSettingsMenu (e) {
-      this.$nextTick(() => {
-        this.isShowSettingMenu = !this.isShowSettingMenu
-      })
+    openSettingsMenu (e, type) {
+      if (this.isShowSettingMenu) {
+        this.isShowSettingMenu = false
+        return
+      }
+      this.$nextTick(() => { this.isShowSettingMenu = !this.isShowSettingMenu })
+    },
+    openSearchWindow (e) {
+      console.log('aaaaaaaa')
+      this.isShowSettingMenu = false
     },
     newToot () {
       const url = this.$router.resolve(`/newtoot/${this.userId}`).href
@@ -78,9 +92,7 @@ export default {
   },
   mounted () {
     window.addEventListener('click', (e) => {
-      if (e.srcElement.className.split && e.srcElement.className !== 'settingsMenu') {
-        this.isShowSettingMenu = false
-      }
+      this.isShowSettingMenu = false
     })
     window.addEventListener('keydown', (e) => {
       if (((e.ctrlKey || e.metaKey) && e.keyCode === keyCodeN)) {
@@ -107,9 +119,19 @@ export default {
 .settingsMenu {
   position: absolute;
   width: 100px;
-  height: 200px;
-  background-color: red;
-  bottom: 10px;
-  left: 50px;
+  background-color: #fefefe;
+  bottom: 30px;
+  left: 30px;
+  box-shadow: 2px 2px 4px gray;
+}
+.menuitemchildren {
+  width: 100%;
+  padding-left: 20px;
+}
+.menuitem {
+  font-size: 12px;
+}
+.menuitem:hover {
+  background-color: #aabbee;
 }
 </style>
