@@ -77,6 +77,15 @@ export default new Router({
         url: String(route.params.url)
       }),
       component: () => import('@/views/ImagePreview')
+    },
+    {
+      name: 'searchWindow',
+      path: '/search/:userId',
+      props: route => ({
+        userId: Number(route.params.userId),
+        word: String(route.query.word)
+      }),
+      component: () => import('@/views/Search')
     }
   ],
   mode: 'hash'

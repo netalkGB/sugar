@@ -394,42 +394,32 @@ export default (logger, windows) => {
     )
   })
   ipcMain.on('newWindow', (event, url, type) => {
-    if (type === 'newToot') {
+    const newWindow = (args) => {
+      const { width, height } = args
       windows.add(
         url,
         { url },
         {
-          width: 320,
-          height: 150
-        }
-      )
-    } else if (type === 'conversations') {
-      windows.add(
-        url,
-        { url },
-        {
-          width: 280,
-          height: 400
-        }
-      )
-    } else if (type === 'imagePreview') {
-      windows.add(
-        url,
-        { url },
-        {
-          width: 640,
-          height: 480
-        }
-      )
-    } else {
-      windows.add(
-        url,
-        { url },
-        {
-          width: 256,
-          height: 500
-        }
-      )
+          width,
+          height
+        })
+    }
+    switch (type) {
+      case 'newToot':
+        newWindow({ width: 320, height: 150 })
+        break
+      case 'conversations':
+        newWindow({ width: 280, height: 400 })
+        break
+      case 'imagePreview':
+        newWindow({ width: 640, height: 480 })
+        break
+      case 'searchWindow':
+        newWindow({ width: 256, height: 500 })
+        break
+      default:
+        newWindow({ width: 256, height: 500 })
+        break
     }
   })
 }
