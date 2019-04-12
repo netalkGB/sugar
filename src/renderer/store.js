@@ -4,6 +4,7 @@ import users from '@/stores/users'
 import timelines from '@/stores/timelines'
 import conversation from '@/stores/conversation'
 import profile from '@/stores/profile'
+import search from '@/stores/search'
 const NODE_ENV = window.NODE_ENV
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
     users,
     timelines,
     conversation,
-    profile
+    profile,
+    search
   }
 })
 export default store
