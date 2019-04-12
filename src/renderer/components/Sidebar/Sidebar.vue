@@ -72,7 +72,9 @@ export default {
       this.$nextTick(() => { this.isShowSettingMenu = !this.isShowSettingMenu })
     },
     openSearchWindow (e) {
-      console.log('aaaaaaaa')
+      const url = this.$router.resolve(`/search/${this.userId}`).href
+      const currentPath = localStorage.getItem('currentPath')
+      ipcRenderer.send('newWindow', `${currentPath}${url}`, 'searchWindow')
       this.isShowSettingMenu = false
     },
     newToot () {
