@@ -2,6 +2,7 @@
   <div class="searchBox">
     <input
       class="textbox"
+      type="search"
       v-model="query"
     >
     <MtButton
@@ -53,6 +54,9 @@ export default {
 }
 .textbox {
   width: calc(100% - 54px);
-  height: 20px;
+  height: 25px;
+}
+::-webkit-search-cancel-button {
+  color: black;
 }
 </style>
