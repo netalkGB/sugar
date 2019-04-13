@@ -1,18 +1,24 @@
 <template>
   <div class="searchBox">
     <input v-model="query">
-    <input
-      type="button"
-      @click="search"
-    >
+    <MtButton
+      @click.native="search"
+      type="submit"
+      :disabled="query.length <= 0"
+      class="searchButton"
+    >検索</MtButton>
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import MtButton from '@/components/Form/MtButton'
 const { mapActions } = createNamespacedHelpers('search')
 
 export default {
+  components: {
+    MtButton
+  },
   data () {
     return {
       query: ''
@@ -30,7 +36,10 @@ export default {
 
 <style scoped>
 .searchBox {
-  background-color: antiquewhite;
   height: 100%;
+}
+.searchButton {
+  height: 25px;
+  font-size: 11px;
 }
 </style>
