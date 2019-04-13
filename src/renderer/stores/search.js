@@ -7,7 +7,7 @@ export default {
   state: {
     accounts: [],
     timeline: [],
-    active: 'status'
+    active: 'user'
   },
   mutations: {
     setAccounts (state, accounts) {
