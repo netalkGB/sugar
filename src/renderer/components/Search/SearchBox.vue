@@ -32,7 +32,6 @@ export default {
   methods: {
     ...mapActions(['searchMastodon']),
     search () {
-      console.log(this.query)
       this.searchMastodon({ q: this.query })
     }
   }

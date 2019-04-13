@@ -38,7 +38,6 @@ export default {
     },
     searchMastodon ({ commit, state }, payload) {
       const currentUser = this.getters['users/getCurrentUser']
-      console.log(currentUser.host)
       const { accessToken, host } = currentUser
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
@@ -47,7 +46,6 @@ export default {
       return new Promise((resolve, reject) => {
         ipcRenderer.once('searchMastodon-success', (_, data) => {
           const { accounts, statuses } = data.result.data
-          console.log(data.result.data)
           commit('setTimeline', statuses.map(status => Toot.fromMastodon(status, ownUser)))
           commit('setAccounts', accounts.map(account =>
             Profile.fromAccount(account, ownFollowers, ownFollowings)
