@@ -33,11 +33,11 @@
         <div
           class="menuitemchildren"
           @mouseup="openSearchWindow"
-        >検索</div>
+        >ユーザ検索</div>
       </div>
-      <div class="menuitem">
+      <!-- <div class="menuitem">
         <div class="menuitemchildren">設定</div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
