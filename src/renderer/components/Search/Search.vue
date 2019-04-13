@@ -1,9 +1,6 @@
 <template>
   <div>
     <SearchBox style="height: 30px" />
-    <!-- <div style="height: calc(100% - 30px);">
-      {{accounts}}<br>{{timeline}}
-    </div> -->
     <UserList
       style="height: calc(100% - 30px);"
       :infiniteMode="false"
