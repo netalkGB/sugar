@@ -1,36 +1,61 @@
 <template>
-  <div><input v-model="query"><input
-      type="button"
-      @click="search"
-    >{{userId}}<br>{{accounts}}<br>{{timeline}}</div>
+  <div :style="{ width: width + 'px', height: height + 'px' }">
+    <Search class="searchContainer" />
+  </div>
 </template>
 
 <script>
-import { mapActions, createNamespacedHelpers } from 'vuex'
-const { mapState } = createNamespacedHelpers('search')
+import logger from '@/other/Logger'
+import Search from '@/components/Search/Search'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('users')
+
 export default {
   props: ['userId'],
-  methods: {
-    ...mapActions('users', ['setCurrentUserId', 'loadUserConfig']),
-    ...mapActions('search', ['searchMastodon']),
-    search () {
-      this.searchMastodon({ q: this.query })
-    }
+  components: {
+    Search
   },
   data () {
     return {
-      query: ''
+      width: 0,
+      height: 0
     }
   },
-  mounted () {
+  methods: {
+    ...mapActions(['setCurrentUserId', 'loadUserConfig'])
+  },
+  created () {
     this.loadUserConfig()
     this.setCurrentUserId(this.userId)
   },
-  computed: {
-    ...mapState({ accounts: state => state.accounts, timeline: state => state.timeline })
+  mounted () {
+    this.width = window.innerWidth
+    this.height = window.innerHeight
+    window.addEventListener('resize', e => {
+      this.width = window.innerWidth
+      this.height = window.innerHeight
+      logger.debug(this.width, this.height)
+    })
+    window.addEventListener('storage', event => {
+      if (event.key === 'user' + this.userId) {
+        const val = JSON.parse(event.newValue)
+        if (val.type === 'deleteToot') {
+          this.removeToot({ id: val.id })
+        }
+      }
+    })
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', () => { })
+    window.removeEventListener('storage', () => { })
   }
 }
 </script>
 
 <style scoped>
+.searchContainer {
+  font-size: 12px;
+  height: 100%;
+  width: 100%;
+}
 </style>
