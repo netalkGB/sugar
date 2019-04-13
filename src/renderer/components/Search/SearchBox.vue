@@ -1,6 +1,9 @@
 <template>
   <div class="searchBox">
-    <input v-model="query">
+    <input
+      class="textbox"
+      v-model="query"
+    >
     <MtButton
       @click.native="search"
       type="submit"
@@ -21,7 +24,8 @@ export default {
   },
   data () {
     return {
-      query: ''
+      query: '',
+      textboxWidth: 0
     }
   },
   methods: {
@@ -37,9 +41,18 @@ export default {
 <style scoped>
 .searchBox {
   height: 100%;
+  padding-left: 4px;
+  padding-right: 4px;
+  display: flex;
 }
 .searchButton {
   height: 25px;
+  width: 50px;
+  margin-left: 4px;
   font-size: 11px;
+}
+.textbox {
+  width: calc(100% - 54px);
+  height: 20px;
 }
 </style>
