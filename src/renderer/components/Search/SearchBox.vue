@@ -1,10 +1,10 @@
 <template>
   <div class="searchBox">
-    <input
+    <MtTextBox
       class="textbox"
       type="search"
       v-model="query"
-    >
+    />
     <MtButton
       @click.native="search"
       type="submit"
@@ -17,11 +17,13 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import MtButton from '@/components/Form/MtButton'
+import MtTextBox from '@/components/Form/MtTextBox'
 const { mapActions } = createNamespacedHelpers('search')
 
 export default {
   components: {
-    MtButton
+    MtButton,
+    MtTextBox
   },
   data () {
     return {
