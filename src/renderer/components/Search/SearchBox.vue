@@ -4,6 +4,7 @@
       class="textbox"
       type="search"
       v-model="query"
+      @cleared="clearList"
     />
     <MtButton
       @click.native="search"
@@ -32,9 +33,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['searchMastodon']),
+    ...mapActions(['searchMastodon', 'clearSearchList']),
     search () {
       this.searchMastodon({ q: this.query })
+    },
+    clearList () {
+      this.clearSearchList()
     }
   }
 }

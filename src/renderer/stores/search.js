@@ -25,6 +25,10 @@ export default {
     },
     setListType (state, type) {
       state.active = type
+    },
+    clear (state) {
+      state.timeline = []
+      state.accounts = []
     }
   },
   actions: {
@@ -35,6 +39,9 @@ export default {
     toggleListType ({ commit }, payload) {
       const type = payload.type
       commit('setListType', type)
+    },
+    clearSearchList ({ commit }) {
+      commit('clear')
     },
     searchMastodon ({ commit, state }, payload) {
       const currentUser = this.getters['users/getCurrentUser']
