@@ -4,6 +4,7 @@
       class="textbox"
       type="search"
       v-model="query"
+      placeholder="idまたはユーザ名"
       @cleared="clearList"
     />
     <MtButton
