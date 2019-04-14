@@ -60,7 +60,7 @@ export default {
     }
   },
   methods: {
-    setVal (value) {  
+    setVal (value) {
       this.val = value
     },
     focus () {
@@ -109,7 +109,7 @@ export default {
 .textBoxWrapper {
   display: inline-flex;
   border: 1px solid #bbbbbb;
-  width: 150px;
+  /* width: 150px; */
 }
 .textBoxWrapper:hover {
   box-shadow: 0 0px 3px rgba(0, 0, 0, 0.3);
