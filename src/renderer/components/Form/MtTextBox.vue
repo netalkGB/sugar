@@ -72,6 +72,7 @@ export default {
       }
       this.setVal('')
       this.focus()
+      this.$emit('cleared')
     }
   },
   data () {
