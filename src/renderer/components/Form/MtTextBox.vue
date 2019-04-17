@@ -110,6 +110,8 @@ export default {
 .textBoxWrapper {
   display: inline-flex;
   border: 1px solid #bbbbbb;
+  height: inherit;
+  padding: 0px;
 }
 .textBoxWrapper:hover {
   box-shadow: 0 0px 3px rgba(0, 0, 0, 0.3);
@@ -120,9 +122,11 @@ export default {
   padding: 3px 4px;
   border-radius: 2px;
   outline: none;
+  height: calc(inherit - 2px);
 }
 .textBox::placeholder {
   color: #aaaaaa;
+  font-size: 10px;
 }
 .searchTextBox {
   width: calc(100% - 20px);
