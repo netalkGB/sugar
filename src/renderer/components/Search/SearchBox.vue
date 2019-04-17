@@ -48,19 +48,17 @@ export default {
 <style scoped>
 .searchBox {
   height: 100%;
-  padding-left: 4px;
-  padding-right: 4px;
   display: flex;
 }
 .searchButton {
-  height: 25px;
+  height: 22px;
   width: 50px;
   margin-left: 4px;
-  font-size: 11px;
+  font-size: 10px;
 }
 .textbox {
   width: calc(100% - 54px);
-  height: 25px;
+  height: 20px;
 }
 ::-webkit-search-cancel-button {
   color: black;

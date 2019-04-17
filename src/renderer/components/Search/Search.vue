@@ -1,8 +1,10 @@
 <template>
   <div>
-    <SearchBox style="height: 30px" />
+    <div class="line">
+      <SearchBox style="height: 26px;padding: 4px;"/>
+    </div>
     <UserList
-      style="height: calc(100% - 30px);"
+      style="height: calc(100% - 35px);"
       :infiniteMode="false"
       :users="accounts"
     />
@@ -27,4 +29,9 @@ export default {
 </script>
 
 <style scoped>
+.line {
+  border-bottom: 1px solid #cccccc;
+  padding: 0px;
+}
+
 </style>
