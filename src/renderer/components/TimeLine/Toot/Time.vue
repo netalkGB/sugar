@@ -1,5 +1,9 @@
 <template>
-  <div class="time" @click="$emit('click')" :title="localTime">{{diffAndFormat}}</div>
+  <div
+    class="time"
+    @click="$emit('click')"
+    :title="localTime"
+  >{{diffAndFormat}}</div>
 </template>
 
 <script>
@@ -20,7 +24,7 @@ export default {
       const sec = diff / 1000
       const min = sec / 60
       if (min < 1) {
-        return Math.floor(sec) + 's'
+        return sec >= 0 ? Math.floor(sec) + 's' : 0 + 's'
       }
       const hour = min / 60
       if (hour < 1) {
