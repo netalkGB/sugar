@@ -31,6 +31,7 @@ export default {
       if (type === 'hashtag') {
         const { href, tag } = ev
         logger.debug('[hashtag]', href, tag)
+        ipcRenderer.send('openURL', href)
       } else if (type === 'user') {
         const { href } = ev
         logger.debug('[user]', href)
