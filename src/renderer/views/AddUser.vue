@@ -3,24 +3,18 @@
     <div id="main">
       <h1>ユーザを追加</h1>
       <h2>Step 1. ホスト名を入力してください</h2>
-      <input
-        placeholder="mstdn.jp"
-        v-model="host"
-      >
-      <p class="control">
-        <button @click="login">ログイン</button>
+      <p class="control" style="display:flex;">
+        <MtTextBox placeholder="mstdn.jp" v-model="host" class="textbox"></MtTextBox>
+        <MtButton @click.native="login">ログイン</MtButton>
       </p>
       <p v-if="invalidHostName">ホストに接続できません</p>
       <h2>Step 2. ブラウザが開くので表示されたPINコードをペーストしてください</h2>
-      <input
-        placeholder="PINコード"
-        v-model="pin"
-      >
-      <p class="control">
-        <button
+      <p class="control" style="display:flex;">
+        <MtTextBox placeholder="PINコード" v-model="pin" class="textbox"></MtTextBox>
+        <MtButton
           :disabled="!canPushDone"
-          @click="done"
-        >完了</button>
+          @click.native="done"
+        >完了</MtButton>
       </p>
       <p v-if="invalidPINCode">認証できませんでした</p>
     </div>
@@ -31,10 +25,17 @@
 import { createNamespacedHelpers } from 'vuex'
 import logger from '@/other/Logger'
 import contextMenu from '@/other/contextMenu'
+import MtTextBox from '@/components/Form/MtTextBox'
+import MtButton from '@/components/Form/MtButton'
+
 const { mapActions, mapGetters } = createNamespacedHelpers('users')
 const ipcRenderer = window.ipc
 const remote = window.remote
 export default {
+  components: {
+    MtTextBox,
+    MtButton
+  },
   data () {
     return {
       host: '',
@@ -103,10 +104,18 @@ export default {
 
 <style scoped>
 h2 {
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin-bottom: 4px;
+  margin-top: 4px;
 }
 #main {
-  margin: 24px;
+  margin: 7px;
+}
+.textbox {
+  height: 26px;
+  margin-right: 4px;
+}
+.button {
+  height:28px;
+  font-size: 12px;
 }
 </style>
