@@ -105,7 +105,7 @@ export default {
   props: ['toot'],
   data () {
     return {
-      showToot: false
+      showToot: true
     }
   },
   methods: {

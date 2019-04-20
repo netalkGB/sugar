@@ -106,6 +106,7 @@ describe('Toot', () => {
     expect(converted.mentions[0].url).toBe('https://www2.example.com/@netalkGB')
     expect(converted.mentions[0].acct).toBe('netalkGB')
     expect(converted.medium !== undefined).toBe(true)
+    expect(converted.warning).toBe(false)
   })
   it('should be convert correctly(notification-favorite))', () => {
     const toot = notificationData[1]
@@ -123,6 +124,7 @@ describe('Toot', () => {
     expect(converted.originalId).toBe('100946880147251231')
     expect(converted.visibility).toBe('public')
     expect(converted.medium !== undefined).toBe(true)
+    expect(converted.warning).toBe(false)
   })
   it('should be convert correctly(notification-boost))', () => {
     const toot = notificationData[2]
@@ -141,6 +143,7 @@ describe('Toot', () => {
     expect(converted.originalId).toBe('100901501511089762')
     expect(converted.visibility).toBe('public')
     expect(converted.medium !== undefined).toBe(true)
+    expect(converted.warning).toBe(false)
   })
   it('should be convert correctly(notification-follow))', () => {
     const toot = notificationData[3]
@@ -148,5 +151,24 @@ describe('Toot', () => {
     expect(converted.followedBy.userid).toBe('kazikituna')
     expect(converted.date.toString()).toBe(new Date(converted.date).toString())
     expect(converted.id).toBe('42837140')
+  })
+
+  it('should be convert correctly(notification-reply && cw))', () => {
+    const toot = notificationData[4]
+    const converted = Toot.fromMastodonNotification(toot)
+    expect(converted.warning).toBe(true)
+    expect(converted.warningComment).toBe('cw')
+  })
+  it('should be convert correctly(notification-favorite && cw))', () => {
+    const toot = notificationData[5]
+    const converted = Toot.fromMastodonNotification(toot)
+    expect(converted.warning).toBe(true)
+    expect(converted.warningComment).toBe('cw')
+  })
+  it('should be convert correctly(notification-boost && cw))', () => {
+    const toot = notificationData[6]
+    const converted = Toot.fromMastodonNotification(toot)
+    expect(converted.warning).toBe(true)
+    expect(converted.warningComment).toBe('cw')
   })
 })
