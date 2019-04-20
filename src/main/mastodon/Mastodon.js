@@ -54,8 +54,8 @@ export default class Mastodon {
   }
   fetchOwnFavouriteTimeline (appendParams) {
     let params = {}
-    if (appendParams && appendParams.maxID) {
-      params = { ...params, max_id: appendParams.maxID }
+    if (appendParams && appendParams.limit) {
+      params = { ...params, limit: appendParams.limit }
     }
     return this.mastodon.get('favourites', params)
   }
