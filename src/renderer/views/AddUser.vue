@@ -3,13 +3,13 @@
     <div id="main">
       <h1>ユーザを追加</h1>
       <h2>Step 1. ホスト名を入力してください</h2>
-      <p class="control" style="display:flex;">
+      <p class="control">
         <MtTextBox placeholder="mstdn.jp" v-model="host" class="textbox"></MtTextBox>
         <MtButton @click.native="login">ログイン</MtButton>
       </p>
       <p v-if="invalidHostName">ホストに接続できません</p>
       <h2>Step 2. ブラウザが開くので表示されたPINコードをペーストしてください</h2>
-      <p class="control" style="display:flex;">
+      <p class="control">
         <MtTextBox placeholder="PINコード" v-model="pin" class="textbox"></MtTextBox>
         <MtButton
           :disabled="!canPushDone"
@@ -117,5 +117,8 @@ h2 {
 .button {
   height:28px;
   font-size: 12px;
+}
+.control {
+  display:flex;
 }
 </style>
