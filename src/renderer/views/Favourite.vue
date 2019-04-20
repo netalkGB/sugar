@@ -1,18 +1,20 @@
 <template>
   <div :style="{ width: width + 'px', height: height + 'px' }">
-    <h1>fav</h1>
-    {{screenName}}
+    <Favourite class="favourite" />
   </div>
 </template>
 
 <script>
 import logger from '@/other/Logger'
+import Favourite from '@/components/Favourite/Favourite'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('users')
 
 export default {
   props: ['userId', 'screenName'],
-  components: {},
+  components: {
+    Favourite
+  },
   data () {
     return {
       width: 0,
@@ -55,5 +57,8 @@ export default {
   font-size: 12px;
   height: 100%;
   width: 100%;
+}
+.favourite {
+  height: 100%;
 }
 </style>
