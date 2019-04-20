@@ -97,6 +97,8 @@ export default class Toot {
       const favorited = data.status.favourited
       const boosted = data.status.reblogged
       const originalId = data.status.id
+      const warning = data.status.sensitive
+      const warningComment = data.status.spoiler_text
       const isTootByOwn = false
       let obj = {
         profile,
@@ -110,7 +112,9 @@ export default class Toot {
         favorited,
         boosted,
         originalId,
-        isTootByOwn
+        isTootByOwn,
+        warning,
+        warningComment
       }
       if (data.status.media_attachments) {
         obj = {
@@ -145,6 +149,8 @@ export default class Toot {
       const boostedBy = Profile.fromAccount(data.account)
       const originalId = data.status.id
       const isTootByOwn = true
+      const warning = data.status.sensitive
+      const warningComment = data.status.spoiler_text
       let obj = {
         profile,
         date,
@@ -158,7 +164,9 @@ export default class Toot {
         boosted,
         boostedBy,
         originalId,
-        isTootByOwn
+        isTootByOwn,
+        warning,
+        warningComment
       }
       if (data.status.media_attachments) {
         obj = {
@@ -193,6 +201,8 @@ export default class Toot {
       const favoritedBy = Profile.fromAccount(data.account)
       const originalId = data.status.id
       const isTootByOwn = true
+      const warning = data.status.sensitive
+      const warningComment = data.status.spoiler_text
       let obj = {
         profile,
         date,
@@ -206,7 +216,9 @@ export default class Toot {
         boosted,
         favoritedBy,
         originalId,
-        isTootByOwn
+        isTootByOwn,
+        warning,
+        warningComment
       }
       if (data.status.media_attachments) {
         obj = {
