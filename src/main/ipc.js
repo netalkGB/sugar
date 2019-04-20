@@ -417,6 +417,9 @@ export default (logger, windows) => {
       case 'searchWindow':
         newWindow({ width: 256, height: 500 })
         break
+      case 'favouriteWindow':
+        newWindow({ width: 256, height: 480 })
+        break
       default:
         newWindow({ width: 256, height: 500 })
         break

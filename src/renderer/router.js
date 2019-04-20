@@ -86,6 +86,15 @@ export default new Router({
         word: String(route.query.word)
       }),
       component: () => import('@/views/Search')
+    },
+    {
+      name: 'favouriteWindow',
+      path: '/favourite/:userId',
+      props: route => ({
+        userId: Number(route.params.userId),
+        screenName: String(route.query.screenName)
+      }),
+      component: () => import('@/views/Favourite')
     }
   ],
   mode: 'hash'

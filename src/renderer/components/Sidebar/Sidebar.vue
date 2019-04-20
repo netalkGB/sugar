@@ -35,6 +35,12 @@
           @mouseup="openSearchWindow"
         >ユーザ検索</div>
       </div>
+      <div class="menuitem">
+        <div
+          class="menuitemchildren"
+          @mouseup="openFavouriteWindow"
+        >お気に入り</div>
+      </div>
       <!-- <div class="menuitem">
         <div class="menuitemchildren">設定</div>
       </div> -->
@@ -75,6 +81,15 @@ export default {
       const url = this.$router.resolve(`/search/${this.userId}`).href
       const currentPath = localStorage.getItem('currentPath')
       ipcRenderer.send('newWindow', `${currentPath}${url}`, 'searchWindow')
+      this.isShowSettingMenu = false
+    },
+    openFavouriteWindow (e) {
+      const currentPath = localStorage.getItem('currentPath')
+      const currentUser = this.currentUser
+      const { user } = currentUser
+      const { userid } = user
+      const url = this.$router.resolve(`/favourite/${this.userId}?screenName=${userid}`).href
+      ipcRenderer.send('newWindow', `${currentPath}${url}`, 'favouriteWindow')
       this.isShowSettingMenu = false
     },
     newToot () {
