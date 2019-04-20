@@ -300,10 +300,9 @@ export default (logger, windows) => {
     }
   })
   ipcMain.on('fetchOwnFavourite', async (event, args) => {
-    const { host, accessToken, id, maxID } = args
+    const { host, accessToken, maxID } = args
     try {
       const result = await getClient(accessToken, host).fetchOwnFavouriteTimeline(
-        id,
         { maxID }
       )
       event.sender.send('fetchOwnFavouriteTimeline-success', {
