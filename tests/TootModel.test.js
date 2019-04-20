@@ -8,7 +8,7 @@ const user2 = Profile.fromAccount(tootData[2].reblog.account)
 const user3 = Profile.fromAccount(tootData[3].account)
 
 describe('Toot', () => {
-  it('should be convert correctly', () => {
+  it('should be convert correctly(normal)', () => {
     const toot = tootData[0]
     let converted = Toot.fromMastodon(toot, user)
     expect(converted.profile.userid).toBe('netalkGB@example.com')
@@ -26,6 +26,7 @@ describe('Toot', () => {
     expect(converted.medium !== undefined).toBe(true)
     converted = Toot.fromMastodon(toot, user2)
     expect(converted.isTootByOwn).toBe(false)
+    expect(converted.warning).toBe(false)
   })
   it('should be convert correctly(reblog))', () => {
     const toot = tootData[2]
@@ -71,6 +72,20 @@ describe('Toot', () => {
     expect(converted.mentions[0].acct).toBe('kaziki')
     expect(converted.medium !== undefined).toBe(true)
   })
+
+  it('should be convert correctly(normal && cw )', () => {
+    const toot = tootData[4]
+    const converted = Toot.fromMastodon(toot, user)
+    expect(converted.warning).toBe(true)
+    expect(converted.warningComment).toBe('!!!warning!!!')
+  })
+  it('should be convert correctly(reblog && cw))', () => {
+    const toot = tootData[5]
+    const converted = Toot.fromMastodon(toot, user)
+    expect(converted.warning).toBe(true)
+    expect(converted.warningComment).toBe('!!warning!!')
+  })
+
   it('should be convert correctly(notification-reply))', () => {
     const toot = notificationData[0]
     const converted = Toot.fromMastodonNotification(toot)
