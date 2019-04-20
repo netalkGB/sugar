@@ -63,6 +63,7 @@ import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
 import Bot from '@/components/Profile/Bot'
 import Fields from '@/components/Profile/Fields'
 import FollowStatus from '@/components/Profile/FollowStatus'
+import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import logger from '@/other/Logger'
 const ipcRenderer = window.ipc
 export default {
@@ -71,7 +72,8 @@ export default {
     MastodonHTML,
     Bot,
     Fields,
-    FollowStatus
+    FollowStatus,
+    IosLockIcon
   },
   methods: {
     handleClick (ev) {
