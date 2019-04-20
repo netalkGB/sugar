@@ -29,27 +29,32 @@
             :date="toot.date"
           />
         </div>
-        <TlText
-          class="text"
-          :content="toot.content"
-          :mentions="toot.mentions"
-        />
-        <Images
-          v-if="toot.medium.length > 0"
-          :medium="toot.medium"
-        />
-        <Action
-          :isTootByOwn="toot.isTootByOwn"
-          :userid="toot.profile.userid"
-          :id="toot.originalId"
-          :favorited="toot.favorited"
-          :boosted="toot.boosted"
-          :visibility="toot.visibility"
-          :favoritesCount="toot.favoritesCount"
-          :boostsCount="toot.boostsCount"
-          :repliesCount="toot.repliesCount"
-          :mentions="toot.mentions"
-        />
+        <template v-if="showToot === true">
+          <TlText
+            class="text"
+            :content="toot.content"
+            :mentions="toot.mentions"
+          />
+          <Images
+            v-if="toot.medium.length > 0"
+            :medium="toot.medium"
+          />
+          <Action
+            :isTootByOwn="toot.isTootByOwn"
+            :userid="toot.profile.userid"
+            :id="toot.originalId"
+            :favorited="toot.favorited"
+            :boosted="toot.boosted"
+            :visibility="toot.visibility"
+            :favoritesCount="toot.favoritesCount"
+            :boostsCount="toot.boostsCount"
+            :repliesCount="toot.repliesCount"
+            :mentions="toot.mentions"
+          />
+        </template>
+        <template v-else>
+          <Warning @click.native="showToot = true" :reason="toot.warningComment"/>
+        </template>
       </div>
     </div>
   </div>
@@ -89,14 +94,20 @@ import ProfileImage from '@/components/TimeLine/Toot/ProfileImage'
 import Profile from '@/components/TimeLine/Toot/Profile'
 import Time from '@/components/TimeLine/Toot/Time'
 import TlText from '@/components/TimeLine/Toot/TlText'
+import Warning from '@/components/TimeLine/Toot/Warning'
 import Action from '@/components/TimeLine/Toot/Action'
 import Images from '@/components/TimeLine/Toot/Images'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('timelines')
 
 export default {
-  components: { BoostedBy, FavoritedBy, FollowedBy, ProfileImage, Profile, Time, TlText, Action, Images },
+  components: { BoostedBy, FavoritedBy, FollowedBy, ProfileImage, Profile, Time, TlText, Action, Images, Warning },
   props: ['toot'],
+  data () {
+    return {
+      showToot: false
+    }
+  },
   methods: {
     ...mapActions(['conversation', 'profile']),
     openConversation () {
@@ -107,6 +118,9 @@ export default {
       const internalid = profile.internalid
       this.profile({ internalid })
     }
+  },
+  created () {
+    this.showToot = this.toot.warning === false
   }
 }
 </script>

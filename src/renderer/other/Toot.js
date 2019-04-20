@@ -19,6 +19,8 @@ export default class Toot {
     this.originalId = args.originalId
     this.isTootByOwn = args.isTootByOwn
     this.mentions = args.mentions
+    this.warning = args.warning
+    this.warningComment = args.warningComment
   }
   static fromMastodon (data, ownUser) {
     let item
@@ -39,6 +41,8 @@ export default class Toot {
     const favorited = item.favourited
     const boosted = item.reblogged
     const isTootByOwn = ownUser && ownUser.userid === profile.userid
+    const warning = item.sensitive
+    const warningComment = item.spoiler_text
     let obj = {
       profile,
       date,
@@ -51,7 +55,9 @@ export default class Toot {
       favorited,
       boosted,
       originalId,
-      isTootByOwn
+      isTootByOwn,
+      warning,
+      warningComment
     }
     if (item.mentions) {
       const mentions = item.mentions.map(m => ({
