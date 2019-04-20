@@ -41,6 +41,12 @@
           @mouseup="openFavouriteWindow"
         >お気に入り</div>
       </div>
+      <div class="menuitem">
+        <div
+          class="menuitemchildren"
+          @mouseup="openOwnProfileWindow"
+        >@{{currentUser.user.userid}}</div>
+      </div>
       <!-- <div class="menuitem">
         <div class="menuitemchildren">設定</div>
       </div> -->
@@ -52,8 +58,8 @@
 import SortableMenu from '@/components/Sidebar/SortableMenu'
 import Icon from '@/components/Sidebar/Icon'
 import logger from '@/other/Logger'
-import { createNamespacedHelpers } from 'vuex'
-const { mapGetters, mapActions } = createNamespacedHelpers('users')
+import { createNamespacedHelpers, mapActions } from 'vuex'
+const { mapGetters } = createNamespacedHelpers('users')
 const ipcRenderer = window.ipc
 const keyCodeN = 78
 export default {
@@ -69,7 +75,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setMenu']),
+    ...mapActions('users', ['setMenu']),
+    ...mapActions('timelines', ['profile']),
     openSettingsMenu (e, type) {
       if (this.isShowSettingMenu) {
         this.isShowSettingMenu = false
@@ -91,6 +98,10 @@ export default {
       const url = this.$router.resolve(`/favourite/${this.userId}?screenName=${userid}`).href
       ipcRenderer.send('newWindow', `${currentPath}${url}`, 'favouriteWindow')
       this.isShowSettingMenu = false
+    },
+    openOwnProfileWindow () {
+      const { internalid } = this.currentUser.user
+      this.profile({ internalid })
     },
     newToot () {
       const url = this.$router.resolve(`/newtoot/${this.userId}`).href
