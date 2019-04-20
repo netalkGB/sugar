@@ -299,6 +299,27 @@ export default (logger, windows) => {
       })
     }
   })
+  ipcMain.on('fetchOwnFavourite', async (event, args) => {
+    const { host, accessToken, id, maxID } = args
+    try {
+      const result = await getClient(accessToken, host).fetchOwnFavouriteTimeline(
+        id,
+        { maxID }
+      )
+      event.sender.send('fetchOwnFavouriteTimeline-success', {
+        result,
+        host,
+        accessToken
+      })
+    } catch (e) {
+      const { message, name } = e
+      event.sender.send('fetchOwnFavouriteTimeline-error', {
+        error: { message, name },
+        host,
+        accessToken
+      })
+    }
+  })
   ipcMain.on('fetchProfileFollowers', async (event, args) => {
     const { host, accessToken, id, limit } = args
     try {

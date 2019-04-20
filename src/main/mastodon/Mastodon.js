@@ -52,6 +52,13 @@ export default class Mastodon {
     const params = { q }
     return this.mastodon2.get('search', params)
   }
+  fetchOwnFavouriteTimeline (appendParams) {
+    let params = {}
+    if (appendParams && appendParams.maxID) {
+      params = { ...params, max_id: appendParams.maxID }
+    }
+    return this.mastodon.get('favourites', params)
+  }
   fetchProfileTimeline (id, appendParams) {
     let params = {}
     if (appendParams && appendParams.maxID) {
