@@ -120,7 +120,7 @@ const main = async () => {
   try {
     const files = [
       nameVersion + `linux-x64.tar.gz`,
-      nameVersion + `linux-ia32.tar.gz`,
+      // nameVersion + `linux-ia32.tar.gz`,
       nameVersion + `linux-armv7l.tar.gz`,
       nameVersion + `linux-arm64.tar.gz`,
       nameVersion + `win32-ia32.zip`,
