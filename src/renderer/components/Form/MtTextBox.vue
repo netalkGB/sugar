@@ -112,6 +112,7 @@ export default {
   border: 1px solid #bbbbbb;
   height: inherit;
   padding: 0px;
+  width: 100%;
 }
 .textBoxWrapper:hover {
   box-shadow: 0 0px 3px rgba(0, 0, 0, 0.3);
