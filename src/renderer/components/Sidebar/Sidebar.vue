@@ -120,7 +120,12 @@ export default {
   },
   mounted () {
     window.addEventListener('click', (e) => {
-      this.isShowSettingMenu = false
+      const { path } = e
+      const firstElem = path[0]
+      const firstElemTagName = firstElem.tagName
+      if (!(firstElemTagName === 'path' || firstElemTagName === 'svg')) {
+        this.isShowSettingMenu = false
+      }
     })
     window.addEventListener('keydown', (e) => {
       if (((e.ctrlKey || e.metaKey) && e.keyCode === keyCodeN)) {
