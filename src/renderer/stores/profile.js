@@ -1,6 +1,7 @@
 import Profile from '@/other/Profile'
 import Toot from '@/other/Toot'
-const ipcRenderer = window.ipc
+import Mastodon from '../other/Mastodon'
+// const ipcRenderer = window.ipc
 
 const userCountlimit = '1000'
 
@@ -54,22 +55,26 @@ export default {
       const type = payload.type
       commit('setListType', type)
     },
-    async fetchProfile ({ commit }, { internalId }) {
+    fetchProfile ({ commit }, { internalId }) {
       const currentUser = this.getters['users/getCurrentUser']
       const { accessToken, host } = currentUser
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
-      return new Promise((resolve, reject) => {
-        ipcRenderer.send('fetchProfile', { host, accessToken, id: internalId })
-        ipcRenderer.once('fetchProfile-success', (_, data) => {
-          const account = data.result.data
+      return new Promise(async (resolve, reject) => {
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.fetchProfile(internalId).then(result => {
+          const account = result.data
           commit('setProfile', {
             profile: Profile.fromAccount(account, ownFollowers, ownFollowings)
           })
           resolve()
-        })
-        ipcRenderer.once('fetchProfile-error', (_, e) => {
-          reject(e)
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
       })
     },
@@ -78,25 +83,26 @@ export default {
       const { accessToken, host } = currentUser
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
-
+      const mastodon = new Mastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
-        ipcRenderer.send('fetchProfileFollowing', {
-          host,
-          accessToken,
-          id: internalId,
-          limit: userCountlimit
-        })
-        ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
-          const following = data.result.data
+        mastodon.fetchProfileFollowing(
+          internalId,
+          { limit: userCountlimit }
+        ).then(result => {
+          const following = result.data
           commit('setFollowing', {
             following: following.map(account =>
               Profile.fromAccount(account, ownFollowers, ownFollowings)
             )
           })
           resolve()
-        })
-        ipcRenderer.once('fetchProfileFollowing-error', (_, e) => {
-          reject(e)
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
       })
     },
@@ -105,66 +111,66 @@ export default {
       const { accessToken, host } = currentUser
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
-
+      const mastodon = new Mastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
-        ipcRenderer.send('fetchProfileFollowers', {
-          host,
-          accessToken,
-          id: internalId,
-          limit: userCountlimit
-        })
-        ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
-          const followers = data.result.data
+        mastodon.fetchProfileFollowers(
+          internalId,
+          { limit: userCountlimit }
+        ).then(result => {
+          const followers = result.data
           commit('setFollowers', {
             followers: followers.map(account =>
               Profile.fromAccount(account, ownFollowers, ownFollowings)
             )
           })
           resolve()
-        })
-        ipcRenderer.once('fetchProfileFollowers-error', (_, e) => {
-          reject(e)
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
       })
     },
     async fetchProfileTimeline ({ commit }, { internalId }) {
       const { accessToken, host, user } = this.getters['users/getCurrentUser']
+      const mastodon = new Mastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
-        ipcRenderer.send('fetchProfileTimeline', {
-          host,
-          accessToken,
-          id: internalId
-        })
-        ipcRenderer.once('fetchProfileTimeline-success', (_, data) => {
-          const toots = data.result.data
+        mastodon.fetchProfileTimeline(internalId).then(result => {
+          const toots = result.data
           commit('setTimeline', {
             timeline: toots.map(d => Toot.fromMastodon(d, user))
           })
           resolve()
-        })
-        ipcRenderer.once('fetchProfileTimeline-error', (_, e) => {
-          reject(e)
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
       })
     },
     async loadOldToot ({ commit }, { internalId, maxID }) {
       const { accessToken, host } = this.getters['users/getCurrentUser']
+      const mastodon = new Mastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
-        ipcRenderer.send('fetchProfileTimeline', {
-          host,
-          accessToken,
-          id: internalId,
-          maxID
-        })
-        ipcRenderer.once('fetchProfileTimeline-success', (_, data) => {
-          const toots = data.result.data
+        mastodon.fetchProfileTimeline(internalId, { maxID }).then(result => {
+          const toots = result.data
           commit('appendTimeline', {
             timeline: toots.map(d => Toot.fromMastodon(d))
           })
           resolve()
-        })
-        ipcRenderer.once('fetchProfileTimeline-error', (_, e) => {
-          reject(e)
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
       })
     }
