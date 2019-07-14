@@ -60,7 +60,7 @@ export default {
       const { accessToken, host } = currentUser
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const mastodon = new Mastodon({ accessToken, host })
         mastodon.fetchProfile(internalId).then(result => {
           const account = result.data
