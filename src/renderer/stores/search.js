@@ -1,6 +1,7 @@
 import Profile from '@/other/Profile'
 import Toot from '@/other/Toot'
-const ipcRenderer = window.ipc
+import Mastodon from '../other/Mastodon'
+// const ipcRenderer = window.ipc
 
 export default {
   namespaced: true,
@@ -51,18 +52,24 @@ export default {
       const ownUser = currentUser.user
       const { q } = payload
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('searchMastodon-success', (_, data) => {
-          const { accounts, statuses } = data.result.data
+        console.log('aaaa')
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.searchMastodon(q).then(result => {
+          console.log(result)
+          const { accounts, statuses } = result.data
           commit('setTimeline', statuses.map(status => Toot.fromMastodon(status, ownUser)))
           commit('setAccounts', accounts.map(account =>
             Profile.fromAccount(account, ownFollowers, ownFollowings)
           ))
           resolve()
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
-        ipcRenderer.once('searchMastodon-error', (_, e) => {
-          reject(e)
-        })
-        ipcRenderer.send('searchMastodon', { host, accessToken, q })
       })
     }
   }
