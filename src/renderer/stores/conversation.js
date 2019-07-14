@@ -1,27 +1,36 @@
 import logger from '@/other/Logger'
 import Toot from '@/other/Toot'
-const ipcRenderer = window.ipc
+import Mastodon from '../other/Mastodon'
+// const ipcRenderer = window.ipc
 
 function loadToot ({ host, accessToken, id }) {
   return new Promise((resolve, reject) => {
-    ipcRenderer.send('fetchToot', { host, accessToken, id })
-    ipcRenderer.once('fetchToot-success', (_, data) => {
-      resolve(data)
-    })
-    ipcRenderer.once('fetchToot-error', (_, e) => {
-      reject(e)
+    const mastodon = new Mastodon({ accessToken, host })
+    mastodon.fetchToot(id).then(result => {
+      resolve(result)
+    }).catch(e => {
+      const returnErr = {
+        error: e,
+        host,
+        accessToken
+      }
+      reject(returnErr)
     })
   })
 }
 
 function loadContext ({ host, accessToken, id }) {
   return new Promise((resolve, reject) => {
-    ipcRenderer.send('fetchContext', { host, accessToken, id })
-    ipcRenderer.once('fetchContext-success', (_, data) => {
-      resolve(data)
-    })
-    ipcRenderer.once('fetchContext-error', (_, e) => {
-      reject(e)
+    const mastodon = new Mastodon({ accessToken, host })
+    mastodon.fetchContext(id).then(result => {
+      resolve(result)
+    }).catch(e => {
+      const returnErr = {
+        error: e,
+        host,
+        accessToken
+      }
+      reject(returnErr)
     })
   })
 }
@@ -64,11 +73,11 @@ export default {
         loadContext({ accessToken, host, id: tootId })
       ])
       let data = [
-        ...context.result.data.ancestors.map(item =>
+        ...context.data.ancestors.map(item =>
           Toot.fromMastodon(item, user)
         ),
-        Toot.fromMastodon(toot.result.data, user),
-        ...context.result.data.descendants.map(item =>
+        Toot.fromMastodon(toot.data, user),
+        ...context.data.descendants.map(item =>
           Toot.fromMastodon(item, user)
         )
       ]
