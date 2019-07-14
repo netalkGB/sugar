@@ -1,6 +1,8 @@
 import logger from '@/other/Logger'
 import Profile from '@/other/Profile'
-const ipcRenderer = window.ipc
+import Mastodon from '../other/Mastodon'
+
+// const ipcRenderer = window.ipc
 
 const userCountlimit = '1000'
 
@@ -103,91 +105,88 @@ export default {
     fetchOwnFollower ({ commit, getters }) {
       const { accessToken, host, user } = getters['getCurrentUser']
       const { internalid } = user
-      ipcRenderer.send('fetchProfileFollowers', {
-        host,
-        accessToken,
-        id: internalid,
-        limit: userCountlimit
-      })
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('fetchProfileFollowers-success', (_, data) => {
-          const followers = data.result.data
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.fetchProfileFollowers(
+          internalid,
+          { limit: userCountlimit }
+        ).then(followers => {
           commit(
             'setOwnFollowers',
             followers.map(follower => Profile.fromAccount(follower))
           )
           resolve()
-        })
-        ipcRenderer.once('fetchProfileFollowers-error', (_, e) => {
-          logger.error(e)
-          reject(e)
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
       })
     },
     fetchOwnFollowing ({ commit, getters }) {
       const { accessToken, host, user } = getters['getCurrentUser']
       const { internalid } = user
-      ipcRenderer.send('fetchProfileFollowing', {
-        host,
-        accessToken,
-        id: internalid,
-        limit: userCountlimit
-      })
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('fetchProfileFollowing-success', (_, data) => {
-          const followings = data.result.data
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.fetchProfileFollowing(
+          internalid,
+          { limit: userCountlimit }
+        ).then(followings => {
           logger.debug(followings)
           commit(
             'setOwnFollowings',
             followings.map(follow => Profile.fromAccount(follow))
           )
           resolve()
-        })
-        ipcRenderer.once('fetchProfileFollowing-error', (_, e) => {
-          logger.error(e)
-          reject(e)
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
       })
     },
     addUser ({ commit }, payload) {
-      return new Promise((resolve, reject) => {
-        ipcRenderer.once('login2-success', (_, tokens) => {
-          const { clientId, clientSecret, accessToken, host } = tokens
-          ipcRenderer.once('fetchOwnAccount-success', (ev, user) => {
-            if (user.resp.statusCode !== 200) {
-              reject(user)
-              return
-            }
-            commit('add', {
-              clientId,
-              clientSecret,
-              accessToken,
-              host,
-              user: Profile.fromAccount(user.data)
-            })
-            resolve()
+      const { clientId, clientSecret, pin, host } = payload
+      return new Promise(async (resolve, reject) => {
+        let accessToken
+        try {
+          accessToken = await Mastodon.loginPhase2(
+            clientId,
+            clientSecret,
+            pin,
+            host
+          )
+          const mastodon = new Mastodon({ accessToken, host })
+          const result = await mastodon.fetchOwnAccount()
+          if (result.resp.statusCode !== 200) {
+            reject(result)
+          }
+          commit('add', {
+            clientId,
+            clientSecret,
+            accessToken,
+            host,
+            user: Profile.fromAccount(result.data)
           })
-          ipcRenderer.once('fetchOwnAccount-error', (_, e) => {
-            reject(e)
-          })
-          ipcRenderer.send('fetchOwnAccount', { host, accessToken })
-        })
-        ipcRenderer.once('login2-error', (_, e) => {
-          reject(e)
-        })
-        ipcRenderer.send('login2', payload)
+          resolve()
+        } catch (e) {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
+        }
       })
     },
     getPIN (_, host) {
-      return new Promise((resolve, reject) => {
-        ipcRenderer.once('login-success', (_, obj) => {
-          resolve(obj)
-        })
-        ipcRenderer.once('login-error', (_, e) => {
-          reject(e)
-        })
-        ipcRenderer.send('login', host)
-      })
+      return Mastodon.loginPhase1(host)
     }
   }
 }
