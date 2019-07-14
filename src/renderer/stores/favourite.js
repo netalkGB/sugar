@@ -1,5 +1,6 @@
 import Toot from '@/other/Toot'
-const ipcRenderer = window.ipc
+import Mastodon from '../other/Mastodon'
+// const ipcRenderer = window.ipc
 const limit = 100
 export default {
   namespaced: true,
@@ -28,15 +29,21 @@ export default {
       const { accessToken, host } = currentUser
       const ownUser = currentUser.user
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('fetchOwnFavouriteTimeline-success', (_, data) => {
-          const statuses = data.result.data
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.fetchOwnFavouriteTimeline(
+          { limit }
+        ).then(result => {
+          const statuses = result.data
           commit('setTimeline', statuses.map(status => Toot.fromMastodon(status, ownUser)))
           resolve()
+        }).catch(e => {
+          const returnErr = {
+            error: e,
+            host,
+            accessToken
+          }
+          reject(returnErr)
         })
-        ipcRenderer.once('fetchOwnFavouriteTimeline-error', (_, e) => {
-          reject(e)
-        })
-        ipcRenderer.send('fetchOwnFavouriteTimeline', { host, accessToken, limit })
       })
     }
   }
