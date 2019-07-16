@@ -1,5 +1,7 @@
 import Toot from '@/other/Toot'
 import TimelineType from '@/other/TimelineType'
+import Mastodon from '../other/Mastodon'
+
 const ipcRenderer = window.ipc
 
 const upperLimitToot = 50
@@ -231,69 +233,62 @@ export default {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('boost-success', (_, data) => {
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.boost(id).then(result => {
           commit('setBoost', { host, accessToken, id, to: true })
-          resolve(data)
-        })
-        ipcRenderer.once('boost-error', (_, e) => {
+          resolve(result)
+        }).catch(e => {
           reject(e)
         })
-        ipcRenderer.send('boost', { host, accessToken, id })
       })
     },
     unBoost ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('unBoost-success', (_, data) => {
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.unBoost(id).then(result => {
           commit('setBoost', { host, accessToken, id, to: false })
-          resolve(data)
-        })
-        ipcRenderer.once('unBoost-error', (_, e) => {
+          resolve(result)
+        }).catch(e => {
           reject(e)
         })
-        ipcRenderer.send('unBoost', { host, accessToken, id })
       })
     },
     deleteOwnToot ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('deleteOwnToot-success', (_, data) => {
-          resolve()
-        })
-        ipcRenderer.once('deleteOwnToot-error', (_, e) => {
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.deleteOwnToot(id).then(result => {
+          resolve(result)
+        }).catch(e => {
           reject(e)
         })
-        ipcRenderer.send('deleteOwnToot', { host, accessToken, id })
       })
     },
     favorite ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('favorite-success', (_, data) => {
-          commit('setFavorite', { host, accessToken, id, to: true })
-          resolve(data)
-        })
-        ipcRenderer.once('favorite-error', (_, e) => {
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.favorite(id).then(result => {
+          resolve(result)
+        }).catch(e => {
           reject(e)
         })
-        ipcRenderer.send('favorite', { host, accessToken, id })
       })
     },
     unFavorite ({ commit, state }, payload) {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        ipcRenderer.once('unFavorite-success', (_, data) => {
-          commit('setFavorite', { host, accessToken, id, to: false })
-          resolve(data)
-        })
-        ipcRenderer.once('unFavorite-error', (_, e) => {
+        const mastodon = new Mastodon({ accessToken, host })
+        mastodon.unFavorite(id).then(result => {
+          resolve(result)
+        }).catch(e => {
           reject(e)
         })
-        ipcRenderer.send('unFavorite', { host, accessToken, id })
       })
     },
     loadOldToot ({ commit, state }, payload) {
@@ -301,74 +296,71 @@ export default {
       const { type, maxID } = payload
       if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchHomeTimeline-success', (_, data) => {
+          const mastodon = new Mastodon({ accessToken, host })
+          mastodon.fetchHomeTimeline({ maxID }).then(result => {
             commit('appendTootsTimeline', {
               host,
               accessToken,
               user,
               type,
               maxID,
-              data
+              data: result
             })
             resolve()
-          })
-          ipcRenderer.once('fetchHomeTimeline-error', (_, e) => {
+          }).catch(e => {
             reject(e)
           })
-          ipcRenderer.send('fetchHomeTimeline', { host, accessToken, maxID })
         })
       } else if (type === TimelineType.localtl) {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchLocalTimeline-success', (_, data) => {
+          const mastodon = new Mastodon({ accessToken, host })
+          mastodon.fetchLocalTimeline({ maxID }).then(result => {
             commit('appendTootsTimeline', {
               host,
               accessToken,
               user,
               type,
               maxID,
-              data
+              data: result
             })
             resolve()
-          })
-          ipcRenderer.once('fetchLocalTimeline-error', (_, e) => {
+          }).catch(e => {
             reject(e)
           })
-          ipcRenderer.send('fetchLocalTimeline', { host, accessToken, maxID })
         })
       } else if (type === TimelineType.publictl) {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchPublicTimeline-success', (_, data) => {
+          const mastodon = new Mastodon({ accessToken, host })
+          mastodon.fetchPublicTimeline({ maxID }).then(result => {
             commit('appendTootsTimeline', {
               host,
               accessToken,
               user,
               type,
               maxID,
-              data
+              data: result
             })
             resolve()
-          })
-          ipcRenderer.once('fetchPublicTimeline-error', (_, e) => {
+          }).catch(e => {
             reject(e)
           })
-          ipcRenderer.send('fetchPublicTimeline', { host, accessToken, maxID })
         })
       } else {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchNotification-success', (_, data) => {
+          const mastodon = new Mastodon({ accessToken, host })
+          mastodon.fetchNotification({ maxID }).then(result => {
             commit('appendNotificationTimeline', {
               host,
               accessToken,
               user,
+              type,
               maxID,
-              data
+              data: result
             })
             resolve()
-          })
-          ipcRenderer.once('fetchNotification-error', (_, e) => {
+          }).catch(e => {
             reject(e)
           })
-          ipcRenderer.send('fetchNotification', { host, accessToken, maxID })
         })
       }
     },
@@ -377,83 +369,73 @@ export default {
       const { type } = payload
       if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchHomeTimeline-success', (_, data) => {
-            commit('setTimeline', { host, accessToken, type, data, user })
-            resolve()
-          })
-          ipcRenderer.once('fetchHomeTimeline-error', (_, e) => {
-            reject(e)
-          })
           if (
             !state.timelines.find(
               tl =>
                 tl.type === type &&
-                tl.accessToken === accessToken &&
-                tl.type === type
-            )
+                tl.accessToken === accessToken)
           ) {
-            ipcRenderer.send('fetchHomeTimeline', { host, accessToken })
+            const mastodon = new Mastodon({ accessToken, host })
+            mastodon.fetchHomeTimeline().then(result => {
+              commit('setTimeline', { host, accessToken, type, data: result, user })
+              resolve()
+            }).catch(e => {
+              reject(e)
+            })
           }
         })
       } else if (type === TimelineType.localtl) {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchLocalTimeline-success', (_, data) => {
-            commit('setTimeline', { host, accessToken, type, data })
-            resolve()
-          })
-          ipcRenderer.once('fetchLoclaTimeline-error', (_, e) => {
-            reject(e)
-          })
           if (
             !state.timelines.find(
               tl =>
                 tl.type === type &&
-                tl.accessToken === accessToken &&
-                tl.type === type
-            )
+                tl.accessToken === accessToken)
           ) {
-            ipcRenderer.send('fetchLocalTimeline', { host, accessToken })
+            const mastodon = new Mastodon({ accessToken, host })
+            mastodon.fetchLocalTimeline().then(result => {
+              commit('setTimeline', { host, accessToken, type, data: result, user })
+              resolve()
+            }).catch(e => {
+              reject(e)
+            })
           }
         })
       } else if (type === TimelineType.publictl) {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchPublicTimeline-success', (_, data) => {
-            commit('setTimeline', { host, accessToken, type, data })
-            resolve()
-          })
-          ipcRenderer.once('fetchPublicTimeline-error', (_, e) => {
-            reject(e)
-          })
           if (
             !state.timelines.find(
               tl =>
                 tl.type === type &&
-                tl.accessToken === accessToken &&
-                tl.type === type
-            )
+                tl.accessToken === accessToken)
           ) {
-            ipcRenderer.send('fetchPublicTimeline', { host, accessToken })
+            const mastodon = new Mastodon({ accessToken, host })
+            mastodon.fetchPublicTimeline().then(result => {
+              commit('setTimeline', { host, accessToken, type, data: result, user })
+              resolve()
+            }).catch(e => {
+              reject(e)
+            })
           }
         })
       } else {
         return new Promise((resolve, reject) => {
-          ipcRenderer.once('fetchNotification-success', (_, data) => {
-            commit('setTimeline', { host, accessToken, type, data })
-            resolve()
+          return new Promise((resolve, reject) => {
+            if (
+              !state.timelines.find(
+                tl =>
+                  tl.type === type &&
+                  tl.accessToken === accessToken)
+            ) {
+              const mastodon = new Mastodon({ accessToken, host })
+              mastodon.fetchNotification().then(result => {
+                commit('setTimeline', { host, accessToken, type, data: result, user })
+                resolve()
+              }).catch(e => {
+                reject(e)
+              })
+            }
           })
-          ipcRenderer.once('fetchNotification-error', (_, e) => {
-            reject(e)
-          })
-          if (
-            !state.timelines.find(
-              tl =>
-                tl.type === type &&
-                tl.accessToken === accessToken &&
-                tl.type === type
-            )
-          ) {
-            ipcRenderer.send('fetchNotification', { host, accessToken })
-          }
         })
       }
     },
@@ -462,100 +444,106 @@ export default {
       const { host, accessToken, user } = this.getters['users/getCurrentUser']
       const userNum = this.getters['users/getCurrentUserId']
       if (type === TimelineType.hometl) {
-        return new Promise((resolve, reject) => {
-          ipcRenderer.once('streamHomeTimeline-error', (_, e) => {
-            reject(e)
-          })
-          ipcRenderer.on('streamHomeTimeline-onError', (_, e) => {
-            reject(e)
-          })
-          ipcRenderer.on('streamHomeTimeline-onMessage', (e, msg) => {
-            if (msg.event === 'update') {
-              const data = msg.data
-              commit('prependTootTimeline', {
-                host,
-                accessToken,
-                type,
-                data,
-                user
-              })
-              commit('cleaningTl', { host, accessToken })
-            } else if (msg.event === 'delete') {
-              const id = msg.data
+        return new Promise(async (resolve, reject) => {
+          try {
+            const mastodon = new Mastodon({ accessToken, host })
+            const stream = await mastodon.streamHomeTimeline()
+            stream.on('message', msg => {
+              if (msg.event === 'update') {
+                const data = msg.data
+                commit('prependTootTimeline', {
+                  host,
+                  accessToken,
+                  type,
+                  data,
+                  user
+                })
+                commit('cleaningTl', { host, accessToken })
+              } else if (msg.event === 'delete') {
+                const id = msg.data
 
-              // Notify delete toot to other windows(modals)
-              localStorage['user' + userNum] = JSON.stringify({
-                type: 'deleteToot',
-                id
-              })
+                // Notify delete toot to other windows(modals)
+                localStorage['user' + userNum] = JSON.stringify({
+                  type: 'deleteToot',
+                  id
+                })
 
-              dispatch('conversation/removeToot', id, { root: true })
-              commit('removeTootFromTl', { host, accessToken, type, id })
-              commit('removeTootFromNotification', { host, accessToken, id })
-            } else if (msg.event === 'notification') {
-              const data = msg.data
-              commit('prependNotification', {
-                host,
-                accessToken,
-                user,
-                data
-              })
-            }
-          })
-          ipcRenderer.send('streamHomeTimeline', { host, accessToken })
+                dispatch('conversation/removeToot', id, { root: true })
+                commit('removeTootFromTl', { host, accessToken, type, id })
+                commit('removeTootFromNotification', { host, accessToken, id })
+              } else if (msg.event === 'notification') {
+                const data = msg.data
+                commit('prependNotification', {
+                  host,
+                  accessToken,
+                  user,
+                  data
+                })
+              }
+            })
+            stream.on('error', error => {
+              resolve(error)
+            })
+          } catch (e) {
+            resolve(e)
+          }
         })
       } else if (type === TimelineType.localtl) {
-        return new Promise((resolve, reject) => {
-          ipcRenderer.once('streamLocalTimeline-error', (_, e) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const mastodon = new Mastodon({ accessToken, host })
+            const stream = await mastodon.streamLocalTimeline()
+            stream.on('message', msg => {
+              if (msg.event === 'update') {
+                const data = msg.data
+                commit('prependTootTimeline', {
+                  host,
+                  accessToken,
+                  type,
+                  data,
+                  user
+                })
+                commit('cleaningTl', { host, accessToken })
+              } else if (msg.event === 'delete') {
+                const id = msg.data
+                commit('removeTootFromTl', { host, accessToken, type, id })
+              }
+            })
+            stream.on('error', error => {
+              reject(error)
+            })
+          } catch (e) {
             reject(e)
-          })
-          ipcRenderer.on('streamLocalTimeline-onError', (_, e) => {
-            reject(e)
-          })
-          ipcRenderer.on('streamLocalTimeline-onMessage', (e, msg) => {
-            if (msg.event === 'update') {
-              const data = msg.data
-              commit('prependTootTimeline', {
-                host,
-                accessToken,
-                type,
-                data,
-                user
-              })
-              commit('cleaningTl', { host, accessToken })
-            } else if (msg.event === 'delete') {
-              const id = msg.data
-              commit('removeTootFromTl', { host, accessToken, type, id })
-            }
-          })
-          ipcRenderer.send('streamLocalTimeline', { host, accessToken })
+          }
         })
       } else {
-        return new Promise((resolve, reject) => {
-          ipcRenderer.once('streamPublicTimeline-error', (_, e) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const mastodon = new Mastodon({ accessToken, host })
+            const stream = await mastodon.streamPublicTimeline()
+            stream.on('message', msg => {
+              if (msg.event === 'update') {
+                const data = msg.data
+                commit('prependTootTimeline', {
+                  host,
+                  accessToken,
+                  type,
+                  data,
+                  user
+                })
+                commit('cleaningTl', { host, accessToken })
+              } else if (msg.event === 'delete') {
+                const id = msg.data
+                commit('removeTootFromNotification', { host, accessToken, id })
+                commit('removeTootFromTl', { host, accessToken, type, id })
+              }
+            })
+            stream.on('error', error => {
+              reject(error)
+            })
+          } catch (e) {
             reject(e)
-          })
-          ipcRenderer.on('streamPublicTimeline-onError', (_, e) => {
-            reject(e)
-          })
-          ipcRenderer.on('streamPublicTimeline-onMessage', (e, msg) => {
-            if (msg.event === 'update') {
-              const data = msg.data
-              commit('prependTootTimeline', {
-                host,
-                accessToken,
-                type,
-                data,
-                user
-              })
-              commit('cleaningTl', { host, accessToken })
-            } else if (msg.event === 'delete') {
-              const id = msg.data
-              commit('removeTootFromNotification', { host, accessToken, id })
-              commit('removeTootFromTl', { host, accessToken, type, id })
-            }
-          })
-          ipcRenderer.send('streamPublicTimeline', { host, accessToken })
+          }
         })
       }
     },
