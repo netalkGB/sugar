@@ -106,7 +106,7 @@ export default {
       const { accessToken, host, user } = getters['getCurrentUser']
       const { internalid } = user
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.fetchProfileFollowers(
           internalid,
           { limit: userCountlimit }
@@ -130,7 +130,7 @@ export default {
       const { accessToken, host, user } = getters['getCurrentUser']
       const { internalid } = user
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.fetchProfileFollowing(
           internalid,
           { limit: userCountlimit }
@@ -162,7 +162,7 @@ export default {
             pin,
             host
           )
-          const mastodon = new Mastodon({ accessToken, host })
+          const mastodon = Mastodon.getMastodon({ accessToken, host })
           const result = await mastodon.fetchOwnAccount()
           if (result.resp.statusCode !== 200) {
             reject(result)

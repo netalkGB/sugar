@@ -61,7 +61,7 @@ export default {
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.fetchProfile(internalId).then(result => {
           const account = result.data
           commit('setProfile', {
@@ -83,7 +83,7 @@ export default {
       const { accessToken, host } = currentUser
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
-      const mastodon = new Mastodon({ accessToken, host })
+      const mastodon = Mastodon.getMastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
         mastodon.fetchProfileFollowing(
           internalId,
@@ -111,7 +111,7 @@ export default {
       const { accessToken, host } = currentUser
       const ownFollowers = currentUser.followers
       const ownFollowings = currentUser.followings
-      const mastodon = new Mastodon({ accessToken, host })
+      const mastodon = Mastodon.getMastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
         mastodon.fetchProfileFollowers(
           internalId,
@@ -136,7 +136,7 @@ export default {
     },
     async fetchProfileTimeline ({ commit }, { internalId }) {
       const { accessToken, host, user } = this.getters['users/getCurrentUser']
-      const mastodon = new Mastodon({ accessToken, host })
+      const mastodon = Mastodon.getMastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
         mastodon.fetchProfileTimeline(internalId).then(result => {
           const toots = result.data
@@ -156,7 +156,7 @@ export default {
     },
     async loadOldToot ({ commit }, { internalId, maxID }) {
       const { accessToken, host } = this.getters['users/getCurrentUser']
-      const mastodon = new Mastodon({ accessToken, host })
+      const mastodon = Mastodon.getMastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
         mastodon.fetchProfileTimeline(internalId, { maxID }).then(result => {
           const toots = result.data

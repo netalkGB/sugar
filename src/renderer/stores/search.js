@@ -52,7 +52,7 @@ export default {
       const ownUser = currentUser.user
       const { q } = payload
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.searchMastodon(q).then(result => {
           console.log(result)
           const { accounts, statuses } = result.data

@@ -5,7 +5,7 @@ import Mastodon from '../other/Mastodon'
 
 function loadToot ({ host, accessToken, id }) {
   return new Promise((resolve, reject) => {
-    const mastodon = new Mastodon({ accessToken, host })
+    const mastodon = Mastodon.getMastodon({ accessToken, host })
     mastodon.fetchToot(id).then(result => {
       resolve(result)
     }).catch(e => {
@@ -21,7 +21,7 @@ function loadToot ({ host, accessToken, id }) {
 
 function loadContext ({ host, accessToken, id }) {
   return new Promise((resolve, reject) => {
-    const mastodon = new Mastodon({ accessToken, host })
+    const mastodon = Mastodon.getMastodon({ accessToken, host })
     mastodon.fetchContext(id).then(result => {
       resolve(result)
     }).catch(e => {
