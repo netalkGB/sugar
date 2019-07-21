@@ -72,7 +72,7 @@ export default {
         loadToot({ accessToken, host, id: tootId }),
         loadContext({ accessToken, host, id: tootId })
       ])
-      let data = [
+      const data = [
         ...context.data.ancestors.map(item =>
           Toot.fromMastodon(item, user)
         ),
