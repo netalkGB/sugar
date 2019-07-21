@@ -29,6 +29,18 @@ export default class Mastodon {
     )
     return accessToken
   }
+  static mastodons = []
+  static getMastodon ({ accessToken, host }) {
+    let client = Mastodon.mastodons.find((val) =>
+      (val.accessToken === accessToken && val.host === host)
+    )
+    if (!client) {
+      const mastodon = new Mastodon({ accessToken, host })
+      client = { accessToken, host, mastodon }
+      Mastodon.mastodons = [...Mastodon.mastodons, client]
+    }
+    return client.mastodon
+  }
   constructor ({ accessToken, host }) {
     this.mastodon = new M({
       access_token: accessToken,

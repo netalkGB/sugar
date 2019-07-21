@@ -233,7 +233,7 @@ export default {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.boost(id).then(result => {
           commit('setBoost', { host, accessToken, id, to: true })
           resolve(result)
@@ -246,7 +246,7 @@ export default {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.unBoost(id).then(result => {
           commit('setBoost', { host, accessToken, id, to: false })
           resolve(result)
@@ -259,7 +259,7 @@ export default {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.deleteOwnToot(id).then(result => {
           resolve(result)
         }).catch(e => {
@@ -271,7 +271,7 @@ export default {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.favorite(id).then(result => {
           resolve(result)
         }).catch(e => {
@@ -283,7 +283,7 @@ export default {
       const { id } = payload
       const { accessToken, host } = this.getters['users/getCurrentUser']
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.unFavorite(id).then(result => {
           resolve(result)
         }).catch(e => {
@@ -296,7 +296,7 @@ export default {
       const { type, maxID } = payload
       if (type === TimelineType.hometl) {
         return new Promise((resolve, reject) => {
-          const mastodon = new Mastodon({ accessToken, host })
+          const mastodon = Mastodon.getMastodon({ accessToken, host })
           mastodon.fetchHomeTimeline({ maxID }).then(result => {
             commit('appendTootsTimeline', {
               host,
@@ -313,7 +313,7 @@ export default {
         })
       } else if (type === TimelineType.localtl) {
         return new Promise((resolve, reject) => {
-          const mastodon = new Mastodon({ accessToken, host })
+          const mastodon = Mastodon.getMastodon({ accessToken, host })
           mastodon.fetchLocalTimeline({ maxID }).then(result => {
             commit('appendTootsTimeline', {
               host,
@@ -330,7 +330,7 @@ export default {
         })
       } else if (type === TimelineType.publictl) {
         return new Promise((resolve, reject) => {
-          const mastodon = new Mastodon({ accessToken, host })
+          const mastodon = Mastodon.getMastodon({ accessToken, host })
           mastodon.fetchPublicTimeline({ maxID }).then(result => {
             commit('appendTootsTimeline', {
               host,
@@ -347,7 +347,7 @@ export default {
         })
       } else {
         return new Promise((resolve, reject) => {
-          const mastodon = new Mastodon({ accessToken, host })
+          const mastodon = Mastodon.getMastodon({ accessToken, host })
           mastodon.fetchNotification({ maxID }).then(result => {
             commit('appendNotificationTimeline', {
               host,
@@ -375,7 +375,7 @@ export default {
                 tl.type === type &&
                 tl.accessToken === accessToken)
           ) {
-            const mastodon = new Mastodon({ accessToken, host })
+            const mastodon = Mastodon.getMastodon({ accessToken, host })
             mastodon.fetchHomeTimeline().then(result => {
               commit('setTimeline', { host, accessToken, type, data: result, user })
               resolve()
@@ -392,7 +392,7 @@ export default {
                 tl.type === type &&
                 tl.accessToken === accessToken)
           ) {
-            const mastodon = new Mastodon({ accessToken, host })
+            const mastodon = Mastodon.getMastodon({ accessToken, host })
             mastodon.fetchLocalTimeline().then(result => {
               commit('setTimeline', { host, accessToken, type, data: result, user })
               resolve()
@@ -409,7 +409,7 @@ export default {
                 tl.type === type &&
                 tl.accessToken === accessToken)
           ) {
-            const mastodon = new Mastodon({ accessToken, host })
+            const mastodon = Mastodon.getMastodon({ accessToken, host })
             mastodon.fetchPublicTimeline().then(result => {
               commit('setTimeline', { host, accessToken, type, data: result, user })
               resolve()
@@ -427,7 +427,7 @@ export default {
                   tl.type === type &&
                   tl.accessToken === accessToken)
             ) {
-              const mastodon = new Mastodon({ accessToken, host })
+              const mastodon = Mastodon.getMastodon({ accessToken, host })
               mastodon.fetchNotification().then(result => {
                 commit('setTimeline', { host, accessToken, type, data: result, user })
                 resolve()
@@ -446,7 +446,7 @@ export default {
       if (type === TimelineType.hometl) {
         return new Promise(async (resolve, reject) => {
           try {
-            const mastodon = new Mastodon({ accessToken, host })
+            const mastodon = Mastodon.getMastodon({ accessToken, host })
             const stream = await mastodon.streamHomeTimeline()
             stream.on('message', msg => {
               if (msg.event === 'update') {
@@ -491,7 +491,7 @@ export default {
       } else if (type === TimelineType.localtl) {
         return new Promise(async (resolve, reject) => {
           try {
-            const mastodon = new Mastodon({ accessToken, host })
+            const mastodon = Mastodon.getMastodon({ accessToken, host })
             const stream = await mastodon.streamLocalTimeline()
             stream.on('message', msg => {
               if (msg.event === 'update') {
@@ -519,7 +519,7 @@ export default {
       } else {
         return new Promise(async (resolve, reject) => {
           try {
-            const mastodon = new Mastodon({ accessToken, host })
+            const mastodon = Mastodon.getMastodon({ accessToken, host })
             const stream = await mastodon.streamPublicTimeline()
             stream.on('message', msg => {
               if (msg.event === 'update') {

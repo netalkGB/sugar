@@ -29,7 +29,7 @@ export default {
       const { accessToken, host } = currentUser
       const ownUser = currentUser.user
       return new Promise((resolve, reject) => {
-        const mastodon = new Mastodon({ accessToken, host })
+        const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.fetchOwnFavouriteTimeline(
           { limit }
         ).then(result => {
