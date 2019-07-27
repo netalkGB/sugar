@@ -75,6 +75,8 @@ import File from '@/other/File'
 import contextMenu from '@/other/contextMenu'
 import MtButton from '@/components/Form/MtButton'
 import MtSelect from '@/components/Form/MtSelect'
+import Mastodon from '@/other/Mastodon'
+import ServerSideError from '@/other/ServerSideError'
 const ipcRenderer = window.ipc
 const remote = window.remote
 const maxTootLength = 500
@@ -108,69 +110,6 @@ export default {
           this.postToot()
         }
       })
-      ipcRenderer.addListener('postToot-success', (e, m) => {
-        const { host, accessToken, result } = m
-        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-          return
-        }
-        if (result.resp.statusCode === 200) {
-          if (this.copyInReplyToID !== null) {
-            window.close()
-          }
-          this.clearForm()
-        }
-        this.sending = false
-        this.$nextTick(() => {
-          this.$refs.toottext.focus()
-        })
-      })
-      ipcRenderer.addListener('postToot-error', (e, m) => {
-        const { host, accessToken, error } = m
-        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-          return
-        }
-        this.sending = false
-        logger.error(error)
-      })
-      ipcRenderer.addListener('uploadFile-success', (e, m) => {
-        const { host, accessToken, result, uuid } = m
-        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-          return
-        }
-        if (this.files.find(val => val.uuid === uuid) === null) {
-          return
-        }
-        if (result.resp.statusCode === 200) {
-          const id = result.data.id
-          this.files = this.files.map(
-            val =>
-              val.uuid === uuid
-                ? val.changeState({ newState: FileState.done, id })
-                : val
-          )
-        } else {
-          this.files = this.files.map(
-            val =>
-              val.uuid === uuid
-                ? val.changeState({ newState: FileState.error, id: null })
-                : val
-          )
-          logger.error(result)
-        }
-      })
-      ipcRenderer.addListener('uploadFile-error', (e, m) => {
-        const { host, accessToken, error, uuid } = m
-        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
-          return
-        }
-        if (this.files.find(val => val.uuid === uuid) === null) {
-          return
-        }
-        this.files = this.files.map(
-          val => (val.uuid === uuid ? { ...val, state: FileState.error } : val)
-        )
-        logger.error(error)
-      })
     },
     postToot () {
       this.sending = true
@@ -194,7 +133,23 @@ export default {
         params = { ...params, mediaIDs }
       }
       logger.debug('send', { accessToken, host, toot: params })
-      ipcRenderer.send('postToot', { accessToken, host, toot: params })
+      Mastodon.getMastodon({ accessToken, host }).postToot(params).then(() => {
+        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+          return
+        }
+        if (this.copyInReplyToID !== null) {
+          window.close()
+        }
+        this.clearForm()
+        this.sending = false
+        this.$refs.toottext.focus()
+      }).catch(e => {
+        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+          return
+        }
+        this.sending = false
+        logger.error(e)
+      })
     },
     handleInput (e) {
       const value = e.target.value
@@ -214,7 +169,35 @@ export default {
     uploadFile (file) {
       const { accessToken, host } = this.keys
       const { filePath, uuid } = file
-      ipcRenderer.send('uploadFile', { accessToken, host, filePath, uuid })
+      Mastodon.getMastodon({ accessToken, host }).uploadFile({ filePath }).then(data => {
+        if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
+          return
+        }
+        if (this.files.find(val => val.uuid === uuid) === null) {
+          return
+        }
+        const id = data.id
+        this.files = this.files.map(
+          val =>
+            val.uuid === uuid
+              ? val.changeState({ newState: FileState.done, id })
+              : val
+        )
+      }).catch(err => {
+        if (err instanceof ServerSideError) {
+          this.files = this.files.map(
+            val =>
+              val.uuid === uuid
+                ? val.changeState({ newState: FileState.error, id: null })
+                : val
+          )
+        } else {
+          this.files = this.files.map(
+            val => (val.uuid === uuid ? { ...val, state: FileState.error } : val)
+          )
+        }
+        logger.error(err)
+      })
     },
     removeFile (idx) {
       this.files = this.files.filter((val, index) => idx !== index)
@@ -295,10 +278,6 @@ export default {
   beforeDestroy () {
     this.$refs.toottext.removeListener('contextmenu', () => { })
     ipcRenderer.removeListener('openDialog-success', () => { })
-    ipcRenderer.removeListener('postToot-success', () => { })
-    ipcRenderer.removeListener('postToot-error', () => { })
-    ipcRenderer.removeListener('uploadFile-success', () => { })
-    ipcRenderer.removeListener('uploadFile-error', () => { })
     window.removeEventListener('keydown', () => { })
   }
 }

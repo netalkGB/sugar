@@ -240,43 +240,64 @@ export default class Mastodon {
   streamPublicTimeline () {
     return this.mastodon.stream('streaming/public')
   }
-  postToot (params) {
-    const {
-      status,
-      visibility,
-      inReplyToID,
-      mediaIDs,
-      sensitive,
-      isCW,
-      spoilerText
-    } = params
-    let opts = {
-      status,
-      visibility
+  async postToot (params) {
+    let returnData
+    try {
+      const {
+        status,
+        visibility,
+        inReplyToID,
+        mediaIDs,
+        sensitive,
+        isCW,
+        spoilerText
+      } = params
+      let opts = {
+        status,
+        visibility
+      }
+      if (inReplyToID !== undefined && inReplyToID !== null) {
+        opts = { ...opts, in_reply_to_id: inReplyToID }
+      }
+      if (mediaIDs !== undefined && inReplyToID !== null && mediaIDs.length > 0) {
+        opts = { ...opts, media_ids: mediaIDs }
+      }
+      if (sensitive !== undefined && sensitive !== null) {
+        opts = { ...opts, sensitive }
+      }
+      if (isCW !== undefined && isCW !== null) {
+        opts = { ...opts, cw: isCW }
+      }
+      if (spoilerText !== undefined && spoilerText !== null) {
+        opts = { ...opts, spoiler_text: spoilerText }
+      }
+      const { resp, data } = await this.mastodon.post('statuses', opts)
+      returnData = data
+      const { statusCode } = resp
+      if (statusCode !== 200) {
+        throw new ServerSideError(statusCode)
+      }
+    } catch (err) {
+      throw err
     }
-    if (inReplyToID !== undefined && inReplyToID !== null) {
-      opts = { ...opts, in_reply_to_id: inReplyToID }
-    }
-    if (mediaIDs !== undefined && inReplyToID !== null && mediaIDs.length > 0) {
-      opts = { ...opts, media_ids: mediaIDs }
-    }
-    if (sensitive !== undefined && sensitive !== null) {
-      opts = { ...opts, sensitive }
-    }
-    if (isCW !== undefined && isCW !== null) {
-      opts = { ...opts, cw: isCW }
-    }
-    if (spoilerText !== undefined && spoilerText !== null) {
-      opts = { ...opts, spoiler_text: spoilerText }
-    }
-    return this.mastodon.post('statuses', opts)
+    return returnData
   }
   async uploadFile (params) {
-    const { filePath } = params
-    const response = await this.mastodon.post('media', {
-      file: fs.createReadStream(filePath)
-    })
-    return response
+    let returnData
+    try {
+      const { filePath } = params
+      const { resp, data } = await this.mastodon.post('media', {
+        file: fs.createReadStream(filePath)
+      })
+      returnData = data
+      const { statusCode } = resp
+      if (statusCode !== 200) {
+        throw new ServerSideError(statusCode)
+      }
+    } catch (err) {
+      throw err
+    }
+    return returnData
   }
   async deleteOwnToot (id) {
     let returnData
