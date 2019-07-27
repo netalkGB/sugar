@@ -53,9 +53,8 @@ export default {
       const { q } = payload
       return new Promise((resolve, reject) => {
         const mastodon = Mastodon.getMastodon({ accessToken, host })
-        mastodon.searchMastodon(q).then(result => {
-          console.log(result)
-          const { accounts, statuses } = result.data
+        mastodon.searchMastodon(q).then(data => {
+          const { accounts, statuses } = data
           commit('setTimeline', statuses.map(status => Toot.fromMastodon(status, ownUser)))
           commit('setAccounts', accounts.map(account =>
             Profile.fromAccount(account, ownFollowers, ownFollowings)

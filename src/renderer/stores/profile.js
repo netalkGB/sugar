@@ -62,8 +62,7 @@ export default {
       const ownFollowings = currentUser.followings
       return new Promise((resolve, reject) => {
         const mastodon = Mastodon.getMastodon({ accessToken, host })
-        mastodon.fetchProfile(internalId).then(result => {
-          const account = result.data
+        mastodon.fetchProfile(internalId).then(account => {
           commit('setProfile', {
             profile: Profile.fromAccount(account, ownFollowers, ownFollowings)
           })
@@ -138,8 +137,7 @@ export default {
       const { accessToken, host, user } = this.getters['users/getCurrentUser']
       const mastodon = Mastodon.getMastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
-        mastodon.fetchProfileTimeline(internalId).then(result => {
-          const toots = result.data
+        mastodon.fetchProfileTimeline(internalId).then(toots => {
           commit('setTimeline', {
             timeline: toots.map(d => Toot.fromMastodon(d, user))
           })

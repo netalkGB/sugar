@@ -75,8 +75,8 @@ export default {
         active: false,
         data:
           type !== TimelineType.notification
-            ? data.data.map(item => Toot.fromMastodon(item, user))
-            : data.data.map(item => Toot.fromMastodonNotification(item, user))
+            ? data.map(item => Toot.fromMastodon(item, user))
+            : data.map(item => Toot.fromMastodonNotification(item, user))
       }
       state.timelines = [...state.timelines, timeline]
     },
@@ -119,7 +119,7 @@ export default {
         ) {
           timeline.data = [
             ...timeline.data,
-            ...data.data.map(d => Toot.fromMastodonNotification(d, user))
+            ...data.map(d => Toot.fromMastodonNotification(d, user))
           ]
           break
         }
@@ -135,7 +135,7 @@ export default {
         ) {
           timeline.data = [
             ...timeline.data,
-            ...data.data.map(d => Toot.fromMastodon(d, user))
+            ...data.map(d => Toot.fromMastodon(d, user))
           ]
           break
         }
