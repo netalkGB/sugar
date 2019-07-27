@@ -135,7 +135,6 @@ export default {
           internalid,
           { limit: userCountlimit }
         ).then(followings => {
-          logger.debug(followings)
           commit(
             'setOwnFollowings',
             followings.map(follow => Profile.fromAccount(follow))

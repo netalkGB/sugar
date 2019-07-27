@@ -73,11 +73,11 @@ export default {
         loadContext({ accessToken, host, id: tootId })
       ])
       const data = [
-        ...context.data.ancestors.map(item =>
+        ...context.ancestors.map(item =>
           Toot.fromMastodon(item, user)
         ),
-        Toot.fromMastodon(toot.data, user),
-        ...context.data.descendants.map(item =>
+        Toot.fromMastodon(toot, user),
+        ...context.descendants.map(item =>
           Toot.fromMastodon(item, user)
         )
       ]

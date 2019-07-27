@@ -32,8 +32,7 @@ export default {
         const mastodon = Mastodon.getMastodon({ accessToken, host })
         mastodon.fetchOwnFavouriteTimeline(
           { limit }
-        ).then(result => {
-          const statuses = result.data
+        ).then(statuses => {
           commit('setTimeline', statuses.map(status => Toot.fromMastodon(status, ownUser)))
           resolve()
         }).catch(e => {
