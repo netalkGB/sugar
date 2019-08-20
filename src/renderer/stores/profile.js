@@ -139,7 +139,7 @@ export default {
       return new Promise((resolve, reject) => {
         mastodon.fetchProfileTimeline(internalId).then(toots => {
           commit('setTimeline', {
-            timeline: toots.map(d => Toot.fromMastodon(d, user))
+            timeline: toots.map(toot => Toot.fromMastodon(toot, user))
           })
           resolve()
         }).catch(e => {
@@ -153,13 +153,12 @@ export default {
       })
     },
     async loadOldToot ({ commit }, { internalId, maxID }) {
-      const { accessToken, host } = this.getters['users/getCurrentUser']
+      const { accessToken, host, user } = this.getters['users/getCurrentUser']
       const mastodon = Mastodon.getMastodon({ accessToken, host })
       return new Promise((resolve, reject) => {
-        mastodon.fetchProfileTimeline(internalId, { maxID }).then(result => {
-          const toots = result.data
+        mastodon.fetchProfileTimeline(internalId, { maxID }).then(toots => {
           commit('appendTimeline', {
-            timeline: toots.map(d => Toot.fromMastodon(d))
+            timeline: toots.map(toot => Toot.fromMastodon(toot, user))
           })
           resolve()
         }).catch(e => {
