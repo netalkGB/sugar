@@ -87,8 +87,7 @@ export default {
         mastodon.fetchProfileFollowing(
           internalId,
           { limit: userCountlimit }
-        ).then(result => {
-          const following = result.data
+        ).then(following => {
           commit('setFollowing', {
             following: following.map(account =>
               Profile.fromAccount(account, ownFollowers, ownFollowings)
@@ -115,8 +114,7 @@ export default {
         mastodon.fetchProfileFollowers(
           internalId,
           { limit: userCountlimit }
-        ).then(result => {
-          const followers = result.data
+        ).then(followers => {
           commit('setFollowers', {
             followers: followers.map(account =>
               Profile.fromAccount(account, ownFollowers, ownFollowings)
