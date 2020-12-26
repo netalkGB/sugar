@@ -156,15 +156,16 @@ export default {
       this.toot = value
     },
     addFile () {
-      ipcRenderer.once('openDialog-success', (_, appendFile) => {
+      ipcRenderer.invoke('openDialog').then(appendFile => {
         if (appendFile !== null) {
-          const filePath = appendFile[0]
-          const file = File.setFile({ filePath, state: FileState.uploading })
-          this.files = [...this.files, file]
-          this.uploadFile(file)
+          const { filePaths } = appendFile
+          filePaths.forEach((filePath) => {
+            const file = File.setFile({ filePath, state: FileState.uploading })
+            this.files = [...this.files, file]
+            this.uploadFile(file)
+          })
         }
-      })
-      ipcRenderer.send('openDialog')
+      }).catch(error => logger.error(error))
     },
     uploadFile (file) {
       const { accessToken, host } = this.keys
@@ -277,7 +278,6 @@ export default {
   },
   beforeDestroy () {
     this.$refs.toottext.removeListener('contextmenu', () => { })
-    ipcRenderer.removeListener('openDialog-success', () => { })
     window.removeEventListener('keydown', () => { })
   }
 }

@@ -7,17 +7,15 @@ export default (logger, windows) => {
       shell.openExternal(arg)
     }
   })
-  ipcMain.on('openDialog', (event, args) => {
-    event.sender.send(
-      'openDialog-success',
-      dialog.showOpenDialog({
-        properties: ['openFile'],
-        filters: [
-          { name: 'Images', extensions: ['jpg', 'png', 'jpeg'] },
-          { name: 'Movies', extensions: ['mp4'] }
-        ]
-      })
-    )
+  ipcMain.handle('openDialog', (event, args) => {
+    const appendFile = dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [
+        { name: 'Images', extensions: ['jpg', 'png', 'jpeg'] },
+        { name: 'Movies', extensions: ['mp4'] }
+      ]
+    })
+    return appendFile
   })
   ipcMain.on('newWindow', (event, url, type) => {
     const newWindow = (args) => {
