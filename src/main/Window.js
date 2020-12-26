@@ -18,6 +18,9 @@ export default class Window {
       ...args,
       webPreferences
     })
+    if (process.platform !== 'darwin') {
+      this.browserWindow.setMenu(null)
+    }
     if (this.isDevMode === true) {
       this.browserWindow.webContents.openDevTools()
     }
