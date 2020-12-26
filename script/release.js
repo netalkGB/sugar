@@ -125,7 +125,9 @@ const main = async () => {
       nameVersion + `linux-arm64.tar.gz`,
       nameVersion + `win32-ia32.zip`,
       nameVersion + `win32-x64.zip`,
-      nameVersion + `darwin-x64.zip`
+      nameVersion + `win32-arm64.zip`,
+      nameVersion + `darwin-x64.zip`,
+      nameVersion + `darwin-arm64.zip`
     ]
     const result = await release(files)
     console.log(

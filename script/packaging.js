@@ -92,11 +92,20 @@ const main = async () => {
   }
   const nameVersion = `${name}-${version}`
   if (platform === 'darwin' || platform === 'all') {
-    archivePromise(
-      `./dist/${name}-darwin-x64`,
-      `./dist/${nameVersion}-darwin-x64.zip`,
-      'zip'
-    ).catch(e => console.error(e))
+    if (arch === 'x64' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-darwin-x64`,
+        `./dist/${nameVersion}-darwin-x64.zip`,
+        'zip'
+      ).catch(e => console.error(e))
+    }
+    if (arch === 'arm64' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-darwin-arm64`,
+        `./dist/${nameVersion}-darwin-arm64.zip`,
+        'zip'
+      ).catch(e => console.error(e))
+    }
   }
   if (platform === 'linux' || platform === 'all') {
     if (arch === 'x64' || arch === 'all') {
@@ -133,6 +142,13 @@ const main = async () => {
       archivePromise(
         `./dist/${name}-win32-x64`,
         `./dist/${nameVersion}-win32-x64.zip`,
+        'zip'
+      ).catch(e => console.error(e))
+    }
+    if (arch === 'arm64' || arch === 'all') {
+      archivePromise(
+        `./dist/${name}-win32-arm64`,
+        `./dist/${nameVersion}-win32-arm64.zip`,
         'zip'
       ).catch(e => console.error(e))
     }
