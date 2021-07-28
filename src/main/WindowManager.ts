@@ -1,18 +1,14 @@
 import { ipcMain } from 'electron'
-import * as serve from 'electron-serve'
 import Window from '~/Window'
 import WindowManagerArgs from '~/interfaces/WindowManagerArgs'
 import WindowManagerFileArgs from '~/interfaces/WindowManagerFileArgs'
 export default class WindowManager {
   private windows: Array<Window>
   private isDevMode: boolean
-  private electronServe!: serve.loadURL
+
   constructor (args: WindowManagerArgs) {
     this.windows = []
     this.isDevMode = args && args.devMode
-    if (args.electronServe !== undefined) {
-      this.electronServe = args.electronServe
-    }
   }
 
   public add (name: string, file: WindowManagerFileArgs, bwArgs: Electron.BrowserWindowConstructorOptions): void {
@@ -22,11 +18,7 @@ export default class WindowManager {
       window.show()
       return
     }
-    if (this.isDevMode) {
-      window = new Window(name, this.isDevMode, bwArgs)
-    } else {
-      window = new Window(name, this.isDevMode, bwArgs, this.electronServe)
-    }
+    window = new Window(name, this.isDevMode, bwArgs)
 
     if (name === 'main') {
       ipcMain.on('changeWindowSize', (_, type) => {

@@ -1,20 +1,15 @@
 import * as path from 'path'
 import { BrowserWindow, app } from 'electron'
-import * as serve from 'electron-serve'
 
 export default class Window {
   private name: string
   private devMode: boolean
   private browserWindow!: BrowserWindow
-  private electronServe!: serve.loadURL
 
-  constructor (name: string, isDevMode: boolean, args: Electron.BrowserWindowConstructorOptions, electronServe: serve.loadURL | undefined = undefined) {
+  constructor (name: string, isDevMode: boolean, args: Electron.BrowserWindowConstructorOptions) {
     this.name = name
     this.devMode = isDevMode
     this.setBrowserWindow(args)
-    if (electronServe !== undefined) {
-      this.electronServe = electronServe
-    }
   }
 
   public getName (): string {
@@ -25,7 +20,7 @@ export default class Window {
     this.name = name
   }
 
-  public async setBrowserWindow (args: Electron.BrowserWindowConstructorOptions): Promise<void> {
+  public setBrowserWindow (args: Electron.BrowserWindowConstructorOptions): void {
     const webPreferences = {
       nodeIntegration: false,
       contextIsolation: false,
@@ -37,9 +32,7 @@ export default class Window {
       ...args,
       webPreferences
     })
-    if (this.electronServe !== undefined) {
-      await this.electronServe(this.browserWindow)
-    }
+
     if (process.platform !== 'darwin') {
       this.browserWindow.setMenu(null)
     }
