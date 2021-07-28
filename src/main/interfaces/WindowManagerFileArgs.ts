@@ -1,4 +1,4 @@
 export default interface WindowManagerFileArgs {
-  filename:string,
-  url: string
+  filename?:string,
+  url?: string
 }
