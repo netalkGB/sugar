@@ -2,8 +2,8 @@ import { ipcMain, dialog, shell } from 'electron'
 import { Logger } from 'log4js'
 import WindowManager from '~/WindowManager'
 
-export default function (logger:Logger, windows:WindowManager)  {
-  ipcMain.on('openURL', (event, arg) => {
+export default function (_logger:Logger, windows:WindowManager) {
+  ipcMain.on('openURL', (_event, arg) => {
     const isURL = arg.match(/^((^http|^https):\/\/)/g) !== null
     if (isURL) {
       shell.openExternal(arg)
