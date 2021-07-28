@@ -1,4 +1,4 @@
-import path from 'path'
+import * as path from 'path'
 import { BrowserWindow, app } from 'electron'
 export default class Window {
   private name:string
