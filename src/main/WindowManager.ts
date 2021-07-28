@@ -4,10 +4,10 @@ import Window from '~/Window'
 import WindowManagerArgs from '~/interfaces/WindowManagerArgs'
 import WindowManagerFileArgs from '~/interfaces/WindowManagerFileArgs'
 export default class WindowManager {
-  private windows:Array<Window>
-  private isDevMode:boolean
-  private electronServe!:serve.loadURL
-  constructor (args:WindowManagerArgs) {
+  private windows: Array<Window>
+  private isDevMode: boolean
+  private electronServe!: serve.loadURL
+  constructor (args: WindowManagerArgs) {
     this.windows = []
     this.isDevMode = args && args.devMode
     if (args.electronServe !== undefined) {
@@ -15,8 +15,8 @@ export default class WindowManager {
     }
   }
 
-  add (name:string, file:WindowManagerFileArgs, bwArgs: Electron.BrowserWindowConstructorOptions) : void {
-    let window:Window | undefined
+  public add (name: string, file: WindowManagerFileArgs, bwArgs: Electron.BrowserWindowConstructorOptions): void {
+    let window: Window | undefined
     window = this.windows.find(w => w.getName() === name)
     if (window !== undefined) {
       window.show()

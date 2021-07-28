@@ -3,12 +3,12 @@ import { BrowserWindow, app } from 'electron'
 import * as serve from 'electron-serve'
 
 export default class Window {
-  private name:string
-  private devMode:boolean
-  private browserWindow!:BrowserWindow
+  private name: string
+  private devMode: boolean
+  private browserWindow!: BrowserWindow
   private electronServe!: serve.loadURL
 
-  constructor (name:string, isDevMode:boolean, args:Electron.BrowserWindowConstructorOptions, electronServe:serve.loadURL | undefined = undefined) {
+  constructor (name: string, isDevMode: boolean, args: Electron.BrowserWindowConstructorOptions, electronServe: serve.loadURL | undefined = undefined) {
     this.name = name
     this.devMode = isDevMode
     this.setBrowserWindow(args)
@@ -17,15 +17,15 @@ export default class Window {
     }
   }
 
-  getName ():string {
+  public getName (): string {
     return this.name
   }
 
-  setName (name:string):void {
+  public setName (name: string): void {
     this.name = name
   }
 
-  async setBrowserWindow (args:Electron.BrowserWindowConstructorOptions) {
+  public async setBrowserWindow (args: Electron.BrowserWindowConstructorOptions): Promise<void> {
     const webPreferences = {
       nodeIntegration: false,
       contextIsolation: false,
@@ -55,11 +55,11 @@ export default class Window {
     })
   }
 
-  loadFile (fname:string) {
+  loadFile (fname: string) {
     this.browserWindow.loadFile(fname)
   }
 
-  loadURL (url:string) {
+  loadURL (url: string) {
     this.browserWindow.loadURL(url)
   }
 
@@ -68,7 +68,7 @@ export default class Window {
     this.browserWindow.focus()
   }
 
-  setSize (w:number, h:number) {
+  setSize (w: number, h: number) {
     this.browserWindow.setSize(w, h)
   }
 }
