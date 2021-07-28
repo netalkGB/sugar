@@ -22,7 +22,12 @@ export default class WindowManager {
       window.show()
       return
     }
-    window = new Window(name, this.isDevMode, bwArgs)
+    if (this.isDevMode) {
+      window = new Window(name, this.isDevMode, bwArgs)
+    } else {
+      window = new Window(name, this.isDevMode, bwArgs, this.electronServe)
+    }
+
     if (name === 'main') {
       ipcMain.on('changeWindowSize', (_, type) => {
         if (window !== undefined) {
