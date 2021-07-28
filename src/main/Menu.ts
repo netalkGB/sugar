@@ -8,7 +8,6 @@ export default () => {
     return
   }
 
-
   let template:Electron.MenuItemConstructorOptions[]
 
   if (nodeEnv === 'development') {
