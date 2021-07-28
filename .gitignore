@@ -1,7 +1,7 @@
-.vscode
+.DS_Store
 node_modules
-.cache
+.nuxt
+coverage
 out
-prodOut
 dist
-testconfig.js
+yarn-error.log

@@ -1,0 +1,8 @@
+{
+    "appId": "io.netalk.gb.labo.sample",
+    "productName": "Sample",
+    "files": [
+        "out/**/*",
+        "!node_modules/"
+    ]
+}

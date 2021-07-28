@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es5",
+    "module": "es2015",
+    "paths": {
+      "~/*": [
+        "./src/main/*"
+      ]
+    },
+    "types": [
+      "@types/node",
+      "@nuxt/types",
+      "jest"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "src/renderer"
+  ]
+}
