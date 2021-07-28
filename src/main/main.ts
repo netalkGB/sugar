@@ -1,45 +1,47 @@
-const { app: electronApp, BrowserWindow } = require('electron')
-const serve = require('electron-serve')
+// const { app: electronApp, BrowserWindow } = require('electron')
+import { app } from 'electron'
+import * as serve from 'electron-serve'
+import * as log4js from 'log4js'
+import WindowManager from '~/WindowManager'
+import ipc from '~/ipc'
+import setupMenu from '~/Menu'
+import WindowManagerArgs from '~/interfaces/WindowManagerArgs'
+
 const isDev = process.env.NODE_ENV === 'development'
-const port = process.env.PORT || 3000
+const port = 3000
 
-let loadURL = null
-if (isDev === false) {
-  loadURL = serve({ directory: 'out/renderer' })
+let windowManagerArgs:WindowManagerArgs = {
+  devMode: isDev
 }
-
-async function createWindow () {
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true
-    }
-  })
-
-  if (isDev) {
-    win.loadURL(`http://localhost:${port}/`)
-    win.webContents.openDevTools()
-  } else {
-    await loadURL(win)
-    // win.webContents.openDevTools()
-    await win.loadURL('app://-/')
+if (isDev === false) {
+  windowManagerArgs = {
+    ...windowManagerArgs,
+    electronServe: serve({ directory: 'out/renderer' })
   }
 }
-function start () {
-  electronApp.whenReady().then(() => createWindow())
 
-  electronApp.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      electronApp.quit()
-    }
-  })
+const windows = new WindowManager(windowManagerArgs)
 
-  electronApp.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+const logger = log4js.getLogger('main')
+const level = isDev ? 'all' : 'warn'
+logger.level = level
+logger.debug('development mode.')
+ipc(logger, windows)
+
+function createWindow () {
+  const url = isDev ? `http://localhost:${port}/` : 'app://-/'
+  windows.add(
+    'main',
+    { url },
+    {
+      width: 320,
+      height: 600
     }
-  })
+  )
+  setupMenu()
 }
 
-start()
+app.on('ready', createWindow)
+app.on('window-all-closed', function () {
+  app.quit()
+})
