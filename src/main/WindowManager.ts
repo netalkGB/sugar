@@ -33,7 +33,8 @@ export default class WindowManager {
 
     if (file.filename) {
       window.loadFile(file.filename)
-    } else {
+    }
+    if (file.url) {
       window.loadURL(file.url)
     }
 
