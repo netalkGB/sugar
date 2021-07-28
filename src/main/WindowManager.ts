@@ -1,14 +1,18 @@
 import { ipcMain } from 'electron'
+import * as serve from 'electron-serve'
 import Window from '~/Window'
 import WindowManagerArgs from '~/interfaces/WindowManagerArgs'
 import WindowManagerFileArgs from '~/interfaces/WindowManagerFileArgs'
-
 export default class WindowManager {
   private windows:Array<Window>
   private isDevMode:boolean
+  private electronServe!:serve.loadURL
   constructor (args:WindowManagerArgs) {
     this.windows = []
     this.isDevMode = args && args.devMode
+    if (args.electronServe !== undefined) {
+      this.electronServe = args.electronServe
+    }
   }
 
   add (name:string, file:WindowManagerFileArgs, bwArgs: Electron.BrowserWindowConstructorOptions) : void {
