@@ -5,22 +5,15 @@ import * as log4js from 'log4js'
 import WindowManager from '~/WindowManager'
 import ipc from '~/ipc'
 import setupMenu from '~/Menu'
-import WindowManagerArgs from '~/interfaces/WindowManagerArgs'
 
 const isDev = process.env.NODE_ENV === 'development'
 const port = 3000
 
-let windowManagerArgs:WindowManagerArgs = {
-  devMode: isDev
-}
 if (isDev === false) {
-  windowManagerArgs = {
-    ...windowManagerArgs,
-    electronServe: serve({ directory: 'out/renderer' })
-  }
+  serve({ directory: 'out/renderer' })
 }
 
-const windows = new WindowManager(windowManagerArgs)
+const windows = new WindowManager({ devMode: isDev })
 
 const logger = log4js.getLogger('main')
 const level = isDev ? 'all' : 'warn'
