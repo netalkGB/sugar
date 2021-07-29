@@ -25,7 +25,7 @@ export default class Window {
       nodeIntegration: false,
       contextIsolation: false,
       webviewTag: false,
-      preload: path.join(app.getAppPath(), 'out/renderer/preload.js'),
+      preload: path.join(app.getAppPath(), 'out/preload/preload.js'),
       enableRemoteModule: true
     }
     this.browserWindow = new BrowserWindow({
