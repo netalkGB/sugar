@@ -22,6 +22,7 @@ export default class Mastodon {
     )
     return { clientId, clientSecret, url }
   }
+
   static async loginPhase2 (clientId, clientSecret, pin, host) {
     const accessToken = await M.getAccessToken(
       clientId,
@@ -31,9 +32,10 @@ export default class Mastodon {
     )
     return accessToken
   }
+
   static mastodons = []
   static getMastodon ({ accessToken, host }) {
-    let client = Mastodon.mastodons.find((val) =>
+    let client = Mastodon.mastodons.find(val =>
       (val.accessToken === accessToken && val.host === host)
     )
     if (!client) {
@@ -43,6 +45,7 @@ export default class Mastodon {
     }
     return client.mastodon
   }
+
   constructor ({ accessToken, host }) {
     this.mastodon = new M({
       access_token: accessToken,
@@ -55,9 +58,11 @@ export default class Mastodon {
       api_url: `https://${host}/api/v2/`
     })
   }
+
   fetchOwnAccount () {
     return this.mastodon.get('accounts/verify_credentials', {})
   }
+
   async fetchProfile (id) {
     let returnData
     try {
@@ -72,6 +77,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async searchMastodon (q) {
     let returnData
     try {
@@ -87,6 +93,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async fetchOwnFavouriteTimeline (appendParams) {
     let returnData
     try {
@@ -105,6 +112,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async fetchProfileTimeline (id, appendParams) {
     let returnData
     try {
@@ -123,6 +131,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async fetchProfileFollowers (id, appendParams) {
     let returnData
     try {
@@ -141,6 +150,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async fetchProfileFollowing (id, appendParams) {
     let returnData
     try {
@@ -159,6 +169,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async fetchHomeTimeline (appendParams) {
     let returnData
     try {
@@ -170,13 +181,14 @@ export default class Mastodon {
       const { statusCode } = resp
       returnData = data
       if (statusCode !== 200) {
-        throw ServerSideError(statusCode)
+        throw new ServerSideError(statusCode)
       }
     } catch (err) {
       throw err
     }
     return returnData
   }
+
   async fetchLocalTimeline (appendParams) {
     let returnData
     try {
@@ -188,13 +200,14 @@ export default class Mastodon {
       const { statusCode } = resp
       returnData = data
       if (statusCode !== 200) {
-        throw ServerSideError(statusCode)
+        throw new ServerSideError(statusCode)
       }
     } catch (err) {
       throw err
     }
     return returnData
   }
+
   async fetchPublicTimeline (appendParams) {
     let returnData
     try {
@@ -206,13 +219,14 @@ export default class Mastodon {
       const { statusCode } = resp
       returnData = data
       if (statusCode !== 200) {
-        throw ServerSideError(statusCode)
+        throw new ServerSideError(statusCode)
       }
     } catch (err) {
       throw err
     }
     return returnData
   }
+
   async fetchNotification (appendParams) {
     let returnData
     try {
@@ -224,22 +238,26 @@ export default class Mastodon {
       const { statusCode } = resp
       returnData = data
       if (statusCode !== 200) {
-        throw ServerSideError(statusCode)
+        throw new ServerSideError(statusCode)
       }
     } catch (err) {
       throw err
     }
     return returnData
   }
+
   streamHomeTimeline () {
     return this.mastodon.stream('streaming/user')
   }
+
   streamLocalTimeline () {
     return this.mastodon.stream('streaming/public/local')
   }
+
   streamPublicTimeline () {
     return this.mastodon.stream('streaming/public')
   }
+
   async postToot (params) {
     let returnData
     try {
@@ -282,6 +300,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async uploadFile (params) {
     let returnData
     try {
@@ -299,6 +318,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async deleteOwnToot (id) {
     let returnData
     try {
@@ -313,6 +333,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async favorite (id) {
     let returnData
     try {
@@ -327,6 +348,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async unFavorite (id) {
     let returnData
     try {
@@ -341,6 +363,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async boost (id) {
     let returnData
     try {
@@ -355,6 +378,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async unBoost (id) {
     let returnData
     try {
@@ -369,6 +393,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async fetchToot (id) {
     let returnData
     try {
@@ -383,6 +408,7 @@ export default class Mastodon {
     }
     return returnData
   }
+
   async fetchContext (id) {
     let returnData
     try {

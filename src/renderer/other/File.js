@@ -9,10 +9,12 @@ export default class File {
     }
     this.state = state
   }
+
   static setFile ({ filePath, state }) {
     const uuid = window.uuidv4()
     return new File({ filePath, uuid, state })
   }
+
   changeState ({ newState, id }) {
     return new File({
       filePath: this.filePath,

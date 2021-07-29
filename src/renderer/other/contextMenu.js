@@ -8,8 +8,8 @@ export default (remote) => {
 
   const Menu = remote.Menu
   const MenuItem = remote.MenuItem
-  let menu = new Menu()
-  for (let ctxMenuItem of items) {
+  const menu = new Menu()
+  for (const ctxMenuItem of items) {
     menu.append(new MenuItem(ctxMenuItem))
   }
   return menu
