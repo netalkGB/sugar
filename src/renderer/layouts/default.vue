@@ -2,13 +2,6 @@
   <Nuxt />
 </template>
 
-<script>
-export default {
-  name: 'default',
-  components: {}
-}
-</script>
-
 <style>
 html {
   font-family: '游ゴシック Medium', 'Yu Gothic Medium', '游ゴシック体', YuGothic,
