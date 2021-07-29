@@ -4,6 +4,7 @@ export default class Media {
     this.url = args.url
     this.previewUrl = args.previewUrl
   }
+
   static fromMediaAttachment (mediaAttachment) {
     const type = mediaAttachment.type
     const url = mediaAttachment.remote_url || mediaAttachment.url
@@ -11,6 +12,7 @@ export default class Media {
     const media = new Media({ type, url, previewUrl })
     return media
   }
+
   static fromMediaAttachments (mediaAttachments) {
     return mediaAttachments.map(mediaAttachment =>
       Media.fromMediaAttachment(mediaAttachment)

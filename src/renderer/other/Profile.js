@@ -16,6 +16,7 @@ export default class Profile {
     this.isFollower = args.isFollower
     this.isFollowing = args.isFollowing
   }
+
   static fromAccount (account, followers, followings) {
     const avatar = account.avatar
     const header = account.header

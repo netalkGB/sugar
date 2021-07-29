@@ -22,6 +22,7 @@ export default class Toot {
     this.warning = args.warning
     this.warningComment = args.warningComment
   }
+
   static fromMastodon (data, ownUser) {
     let item
     if (data.reblog !== null) {
@@ -84,6 +85,7 @@ export default class Toot {
     }
     return new Toot(obj)
   }
+
   static fromMastodonNotification (data, ownUser) {
     if (data.type === 'mention') {
       const profile = Profile.fromAccount(data.account)
