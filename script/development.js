@@ -1,7 +1,7 @@
 const { loadNuxt, build } = require('nuxt')
 const spawn = require('cross-spawn-promise')
 const express = require('express')()
-const { buildMainProcess } = require('./promiseWebpack')
+const { buildMainProcess, buildPreloadScript } = require('./promiseWebpack')
 
 const port = 3000
 const mode = 'development'
@@ -22,6 +22,22 @@ async function main () {
     if (err.details) {
       for (const d of err.details) {
         console.error('main process ' + '[err]' + ': ' + red + d + reset)
+      }
+      process.exit(255)
+    }
+  }
+
+  try {
+    const stats = await buildPreloadScript({ mode })
+    console.log(stats.toString({ colors: true }))
+    if (stats.hasErrors()) {
+      process.exit(255)
+    }
+  } catch (error) {
+    console.error(error.stack || error)
+    if (err.details) {
+      for (const d of err.details) {
+        console.error('preload script ' + '[err]' + ': ' + red + d + reset)
       }
       process.exit(255)
     }
