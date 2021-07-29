@@ -1,10 +1,10 @@
-import { Logger } from 'log4js'
+import { Log4js } from 'log4js'
 import 'electron'
 interface Window {
   NODE_ENV:string | undefined,
   ipc:Electron.IpcRenderer
   remote:Electron.Remote,
-  log4js:Logger,
+  log4js:Log4js,
   uuidv4:any,
   M:any,
   fs:any,
