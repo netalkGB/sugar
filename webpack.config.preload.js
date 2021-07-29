@@ -5,7 +5,7 @@ module.exports = (_, argv) => {
   return {
     mode,
     target: 'electron-main',
-    entry: ['./src/preload/preload.js'],
+    entry: ['./src/preload/preload.ts'],
     output: {
       filename: 'preload.js',
       path: path.join(
@@ -26,12 +26,12 @@ module.exports = (_, argv) => {
       rules: [
         {
           test: /(\.js$|\.ts$)/,
-          exclude: /(node_modules|renderer|out)/,
+          exclude: /(node_modules|renderer|out|main)/,
           use: [
             {
               loader: 'ts-loader',
               options: {
-                configFile: 'tsconfig.main.json'
+                configFile: 'tsconfig.preload.json'
               }
             }
           ]
