@@ -12,9 +12,7 @@ interface Window {
   clearImmediate:any
 }
 
-declare var window:Window
-
-
+declare const window:Window
 
 const _setImmediate = window.setImmediate
 const _clearImmediate = window.clearImmediate
