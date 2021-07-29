@@ -26,7 +26,7 @@ module.exports = (_, argv) => {
       rules: [
         {
           test: /(\.js$|\.ts$)/,
-          exclude: /(node_modules|renderer|out)/,
+          exclude: /(node_modules|renderer|out|preload)/,
           use: [
             {
               loader: 'ts-loader',
