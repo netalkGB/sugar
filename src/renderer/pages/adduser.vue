@@ -4,34 +4,43 @@
       <h1>ユーザを追加</h1>
       <h2>Step 1. ホスト名を入力してください</h2>
       <p class="control">
-        <MtTextBox placeholder="mstdn.jp" v-model="host" class="textbox"></MtTextBox>
-        <MtButton @click.native="login">ログイン</MtButton>
+        <MtTextBox v-model="host" placeholder="mstdn.jp" class="textbox" />
+        <MtButton @click.native="login">
+          ログイン
+        </MtButton>
       </p>
-      <p v-if="invalidHostName">ホストに接続できません</p>
+      <p v-if="invalidHostName">
+        ホストに接続できません
+      </p>
       <h2>Step 2. ブラウザが開くので表示されたPINコードをペーストしてください</h2>
       <p class="control">
-        <MtTextBox placeholder="PINコード" v-model="pin" class="textbox"></MtTextBox>
+        <MtTextBox v-model="pin" placeholder="PINコード" class="textbox" />
         <MtButton
           :disabled="!canPushDone"
           @click.native="done"
-        >完了</MtButton>
+        >
+          完了
+        </MtButton>
       </p>
-      <p v-if="invalidPINCode">認証できませんでした</p>
+      <p v-if="invalidPINCode">
+        認証できませんでした
+      </p>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { createNamespacedHelpers } from 'vuex'
 import logger from '@/other/Logger'
 import contextMenu from '@/other/contextMenu'
-import MtTextBox from '@/components/Form/MtTextBox'
-import MtButton from '@/components/Form/MtButton'
+import MtTextBox from '@/components/Form/MtTextBox.vue'
+import MtButton from '@/components/Form/MtButton.vue'
 
 const { mapActions, mapGetters } = createNamespacedHelpers('users')
 const ipcRenderer = window.ipc
 const remote = window.remote
-export default {
+export default Vue.extend({
   components: {
     MtTextBox,
     MtButton
@@ -47,8 +56,11 @@ export default {
       invalidPINCode: false
     }
   },
+  computed: {
+    ...mapGetters({ userList: 'getUserList' })
+  },
   watch: {
-    userList: function () {
+    userList () {
       logger.debug(this.userList)
     }
   },
@@ -57,27 +69,26 @@ export default {
   },
   mounted () {
     const menu = contextMenu(remote)
-    this.$refs.adduser.addEventListener('contextmenu', (e) => {
+    const adduser = this.$refs.adduser as HTMLDivElement
+    adduser.addEventListener('contextmenu', (e) => {
       e.preventDefault()
       menu.popup(remote.getCurrentWindow())
     })
   },
   beforeDestroy () {
-    this.$refs.adduser.removeEventListener('contextmenu', () => { })
-  },
-  computed: {
-    ...mapGetters({ userList: 'getUserList' })
+    const adduser = this.$refs.adduser as HTMLDivElement
+    adduser.removeEventListener('contextmenu', () => { })
   },
   methods: {
     ...mapActions(['getPIN', 'addUser', 'saveUserConfig']),
     login () {
-      this.getPIN(this.host).then(obj => {
+      this.getPIN(this.host).then((obj) => {
         this.clientId = obj.clientId
         this.clientSecret = obj.clientSecret
         logger.debug('url', obj.url)
         ipcRenderer.send('openURL', obj.url)
         this.canPushDone = true
-      }).catch(e => {
+      }).catch((e) => {
         logger.debug('err')
         logger.debug(e)
         this.invalidHostName = true
@@ -88,18 +99,18 @@ export default {
       this.addUser({ clientId, clientSecret, pin, host }).then(() => {
         logger.debug('done:', 'success')
         this.$router.push('/')
-        this.saveUserConfig().catch(e => {
+        this.saveUserConfig().catch((e) => {
           logger.debug('save err')
           logger.debug(e)
         })
-      }).catch(e => {
+      }).catch((e) => {
         logger.debug('err')
         logger.debug(e)
         this.invalidPINCode = true
       })
     }
   }
-}
+})
 </script>
 
 <style scoped>
