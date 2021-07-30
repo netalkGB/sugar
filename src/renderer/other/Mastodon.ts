@@ -1,4 +1,5 @@
 import ServerSideError from '@/other/ServerSideError'
+import {Entity} from 'megalodon'
 
 const { M, fs } = window
 
@@ -34,7 +35,7 @@ export default class Mastodon {
   }
 
   static mastodons:Array<{ accessToken:string, host:string, mastodon:any }> = []
-  static getMastodon ({ accessToken, host }:{accessToken:string;host:string}) {
+  static getMastodon ({ accessToken, host }:{accessToken:string;host:string}):Mastodon {
     let client = Mastodon.mastodons.find(val =>
       (val.accessToken === accessToken && val.host === host)
     )
@@ -136,8 +137,8 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchProfileFollowers (id:string, appendParams:any) {
-    let returnData
+  async fetchProfileFollowers (id:string, appendParams:any):Promise<Array<Entity.Account>> {
+    let returnData:Array<Entity.Account>
     try {
       let params = {}
       if (appendParams && appendParams.limit) {
@@ -155,7 +156,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchProfileFollowing (id:string, appendParams:any) {
+  async fetchProfileFollowing (id:string, appendParams:any):Promise<Array<Entity.Account>> {
     let returnData
     try {
       let params = {}
