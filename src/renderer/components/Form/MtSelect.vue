@@ -1,6 +1,6 @@
 <template>
-  <select :disabled="disabled" :value="value"  @change="handleChange" class="select">
-    <slot></slot>
+  <select :disabled="disabled" :value="value" class="select" @change="handleChange">
+    <slot />
   </select>
 </template>
 

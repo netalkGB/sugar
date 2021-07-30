@@ -6,10 +6,10 @@
       @click="focus"
     >
       <input
+        ref="textbox"
+        v-model="val"
         type="text"
         class="textBox searchTextBox"
-        v-model="val"
-        ref="textbox"
         :placeholder="placeholder"
         :disabled="disabled"
       >
@@ -28,10 +28,10 @@
       :class="{'enable': disabled === false, 'disable': disabled === true }"
     >
       <input
+        ref="textbox"
+        v-model="val"
         type="text"
         class="textBox normalTextBox"
-        v-model="val"
-        ref="textbox"
         :placeholder="placeholder"
         :disabled="disabled"
       >
@@ -59,6 +59,28 @@ export default {
       default: ''
     }
   },
+  data () {
+    return {
+      val: ''
+    }
+  },
+  computed: {
+    len () {
+      return this.val.length
+    },
+    isVisibleClearButton () {
+      return this.len > 0 && this.disabled === false
+    }
+  },
+  watch: {
+    val (newVal) {
+      this.$emit('input', newVal)
+    }
+  },
+  mounted () {
+    this.setVal(this.value)
+    this.$emit('input', this.value)
+  },
   methods: {
     setVal (value) {
       this.val = value
@@ -73,28 +95,6 @@ export default {
       this.setVal('')
       this.focus()
       this.$emit('cleared')
-    }
-  },
-  data () {
-    return {
-      val: ''
-    }
-  },
-  mounted () {
-    this.setVal(this.value)
-    this.$emit('input', this.value)
-  },
-  computed: {
-    len: function () {
-      return this.val.length
-    },
-    isVisibleClearButton: function () {
-      return this.len > 0 && this.disabled === false
-    }
-  },
-  watch: {
-    val: function (newVal) {
-      this.$emit('input', newVal)
     }
   }
 }

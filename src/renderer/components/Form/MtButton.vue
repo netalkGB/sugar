@@ -1,12 +1,12 @@
 <template>
   <button v-if="type === 'submit'" :disabled="disabled" class="button submit">
-    <slot></slot>
+    <slot />
   </button>
   <button v-else-if="type === 'danger'" :disabled="disabled" class="button danger">
-    <slot></slot>
+    <slot />
   </button>
   <button v-else :disabled="disabled" class="button normal">
-    <slot></slot>
+    <slot />
   </button>
 </template>
 
