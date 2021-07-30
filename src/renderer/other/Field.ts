@@ -3,19 +3,19 @@ export default class Field {
   private _name:string
   private _value:string
 
-  get name():string {
+  get name ():string {
     return this._name
   }
 
-  set name(name:string) {
+  set name (name:string) {
     this._name = name
   }
 
-  get value():string {
+  get value ():string {
     return this._value
   }
 
-  set value(value:string) {
+  set value (value:string) {
     this._value = value
   }
 

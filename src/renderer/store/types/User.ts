@@ -1,4 +1,4 @@
-import Profile from "@/other/Profile";
+import Profile from '@/other/Profile'
 
 export interface User {
   clientId: string,

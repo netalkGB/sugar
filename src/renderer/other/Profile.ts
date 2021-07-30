@@ -16,89 +16,115 @@ export default class Profile {
   private _isFollower:boolean | undefined
   private _isFollowing:boolean | undefined
 
-  set avatar(avatar:string | undefined) {
+  set avatar (avatar:string | undefined) {
     this._avatar = avatar
   }
-  set header(header:string | undefined) {
+
+  set header (header:string | undefined) {
     this._header = header
   }
-  set displayName(displayName:string | undefined) {
+
+  set displayName (displayName:string | undefined) {
     this._displayName = displayName
   }
-  set userid(userid:string | undefined) {
+
+  set userid (userid:string | undefined) {
     this._userid = userid
   }
-  set locked(locked:string | undefined) {
+
+  set locked (locked:string | undefined) {
     this._locked = locked
   }
-  set note(note:string | undefined) {
+
+  set note (note:string | undefined) {
     this._note = note
   }
-  set internalid(internalid:string | undefined) {
+
+  set internalid (internalid:string | undefined) {
     this._internalid = internalid
   }
-  set followersCount(followersCount:number | undefined) {
+
+  set followersCount (followersCount:number | undefined) {
     this._followersCount = followersCount
   }
-  set followingCount(followingCount:number | undefined) {
+
+  set followingCount (followingCount:number | undefined) {
     this._followingCount = followingCount
   }
-  set statusesCount(statusesCount:number | undefined) {
+
+  set statusesCount (statusesCount:number | undefined) {
     this._statusesCount = statusesCount
   }
-  set fields(fields:Array<Field> | undefined) {
+
+  set fields (fields:Array<Field> | undefined) {
     this._fields = fields
   }
-  set bot(bot:boolean | undefined) {
+
+  set bot (bot:boolean | undefined) {
     this._bot = bot
   }
-  set isFollower(isFollower:boolean | undefined) {
+
+  set isFollower (isFollower:boolean | undefined) {
     this._isFollower = isFollower
   }
-  set isFollowing(isFollowing:boolean | undefined) {
+
+  set isFollowing (isFollowing:boolean | undefined) {
     this._isFollowing = isFollowing
   }
 
-  get avatar() {
+  get avatar () {
     return this._avatar
   }
-  get header() {
+
+  get header () {
     return this._header
   }
-  get displayName() {
+
+  get displayName () {
     return this._displayName
   }
-  get userid() {
+
+  get userid () {
     return this._userid
   }
-  get locked() {
+
+  get locked () {
     return this._locked
   }
-  get note() {
+
+  get note () {
     return this._note
   }
-  get internalid() {
+
+  get internalid () {
     return this._internalid
   }
-  get followersCount() {
+
+  get followersCount () {
     return this._followersCount
   }
-  get followingCount() {
+
+  get followingCount () {
     return this._followingCount
   }
-  get statusesCount() {
+
+  get statusesCount () {
     return this._statusesCount
   }
-  get fields() {
+
+  get fields () {
     return this._fields
   }
-  get bot() {
+
+  get bot () {
     return this._bot
   }
-  get isFollower() {
+
+  get isFollower () {
     return this._isFollower
   }
-  get isFollowing() {
+
+  get isFollowing () {
     return this._isFollowing
   }
 

@@ -2,9 +2,9 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import { RootState } from '@/store'
 import logger from '@/other/Logger'
 import Profile from '@/other/Profile'
+import ServerSideError from '@/other/ServerSideError'
 import Mastodon from '../other/Mastodon'
 import { Users } from './types/Users'
-import ServerSideError from '@/other/ServerSideError'
 
 // const ipcRenderer = window.ipc
 
