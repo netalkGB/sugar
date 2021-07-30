@@ -10,21 +10,23 @@
   </button>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+
+export default Vue.extend({
   props: {
     type: {
       type: String,
       default: 'normal',
       required: false
-    },
+    } as PropOptions<String>,
     disabled: {
       type: Boolean,
       defualt: false,
       required: false
-    }
+    } as PropOptions<Boolean>
   }
-}
+})
 </script>
 
 <style scoped>
