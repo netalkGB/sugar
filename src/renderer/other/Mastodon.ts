@@ -1,5 +1,5 @@
 import ServerSideError from '@/other/ServerSideError'
-import {Entity} from 'megalodon'
+import { Entity } from 'megalodon'
 
 const { M, fs } = window
 
