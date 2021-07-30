@@ -39,8 +39,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+
+export default Vue.extend({
   props: {
     type: {
       type: String,
@@ -65,15 +67,15 @@ export default {
     }
   },
   computed: {
-    len () {
+    len ():number {
       return this.val.length
     },
-    isVisibleClearButton () {
+    isVisibleClearButton ():boolean {
       return this.len > 0 && this.disabled === false
     }
   },
   watch: {
-    val (newVal) {
+    val (newVal:string) {
       this.$emit('input', newVal)
     }
   },
@@ -82,11 +84,12 @@ export default {
     this.$emit('input', this.value)
   },
   methods: {
-    setVal (value) {
+    setVal (value:string) {
       this.val = value
     },
     focus () {
-      this.$refs.textbox.focus()
+      const textbox = this.$refs.textbox as HTMLInputElement
+      textbox.focus()
     },
     reset () {
       if (this.disabled === true) {
@@ -97,7 +100,7 @@ export default {
       this.$emit('cleared')
     }
   }
-}
+})
 </script>
 
 <style scoped>
