@@ -24,7 +24,7 @@ export default Vue.extend({
     }
     if (this.userList.length === 1) {
       if (!this.userList[0].menu) {
-        this.$router.push('/user/1/home_timeline')
+        this.$router.push('/user/1/hometimeline')
       } else {
         this.$router.push(this.userList[0].menu[0].to)
       }
