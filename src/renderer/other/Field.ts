@@ -24,11 +24,14 @@ export default class Field {
     this._value = value
   }
 
-  public static fromMastodonField (field:Field) {
+  public static fromMastodonField (field:any) {
     return new Field(field.name, field.value)
   }
 
-  public static fromMastodonFields (fields:Array<Field>) {
-    return fields.map(f => Field.fromMastodonField(f))
+  public static fromMastodonFields (fields:object | null):Array<Field> | null {
+    if (fields instanceof Array) {
+      return fields.map(f => Field.fromMastodonField(f))
+    }
+    return null
   }
 }

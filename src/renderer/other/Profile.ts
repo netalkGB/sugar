@@ -1,18 +1,20 @@
 import Field from '@/other/Field'
 import ProfileArgs from '@/other/ProfileArgs'
+import { Entity } from 'megalodon'
+
 export default class Profile {
   private _avatar:string | undefined
   private _header:string | undefined
   private _displayName:string | undefined
   private _userid:string | undefined
-  private _locked:string | undefined
+  private _locked:boolean | undefined
   private _note:string | undefined
   private _internalid:string | undefined
   private _followersCount:number | undefined
   private _followingCount:number | undefined
   private _statusesCount:number | undefined
-  private _fields:Array<Field> | undefined
-  private _bot:boolean | undefined
+  private _fields:Array<Field> | undefined | null
+  private _bot:boolean | undefined | null
   private _isFollower:boolean | undefined
   private _isFollowing:boolean | undefined
 
@@ -32,7 +34,7 @@ export default class Profile {
     this._userid = userid
   }
 
-  set locked (locked:string | undefined) {
+  set locked (locked:boolean | undefined) {
     this._locked = locked
   }
 
@@ -56,11 +58,11 @@ export default class Profile {
     this._statusesCount = statusesCount
   }
 
-  set fields (fields:Array<Field> | undefined) {
+  set fields (fields:Array<Field> | undefined | null) {
     this._fields = fields
   }
 
-  set bot (bot:boolean | undefined) {
+  set bot (bot:boolean | undefined | null) {
     this._bot = bot
   }
 
@@ -146,7 +148,7 @@ export default class Profile {
   }
 
   // accountについてはmastodon-apiのJSONの返却値を使用するため一旦anyとする
-  static fromAccount (account:any, followers:Array<Profile> | undefined = undefined, followings:Array<Profile> | undefined = undefined) {
+  static fromAccount (account:Entity.Account, followers:Array<Profile> | undefined = undefined, followings:Array<Profile> | undefined = undefined) {
     const avatar = account.avatar
     const header = account.header
     const displayName = account.display_name
