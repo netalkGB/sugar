@@ -148,7 +148,6 @@ export default class Profile implements Jsonable {
     this._isFollowing = args.isFollowing
   }
 
-  // accountについてはmastodon-apiのJSONの返却値を使用するため一旦anyとする
   static fromAccount (account:Entity.Account, followers:Array<Profile> | undefined = undefined, followings:Array<Profile> | undefined = undefined) {
     const avatar = account.avatar
     const header = account.header
