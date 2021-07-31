@@ -72,7 +72,7 @@ export default Vue.extend({
     const adduser = this.$refs.adduser as HTMLDivElement
     adduser.addEventListener('contextmenu', (e) => {
       e.preventDefault()
-      menu.popup(remote.getCurrentWindow())
+      menu.popup({ window: remote.getCurrentWindow() })
     })
   },
   beforeDestroy () {
