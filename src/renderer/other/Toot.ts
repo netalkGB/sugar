@@ -339,7 +339,7 @@ export default class Toot {
         date,
         id,
         boostedBy,
-        isTootByOwn,
+        isTootByOwn
       }
       if (status) {
         const profile = Profile.fromAccount(status.account)
