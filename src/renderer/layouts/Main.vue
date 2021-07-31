@@ -6,7 +6,7 @@
     <div id="menu">
       <Sidebar :userId="userId" />
     </div>
-    <router-view id="content"></router-view>
+    <nuxt id="content" />
   </div>
 </template>
 
@@ -18,7 +18,6 @@ import Sidebar from '@/components/Sidebar/Sidebar'
 const ipcRenderer = window.ipc
 
 export default {
-  props: { userId: Number },
   components: {
     Sidebar
   },
@@ -26,6 +25,13 @@ export default {
     return {
       width: 0,
       height: 0
+    }
+  },
+  computed: {
+    userId () {
+      const userId = this.$route.params.userId
+      const base = 10
+      return parseInt(userId, base)
     }
   },
   methods: {
@@ -37,22 +43,22 @@ export default {
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
     await this.fetchOwnFollowerAndFollowing()
-    this.firstFetch({ type: TimelineType.localtl }).then(() => {
-      this.startStreaming({ type: TimelineType.localtl }).catch(e => {
-        logger.debug(e)
-      })
-    })
-    this.firstFetch({ type: TimelineType.hometl }).then(() => {
-      this.startStreaming({ type: TimelineType.hometl }).catch(e => {
-        logger.debug(e)
-      })
-    })
-    this.firstFetch({ type: TimelineType.publictl }).then(() => {
-      this.startStreaming({ type: TimelineType.publictl }).catch(e => {
-        logger.debug(e)
-      })
-    })
-    this.firstFetch({ type: TimelineType.notification }).then(() => { })
+    // this.firstFetch({ type: TimelineType.localtl }).then(() => {
+    //   this.startStreaming({ type: TimelineType.localtl }).catch(e => {
+    //     logger.debug(e)
+    //   })
+    // })
+    // this.firstFetch({ type: TimelineType.hometl }).then(() => {
+    //   this.startStreaming({ type: TimelineType.hometl }).catch(e => {
+    //     logger.debug(e)
+    //   })
+    // })
+    // this.firstFetch({ type: TimelineType.publictl }).then(() => {
+    //   this.startStreaming({ type: TimelineType.publictl }).catch(e => {
+    //     logger.debug(e)
+    //   })
+    // })
+    // this.firstFetch({ type: TimelineType.notification }).then(() => { })
   },
   mounted () {
     this.width = window.innerWidth
