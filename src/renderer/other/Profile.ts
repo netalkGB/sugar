@@ -3,74 +3,74 @@ import ProfileArgs from '@/other/ProfileArgs'
 import { Entity } from 'megalodon'
 
 export default class Profile {
-  private _avatar:string | undefined
-  private _header:string | undefined
-  private _displayName:string | undefined
-  private _userid:string | undefined
-  private _locked:boolean | undefined
-  private _note:string | undefined
-  private _internalid:string | undefined
-  private _followersCount:number | undefined
-  private _followingCount:number | undefined
-  private _statusesCount:number | undefined
-  private _fields:Array<Field> | undefined | null
-  private _bot:boolean | undefined | null
-  private _isFollower:boolean | undefined
-  private _isFollowing:boolean | undefined
+  private _avatar:string
+  private _header:string
+  private _displayName:string
+  private _userid:string
+  private _locked:boolean
+  private _note:string
+  private _internalid:string
+  private _followersCount:number
+  private _followingCount:number
+  private _statusesCount:number
+  private _fields:Array<Field> | null
+  private _bot:boolean | null
+  private _isFollower:boolean
+  private _isFollowing:boolean
 
-  set avatar (avatar:string | undefined) {
+  set avatar (avatar:string) {
     this._avatar = avatar
   }
 
-  set header (header:string | undefined) {
+  set header (header:string) {
     this._header = header
   }
 
-  set displayName (displayName:string | undefined) {
+  set displayName (displayName:string) {
     this._displayName = displayName
   }
 
-  set userid (userid:string | undefined) {
+  set userid (userid:string) {
     this._userid = userid
   }
 
-  set locked (locked:boolean | undefined) {
+  set locked (locked:boolean) {
     this._locked = locked
   }
 
-  set note (note:string | undefined) {
+  set note (note:string) {
     this._note = note
   }
 
-  set internalid (internalid:string | undefined) {
+  set internalid (internalid:string) {
     this._internalid = internalid
   }
 
-  set followersCount (followersCount:number | undefined) {
+  set followersCount (followersCount:number) {
     this._followersCount = followersCount
   }
 
-  set followingCount (followingCount:number | undefined) {
+  set followingCount (followingCount:number) {
     this._followingCount = followingCount
   }
 
-  set statusesCount (statusesCount:number | undefined) {
+  set statusesCount (statusesCount:number) {
     this._statusesCount = statusesCount
   }
 
-  set fields (fields:Array<Field> | undefined | null) {
+  set fields (fields:Array<Field> | null) {
     this._fields = fields
   }
 
-  set bot (bot:boolean | undefined | null) {
+  set bot (bot:boolean | null) {
     this._bot = bot
   }
 
-  set isFollower (isFollower:boolean | undefined) {
+  set isFollower (isFollower:boolean) {
     this._isFollower = isFollower
   }
 
-  set isFollowing (isFollowing:boolean | undefined) {
+  set isFollowing (isFollowing:boolean) {
     this._isFollowing = isFollowing
   }
 
