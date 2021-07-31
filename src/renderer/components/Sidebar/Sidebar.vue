@@ -25,27 +25,33 @@
       </div>
     </div>
     <div
+      v-show="isShowSettingMenu"
       ref="settingsMenu"
       class="settingsMenu"
-      v-show="isShowSettingMenu"
     >
       <div class="menuitem">
         <div
           class="menuitemchildren"
           @mouseup="openSearchWindow"
-        >ユーザ検索</div>
+        >
+          ユーザ検索
+        </div>
       </div>
       <div class="menuitem">
         <div
           class="menuitemchildren"
           @mouseup="openFavouriteWindow"
-        >お気に入り</div>
+        >
+          お気に入り
+        </div>
       </div>
       <div class="menuitem">
         <div
           class="menuitemchildren"
           @mouseup="openOwnProfileWindow"
-        >@{{currentUser.user.userid}}</div>
+        >
+          @{{ currentUser.user.userid }}
+        </div>
       </div>
       <!-- <div class="menuitem">
         <div class="menuitemchildren">設定</div>

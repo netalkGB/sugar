@@ -4,7 +4,7 @@
     :style="{ width: width + 'px', height: height + 'px' }"
   >
     <div id="menu">
-      <Sidebar :userId="userId" />
+      <Sidebar :user-id="userId" />
     </div>
     <nuxt id="content" />
   </div>
@@ -63,7 +63,7 @@ export default {
   mounted () {
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
