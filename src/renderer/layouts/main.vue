@@ -48,11 +48,11 @@ export default {
     //     logger.debug(e)
     //   })
     // })
-    // this.firstFetch({ type: TimelineType.hometl }).then(() => {
-    //   this.startStreaming({ type: TimelineType.hometl }).catch(e => {
-    //     logger.debug(e)
-    //   })
-    // })
+    this.firstFetch({ type: TimelineType.hometl }).then(() => {
+      this.startStreaming({ type: TimelineType.hometl }).catch(e => {
+        logger.debug(e)
+      })
+    })
     // this.firstFetch({ type: TimelineType.publictl }).then(() => {
     //   this.startStreaming({ type: TimelineType.publictl }).catch(e => {
     //     logger.debug(e)
