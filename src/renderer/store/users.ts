@@ -5,6 +5,7 @@ import Profile from '@/other/Profile'
 import ServerSideError from '@/other/ServerSideError'
 import Mastodon from '../other/Mastodon'
 import { Users } from './types/Users'
+import { User } from './types/User'
 
 // const ipcRenderer = window.ipc
 
@@ -39,7 +40,7 @@ export const getters: GetterTree<UsersState, RootState> = {
 export const mutations: MutationTree<UsersState> = {
   add (state, payload) {
     logger.debug(payload)
-    const user = {
+    const user:User = {
       clientId: payload.clientId,
       clientSecret: payload.clientSecret,
       accessToken: payload.accessToken,
@@ -112,8 +113,15 @@ export const actions: ActionTree<UsersState, RootState> = {
     }
   },
   fetchOwnFollower ({ commit, getters }) {
-    const { accessToken, host, user } = getters.getCurrentUser
-    const { internalid } = user
+    // const { accessToken, host, user } = getters.getCurrentUser as User
+    const currentUser = getters.getCurrentUser as User
+    const accessToken = currentUser.accessToken
+    const host = currentUser.host
+    const user = currentUser.user
+    logger.debug(currentUser)
+    const internalid = user.internalid
+    logger.debug(user)
+    logger.debug(internalid)
     return new Promise<void>((resolve, reject) => {
       const mastodon = Mastodon.getMastodon({ accessToken, host })
       mastodon.fetchProfileFollowers(
