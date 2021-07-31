@@ -126,7 +126,7 @@ export default Vue.extend({
   padding: 3px 4px;
   border-radius: 2px;
   outline: none;
-  height: calc(inherit - 2px);
+  /* height: calc(inherit - 2px); */
 }
 .textBox::placeholder {
   color: #aaaaaa;
