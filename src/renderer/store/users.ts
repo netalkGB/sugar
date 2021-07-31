@@ -40,7 +40,7 @@ export const getters: GetterTree<UsersState, RootState> = {
 export const mutations: MutationTree<UsersState> = {
   add (state, payload) {
     logger.debug(payload)
-    const user:User = {
+    const user = {
       clientId: payload.clientId,
       clientSecret: payload.clientSecret,
       accessToken: payload.accessToken,
@@ -113,15 +113,8 @@ export const actions: ActionTree<UsersState, RootState> = {
     }
   },
   fetchOwnFollower ({ commit, getters }) {
-    // const { accessToken, host, user } = getters.getCurrentUser as User
-    const currentUser = getters.getCurrentUser as User
-    const accessToken = currentUser.accessToken
-    const host = currentUser.host
-    const user = currentUser.user
-    logger.debug(currentUser)
-    const internalid = user.internalid
-    logger.debug(user)
-    logger.debug(internalid)
+    const { accessToken, host, user } = getters.getCurrentUser as User
+    const { internalid } = user
     return new Promise<void>((resolve, reject) => {
       const mastodon = Mastodon.getMastodon({ accessToken, host })
       mastodon.fetchProfileFollowers(
