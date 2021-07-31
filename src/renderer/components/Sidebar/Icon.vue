@@ -59,8 +59,8 @@ import MdSettingsIcon from 'vue-ionicons/dist/md-settings.vue'
 import IosMegaphoneIcon from 'vue-ionicons/dist/ios-megaphone.vue'
 import IosNotificationsIcon from 'vue-ionicons/dist/ios-notifications.vue'
 export default {
-  props: ['to', 'icon'],
   components: { MdHomeIcon, IosPeopleIcon, IosAddIcon, MdSettingsIcon, IosGlobeIcon, IosMegaphoneIcon, IosNotificationsIcon },
+  props: ['to', 'icon'],
   data () {
     return {
       width: '26',

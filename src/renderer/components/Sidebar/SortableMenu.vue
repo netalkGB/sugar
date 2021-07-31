@@ -37,6 +37,14 @@ export default {
       ]
     }
   },
+  watch: {
+    menu (newVal) {
+      this.$emit('onChanged', newVal)
+    },
+    drag (newVal) {
+      logger.debug('newVal', newVal)
+    }
+  },
   created () {
     this.merge()
   },
@@ -47,21 +55,13 @@ export default {
       if (!items) {
         return
       }
-      for (let i of menu) {
+      for (const i of menu) {
         const r = this.items.find(item => item.icon === i.icon)
         if (!r) {
           items = [...items, r]
         }
       }
       this.menu = items
-    }
-  },
-  watch: {
-    menu (newVal) {
-      this.$emit('onChanged', newVal)
-    },
-    drag (newVal) {
-      logger.debug('newVal', newVal)
     }
   }
 }
