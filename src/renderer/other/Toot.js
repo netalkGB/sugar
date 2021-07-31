@@ -1,5 +1,5 @@
-import Profile from '@/other/Profile.js'
-import Media from '@/other/Media.js'
+import Profile from '@/other/Profile'
+import Media from '@/other/Media'
 export default class Toot {
   constructor (args) {
     this.profile = args.profile
