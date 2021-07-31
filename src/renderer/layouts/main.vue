@@ -49,7 +49,7 @@ export default {
     //   })
     // })
     this.firstFetch({ type: TimelineType.hometl }).then(() => {
-      this.startStreaming({ type: TimelineType.hometl }).catch(e => {
+      this.startStreaming({ type: TimelineType.hometl }).catch((e) => {
         logger.debug(e)
       })
     })
