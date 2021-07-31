@@ -1,8 +1,9 @@
 import Field from '@/other/Field'
 import ProfileArgs from '@/other/ProfileArgs'
 import { Entity } from 'megalodon'
+import Jsonable from './Jsonable'
 
-export default class Profile {
+export default class Profile implements Jsonable {
   private _avatar:string
   private _header:string
   private _displayName:string
@@ -183,5 +184,24 @@ export default class Profile {
       isFollower,
       isFollowing
     })
+  }
+
+  public toJSON () {
+    return {
+      avatar: this.avatar,
+      header: this.header,
+      displayName: this.displayName,
+      userid: this.userid,
+      locked: this.locked,
+      note: this.note,
+      internalid: this.internalid,
+      followersCount: this.followersCount,
+      followingCount: this.followingCount,
+      statusesCount: this.statusesCount,
+      fields: this.fields,
+      bot: this.bot,
+      isFollower: this.isFollower,
+      isFollowing: this.isFollowing
+    }
   }
 }
