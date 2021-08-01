@@ -1,5 +1,5 @@
 import Profile from '@/other/Profile'
-
+import SideMenuItem from '@/other/SideMenuItem'
 export interface User {
   clientId: string,
   clientSecret: string,
@@ -10,5 +10,5 @@ export interface User {
   user: Profile,
   followers: Array<Profile>,
   followings: Array<Profile>,
-  menu: null
+  menu: Array<SideMenuItem> | null
 }
