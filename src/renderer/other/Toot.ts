@@ -20,7 +20,7 @@ export default class Toot {
   private _boostedBy?: Profile
   private _followedBy?: Profile
   private _originalId?: string
-  private _isTootByOwn: boolean
+  private _isTootByOwn: boolean | undefined
   private _mentions?: Array<{
     id: string
     acct: string
@@ -155,7 +155,7 @@ export default class Toot {
     return this._isTootByOwn
   }
 
-  set isTootByOwn (isTootByOwn:boolean) {
+  set isTootByOwn (isTootByOwn:boolean|undefined) {
     this._isTootByOwn = isTootByOwn
   }
 
@@ -228,7 +228,7 @@ export default class Toot {
     const visibility = item.visibility
     const favorited = item.favourited
     const boosted = item.reblogged
-    const isTootByOwn = ownUser && ownUser.user.userid === profile.userid
+    const isTootByOwn = ownUser.user && ownUser.user.userid === profile.userid
     const warning = item.sensitive
     const warningComment = item.spoiler_text
     let obj:TootArgs = {
@@ -329,7 +329,7 @@ export default class Toot {
           }
         }
       }
-      return obj
+      return new Toot(obj)
     } else if (data.type === 'reblog') {
       const date = new Date(data.created_at)
       const id = data.id
@@ -386,7 +386,7 @@ export default class Toot {
           }
         }
       }
-      return obj
+      return new Toot(obj)
     } else if (data.type === 'favourite') {
       const date = new Date(data.created_at)
       const id = data.id
@@ -443,12 +443,12 @@ export default class Toot {
           }
         }
       }
-      return obj
+      return new Toot(obj)
     } else {
       const date = new Date(data.created_at)
       const id = data.id
       const followedBy = Profile.fromAccount(data.account)
-      return { date, id, followedBy }
+      return new Toot({ date, id, followedBy })
     }
   }
 }
