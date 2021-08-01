@@ -5,17 +5,14 @@ const { M, fs } = window
 
 export default class Mastodon {
   static async loginPhase1 (host:string) {
-    let clientId
-    let clientSecret
-    let url
     const res = await M.createOAuthApp(
       `https://${host}/api/v1/apps`,
       'mastoot',
       'read write follow'
     )
-    clientId = res.client_id
-    clientSecret = res.client_secret
-    url = await M.getAuthorizationUrl(
+    const clientId = res.client_id
+    const clientSecret = res.client_secret
+    const url = await M.getAuthorizationUrl(
       clientId,
       clientSecret,
       `https://${host}`,
@@ -99,7 +96,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchOwnFavouriteTimeline (appendParams:any) {
+  async fetchOwnFavouriteTimeline (appendParams:any = undefined) {
     let returnData
     try {
       let params = {}
@@ -118,7 +115,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchProfileTimeline (id:string, appendParams:any) {
+  async fetchProfileTimeline (id:string, appendParams:any = undefined) {
     let returnData
     try {
       let params = {}
@@ -137,7 +134,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchProfileFollowers (id:string, appendParams:any):Promise<Array<Entity.Account>> {
+  async fetchProfileFollowers (id:string, appendParams:any = undefined):Promise<Array<Entity.Account>> {
     let returnData:Array<Entity.Account>
     try {
       let params = {}
@@ -156,7 +153,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchProfileFollowing (id:string, appendParams:any):Promise<Array<Entity.Account>> {
+  async fetchProfileFollowing (id:string, appendParams:any = undefined):Promise<Array<Entity.Account>> {
     let returnData
     try {
       let params = {}
@@ -175,7 +172,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchHomeTimeline (appendParams:any) {
+  async fetchHomeTimeline (appendParams:any = undefined) {
     let returnData
     try {
       let params = {}
@@ -194,7 +191,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchLocalTimeline (appendParams:any) {
+  async fetchLocalTimeline (appendParams:any = undefined) {
     let returnData
     try {
       let params:any = { local: true }
@@ -213,7 +210,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchPublicTimeline (appendParams:any) {
+  async fetchPublicTimeline (appendParams:any = undefined) {
     let returnData
     try {
       let params:any = { local: false }
@@ -232,7 +229,7 @@ export default class Mastodon {
     return returnData
   }
 
-  async fetchNotification (appendParams:any) {
+  async fetchNotification (appendParams:any = undefined) {
     let returnData
     try {
       let params = {}
