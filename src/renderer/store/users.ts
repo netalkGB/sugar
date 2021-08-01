@@ -39,7 +39,6 @@ export const getters: GetterTree<UsersState, RootState> = {
 
 export const mutations: MutationTree<UsersState> = {
   add (state, payload) {
-    logger.debug(payload)
     const user = {
       clientId: payload.clientId,
       clientSecret: payload.clientSecret,
