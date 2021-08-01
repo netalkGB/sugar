@@ -30,10 +30,10 @@ export default {
     return {
       drag: false,
       menu: [
-        { icon: 'home_timeline', to: { name: 'home_timeline' } },
-        { icon: 'local_timeline', to: { name: 'local_timeline' } },
-        { icon: 'public_timeline', to: { name: 'public_timeline' } },
-        { icon: 'notifications', to: { name: 'notification' } }
+        { icon: 'home_timeline', to: { name: 'user-userId-hometimeline' } },
+        { icon: 'local_timeline', to: { name: 'user-userId-localtimeline' } },
+        { icon: 'public_timeline', to: { name: 'user-userId-publictimeline' } },
+        { icon: 'notifications', to: { name: 'user-userId-notification' } }
       ]
     }
   },
