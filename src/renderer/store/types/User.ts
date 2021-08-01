@@ -7,6 +7,7 @@ export interface User {
   host: string,
   userNumber: number,
   userid: string,
+  user: Profile,
   followers: Array<Profile>,
   followings: Array<Profile>,
   menu: null
