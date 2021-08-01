@@ -1,5 +1,5 @@
 <template>
-  <TimeLine @wantOldToot="wantOldToot" ref="timeline" :type="type" :timeline="timeline" @scrollStateChanged="handleScrollState" />
+  <TimeLine ref="timeline" :type="type" :timeline="timeline" @wantOldToot="wantOldToot" @scrollStateChanged="handleScrollState" />
 </template>
 
 <script>
@@ -10,6 +10,7 @@ import logger from '@/other/Logger'
 
 export default {
   components: { TimeLine },
+  layout: 'main',
   computed: {
     ...mapGetters('users', { currentUser: 'getCurrentUser' }),
     ...mapState({ tl: state => state.timelines.timelines }),
