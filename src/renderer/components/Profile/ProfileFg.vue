@@ -1,8 +1,8 @@
 <template>
   <div>
     <div
-      class="imageContainer"
       v-if="shortMode === false"
+      class="imageContainer"
     >
       <div
         class="image"
@@ -21,37 +21,39 @@
         class="idname"
         @click="$emit('toggle')"
       >
-        <span class="id">{{displayName}}</span>
+        <span class="id">{{ displayName }}</span>
         <IosLockIcon
+          v-if="locked"
           :w="'12'"
           :h="'12'"
-          v-if="locked"
         />
         <Bot v-if="bot" />
       </div>
       <div
         class="idname"
         @click="$emit('toggle')"
-      >{{userid}}</div>
+      >
+        {{ userid }}
+      </div>
       <FollowStatus
-        class="followstatus"
         v-if="shortMode === false"
-        :isFollowing="isFollowing"
-        :isFollower="isFollower"
+        class="followstatus"
+        :is-following="isFollowing"
+        :is-follower="isFollower"
       />
     </div>
     <div
-      class="paddingLR"
       v-if="shortMode === false"
+      class="paddingLR"
     >
       <MastodonHTML
-        @click="handleClick"
         :html="note"
+        @click="handleClick"
       />
     </div>
     <div
-      class="paddingLR"
       v-if="shortMode === false"
+      class="paddingLR"
     >
       <Fields :fields="fields" />
     </div>
@@ -67,7 +69,6 @@ import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import logger from '@/other/Logger'
 const ipcRenderer = window.ipc
 export default {
-  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot', 'fields', 'isFollowing', 'isFollower'],
   components: {
     MastodonHTML,
     Bot,
@@ -75,6 +76,7 @@ export default {
     FollowStatus,
     IosLockIcon
   },
+  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot', 'fields', 'isFollowing', 'isFollower'],
   methods: {
     handleClick (ev) {
       const { type } = ev

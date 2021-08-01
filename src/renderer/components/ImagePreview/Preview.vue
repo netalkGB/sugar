@@ -8,9 +8,15 @@
       :style="{ 'height': autoHeight, 'width': autoWidth, 'zoom':zoom, 'transform': calcDeg }"
     >
     <div class="tool">
-      <div @click="zoomIn">[+]</div>
-      <div @click="zoomOut">[-]</div>
-      <div @click="rotate">[r]</div>
+      <div @click="zoomIn">
+        [+]
+      </div>
+      <div @click="zoomOut">
+        [-]
+      </div>
+      <div @click="rotate">
+        [r]
+      </div>
     </div>
   </div>
 </template>
@@ -24,17 +30,6 @@ export default {
       rotateMode: 0
     }
   },
-  methods: {
-    zoomIn () {
-      this.zoom += 0.2
-    },
-    zoomOut () {
-      this.zoom -= 0.2
-    },
-    rotate () {
-      this.rotateMode = this.rotateMode >= 4 ? 0 : this.rotateMode + 1
-    }
-  },
   computed: {
     autoHeight () {
       return this.zoom === 1.0 ? this.height + 'px' : 'auto'
@@ -44,6 +39,17 @@ export default {
     },
     calcDeg () {
       return `rotate(${this.rotateMode * 90}deg)`
+    }
+  },
+  methods: {
+    zoomIn () {
+      this.zoom += 0.2
+    },
+    zoomOut () {
+      this.zoom -= 0.2
+    },
+    rotate () {
+      this.rotateMode = this.rotateMode >= 4 ? 0 : this.rotateMode + 1
     }
   }
 }

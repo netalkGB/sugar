@@ -1,9 +1,9 @@
 <template>
   <div class="favourite">
     <TimeLine
-      :infiniteMode="false"
-      :timeline="timeline"
       ref="timeline"
+      :infinite-mode="false"
+      :timeline="timeline"
     />
   </div>
 </template>

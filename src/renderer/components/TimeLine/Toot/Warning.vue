@@ -1,6 +1,6 @@
 <template>
   <div class="warning">
-    !!!&nbsp;閲覧注意{{comment}}&nbsp;!!!
+    !!!&nbsp;閲覧注意{{ comment }}&nbsp;!!!
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
     }
   },
   computed: {
-    comment: function () {
+    comment () {
       return this.reason.length > 0 ? `(${this.reason})` : ''
     }
   }

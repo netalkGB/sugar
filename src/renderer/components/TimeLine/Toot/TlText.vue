@@ -1,7 +1,7 @@
 <template>
   <MastodonHTML
-    @click="handleClick"
     :html="content"
+    @click="handleClick"
   />
 </template>
 
@@ -12,10 +12,10 @@ import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
 const ipcRenderer = window.ipc
 
 export default {
-  props: ['content', 'mentions'],
   components: {
     MastodonHTML
   },
+  props: ['content', 'mentions'],
   data () {
     return {
       users: null,

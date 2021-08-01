@@ -4,8 +4,8 @@
   >
     <div class="border">
       <div
-        class="header"
         ref="header"
+        class="header"
       >
         <div
           class="profileBg"
@@ -13,16 +13,16 @@
         >
           <ProfileFg
             class="profileFg"
-            :shortMode="shortMode"
+            :short-mode="shortMode"
             :avatar="profile.avatar"
-            :displayName="profile.displayName"
+            :display-name="profile.displayName"
             :locked="profile.locked"
             :bot="profile.bot"
             :userid="profile.userid"
             :note="profile.note"
             :fields="profile.fields"
-            :isFollowing="profile.isFollowing"
-            :isFollower="profile.isFollower"
+            :is-following="profile.isFollowing"
+            :is-follower="profile.isFollower"
             @toggle="toggleShortMode"
           />
         </div>
@@ -44,12 +44,12 @@ import Count from '@/components/Profile/Count'
 import ProfileFg from '@/components/Profile/ProfileFg'
 
 export default {
-  props: ['profile'],
   components: {
     IosLockIcon,
     Count,
     ProfileFg
   },
+  props: ['profile'],
   data () {
     return {
       shortMode: false

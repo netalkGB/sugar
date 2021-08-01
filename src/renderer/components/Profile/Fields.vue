@@ -4,10 +4,10 @@
       v-for="(item, index) in fields"
       :key="index"
     >
-      {{item.name}}:
+      {{ item.name }}:
       <MastodonHTML
-        @click="handleClick"
         :html="item.value"
+        @click="handleClick"
       />
     </div>
   </div>
@@ -18,10 +18,10 @@ import MastodonHTML from '@/components/MastodonHTML/MastodonHTML'
 import logger from '@/other/Logger'
 const ipcRenderer = window.ipc
 export default {
-  props: ['fields'],
   components: {
     MastodonHTML
   },
+  props: ['fields'],
   methods: {
     handleClick (ev) {
       const { type } = ev

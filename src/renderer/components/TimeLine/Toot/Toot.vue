@@ -2,15 +2,15 @@
   <div v-if="!toot.followedBy">
     <BoostedBy
       v-if="toot.boostedBy"
-      :boostedBy="toot.boostedBy"
-      @click="openProfile(toot.boostedBy)"
+      :boosted-by="toot.boostedBy"
       class="notification"
+      @click="openProfile(toot.boostedBy)"
     />
     <FavoritedBy
       v-if="toot.favoritedBy"
-      :favoritedBy="toot.favoritedBy"
-      @click="openProfile(toot.favoritedBy)"
+      :favorited-by="toot.favoritedBy"
       class="notification"
+      @click="openProfile(toot.favoritedBy)"
     />
     <div class="toot">
       <ProfileImage
@@ -25,8 +25,8 @@
             @click="openProfile(toot.profile)"
           />
           <Time
-            @click="openConversation"
             :date="toot.date"
+            @click="openConversation"
           />
         </div>
         <template v-if="showToot === true">
@@ -40,20 +40,20 @@
             :medium="toot.medium"
           />
           <Action
-            :isTootByOwn="toot.isTootByOwn"
-            :userid="toot.profile.userid"
             :id="toot.originalId"
+            :is-toot-by-own="toot.isTootByOwn"
+            :userid="toot.profile.userid"
             :favorited="toot.favorited"
             :boosted="toot.boosted"
             :visibility="toot.visibility"
-            :favoritesCount="toot.favoritesCount"
-            :boostsCount="toot.boostsCount"
-            :repliesCount="toot.repliesCount"
+            :favorites-count="toot.favoritesCount"
+            :boosts-count="toot.boostsCount"
+            :replies-count="toot.repliesCount"
             :mentions="toot.mentions"
           />
         </template>
         <template v-else>
-          <Warning @click.native="showToot = true" :reason="toot.warningComment"/>
+          <Warning :reason="toot.warningComment" @click.native="showToot = true" />
         </template>
       </div>
     </div>
@@ -61,13 +61,13 @@
   <div v-else>
     <FollowedBy
       v-if="toot.followedBy"
-      :followedBy="toot.followedBy"
+      :followed-by="toot.followedBy"
       class="notification"
     />
     <div class="toot follow">
       <ProfileImage
-        @click="openProfile(toot.followedBy)"
         :profile="toot.followedBy"
+        @click="openProfile(toot.followedBy)"
       />
       <div class="body">
         <div class="idnametime">

@@ -1,9 +1,11 @@
 <template>
   <div
     class="time"
-    @click="$emit('click')"
     :title="localTime"
-  >{{diffAndFormat}}</div>
+    @click="$emit('click')"
+  >
+    {{ diffAndFormat }}
+  </div>
 </template>
 
 <script>

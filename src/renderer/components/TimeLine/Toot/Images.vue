@@ -1,14 +1,16 @@
 <template>
   <div class="images">
     <div
-      class="image"
       v-for="(image, index) in medium"
       :key="index"
+      class="image"
     >
-      <div @click="openImage(image.previewUrl)"><img
+      <div @click="openImage(image.previewUrl)">
+        <img
           class="img"
           :src="image.previewUrl"
-        ></div>
+        >
+      </div>
     </div>
   </div>
 </template>

@@ -1,12 +1,12 @@
 <template>
-  <span>{{name}}</span>
+  <span>{{ name }}</span>
 </template>
 
 <script>
 export default {
   props: ['profile'],
   computed: {
-    name: function () {
+    name () {
       const { userid, displayName } = this.profile
       if (displayName.length > 0) {
         return displayName

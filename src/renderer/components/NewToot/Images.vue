@@ -1,6 +1,13 @@
 <template>
-  <div class="images" v-if="files.length > 0">
-    <ImagePreview class="preview" v-for="(file,idx) in files" :file="file" :idx="idx" :key="idx" @remove="removeFile" />
+  <div v-if="files.length > 0" class="images">
+    <ImagePreview
+      v-for="(file,idx) in files"
+      :key="idx"
+      class="preview"
+      :file="file"
+      :idx="idx"
+      @remove="removeFile"
+    />
   </div>
 </template>
 
@@ -8,10 +15,10 @@
 import ImagePreview from '@/components/NewToot/ImagePreview'
 
 export default {
-  props: ['files'],
   components: {
     ImagePreview
   },
+  props: ['files'],
   methods: {
     removeFile (idx) {
       this.$emit('removeFile', idx)

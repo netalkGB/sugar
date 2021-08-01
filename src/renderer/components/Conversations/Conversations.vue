@@ -1,7 +1,7 @@
 <template>
   <TimeLine
-    :infiniteMode="false"
     ref="timeline"
+    :infinite-mode="false"
     :timeline="conversations"
   />
 </template>

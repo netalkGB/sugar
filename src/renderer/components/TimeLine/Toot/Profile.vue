@@ -1,14 +1,16 @@
 <template>
   <div class="nameandid">
     <div
+      v-if="profile.displayName"
       class="name clickable"
       @click="$emit('click')"
-      v-if="profile.displayName"
-    >{{profile.displayName}}</div>
+    >
+      {{ profile.displayName }}
+    </div>
     <div
+      v-if="profile.locked"
       class="protect clickable"
       @click="$emit('click')"
-      v-if="profile.locked"
     >
       <IosLockIcon
         :w="'12'"
@@ -18,7 +20,9 @@
     <div
       class="id clickable"
       @click="$emit('click')"
-    >{{profile.userid}}</div>
+    >
+      {{ profile.userid }}
+    </div>
   </div>
 </template>
 
