@@ -228,7 +228,7 @@ export default class Toot {
     const visibility = item.visibility
     const favorited = item.favourited
     const boosted = item.reblogged
-    const isTootByOwn = ownUser.user && ownUser.user.userid === profile.userid
+    const isTootByOwn = ownUser.userid === profile.userid
     const warning = item.sensitive
     const warningComment = item.spoiler_text
     let obj:TootArgs = {
