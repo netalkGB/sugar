@@ -73,7 +73,7 @@ export default {
 <style scoped>
 .icon {
   height: 48px;
-  color: #888888;
+  fill: #888888;
   display: flex;
   align-items: center;
   justify-content: center;

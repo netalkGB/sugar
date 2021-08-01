@@ -43,6 +43,6 @@ export default {
   width: calc(100% - var(--icon-size));
 }
 .favorited {
-  color: #ffaa00;
+  fill: #ffaa00;
 }
 </style>
