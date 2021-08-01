@@ -1,7 +1,7 @@
 <template>
-  <div class="userListContainer" @scroll="scrolling" ref="outerList">
+  <div ref="outerList" class="userListContainer" @scroll="scrolling">
     <div ref="list">
-      <User v-for="(user) in users" :user="user" :key="user.id" />
+      <User v-for="(user) in users" :key="user.id" :user="user" />
       <div v-if="loadingPrev === true" class="loading">
         <IosSyncIcon w="20px" h="20px" animate="rotate" />
       </div>
@@ -32,21 +32,8 @@ export default {
       prevScrollHeight: 0
     }
   },
-  methods: {
-    scrolling (e) {
-      const { scrollTop, offsetHeight, scrollHeight } = e.target
-      const loadTopHeight = scrollHeight - offsetHeight
-      if (scrollTop <= 0) {
-        this.scrollState = 'loading(next)'
-      } else if (scrollTop >= loadTopHeight) {
-        this.scrollState = 'loading(prev)'
-      } else {
-        this.scrollState = 'buffering'
-      }
-    }
-  },
   watch: {
-    scrollState: function () {
+    scrollState () {
       if (this.infiniteMode === false) {
         return
       }
@@ -73,6 +60,19 @@ export default {
   },
   beforeDestroy () {
     this.$off('loadOldUserDone')
+  },
+  methods: {
+    scrolling (e) {
+      const { scrollTop, offsetHeight, scrollHeight } = e.target
+      const loadTopHeight = scrollHeight - offsetHeight
+      if (scrollTop <= 0) {
+        this.scrollState = 'loading(next)'
+      } else if (scrollTop >= loadTopHeight) {
+        this.scrollState = 'loading(prev)'
+      } else {
+        this.scrollState = 'buffering'
+      }
+    }
   }
 }
 </script>

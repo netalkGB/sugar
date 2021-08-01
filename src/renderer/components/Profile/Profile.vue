@@ -21,23 +21,23 @@
 </template>
 
 <script>
+import logger from '@/other/Logger'
+import { createNamespacedHelpers } from 'vuex'
 import Header from './Header'
 import Timeline from './Timeline'
-import logger from '@/other/Logger'
 
-import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapState } = createNamespacedHelpers('profile')
 
 export default {
   components: {
     Header, Timeline
   },
+  props: ['internalId', 'userId'],
   data () {
     return {
       profileHeight: '50%'
     }
   },
-  props: ['internalId', 'userId'],
   methods: {
     ...mapActions(['fetchProfile', 'fetchProfileTimeline', 'loadOldToot', 'fetchProfileFollowers', 'fetchProfileFollowing']),
     fetch () {

@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="line">
-      <SearchBox style="height: 26px;padding: 4px;"/>
+      <SearchBox style="height: 26px;padding: 4px;" />
     </div>
     <UserList
       style="height: calc(100% - 35px);"
-      :infiniteMode="false"
+      :infinite-mode="false"
       :users="accounts"
     />
   </div>

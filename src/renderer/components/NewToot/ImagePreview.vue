@@ -2,19 +2,19 @@
   <div class="image" :style="{width: imageWidth + 'px',height: imageHeight + 'px'}">
     <div>
       <template v-if="file.filePath.split('.').pop() !== 'mp4'">
-        <img class="img" ref="realImage" :src="file.filePath" alt="">
+        <img ref="realImage" class="img" :src="file.filePath" alt="">
       </template>
       <template v-else>
-        <video class="img" ref="realVideo" :src="file.filePath"></video>
+        <video ref="realVideo" class="img" :src="file.filePath" />
       </template>
     </div>
     <div class="absolute" :class="{ uploading:file.state === 'uploading',error: file.state === 'error' }">
-      <div class="state" v-if="file.state === 'uploading'">
+      <div v-if="file.state === 'uploading'" class="state">
         <div class="spin">
           <ios-sync-icon w="25" h="25" />
         </div>
       </div>
-      <div class="state" v-if="file.state === 'error'">
+      <div v-if="file.state === 'error'" class="state">
         <div>
           error
         </div>
@@ -38,11 +38,6 @@ export default {
     IosCloseIcon
   },
   props: ['file', 'idx'],
-  methods: {
-    close () {
-      this.$emit('remove', this.idx)
-    }
-  },
   data () {
     return {
       imageWidth: 100,
@@ -69,6 +64,11 @@ export default {
     }
     if (this.$refs.realVideo !== undefined) {
       this.$refs.realImage.removeEventListener('loaddeddata', () => { })
+    }
+  },
+  methods: {
+    close () {
+      this.$emit('remove', this.idx)
     }
   }
 }

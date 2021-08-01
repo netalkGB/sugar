@@ -2,8 +2,8 @@
   <div>
     <div class="user">
       <ProfileImage
-        @click="openProfile(user)"
         :profile="user"
+        @click="openProfile(user)"
       />
       <div class="body">
         <div class="idnametime">

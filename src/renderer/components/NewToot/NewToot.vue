@@ -5,45 +5,55 @@
       class="contentWarning"
     >
       <input
-        class="cw"
         v-model="spoilerText"
+        class="cw"
         :disabled="sending"
         placeholder="ここに警告を書いてください"
       >
     </div>
     <div class="inputToot">
       <textarea
-        :value="toot"
         ref="toottext"
+        :value="toot"
         :disabled="sending"
-        @input="handleInput"
         class="toot"
         autofocus
         placeholder="今何してる？"
-      ></textarea>
+        @input="handleInput"
+      />
     </div>
     <div class="menu">
       <div>
         <MtButton
           class="item addFile"
-          @click.native="addFile"
           :disabled="files.length >= 4 || sending"
-        >写真を追加</MtButton>
+          @click.native="addFile"
+        >
+          写真を追加
+        </MtButton>
         <MtSelect
+          v-model="visibility"
           class="item permission"
           :disabled="sending"
-          v-model='visibility'
         >
-          <option value="public">公開</option>
-          <option value="unlisted">未収載</option>
-          <option value="private">フォロワー限定</option>
-          <option value="direct">ダイレクト</option>
+          <option value="public">
+            公開
+          </option>
+          <option value="unlisted">
+            未収載
+          </option>
+          <option value="private">
+            フォロワー限定
+          </option>
+          <option value="direct">
+            ダイレクト
+          </option>
         </MtSelect>
         <label class="item iscw">
           CW:<input
+            v-model="isCW"
             type="checkbox"
             :disabled="sending"
-            v-model="isCW"
           >
         </label>
       </div>
@@ -54,15 +64,17 @@
     <div class="menu">
       <MtButton
         :disabled="isCanToot === false"
-        @click.native="postToot"
         type="submit"
         class="item"
-      >トゥート</MtButton>
+        @click.native="postToot"
+      >
+        トゥート
+      </MtButton>
     </div>
     <Images
       :files="files"
-      @removeFile="removeFile"
       class="imgs"
+      @removeFile="removeFile"
     />
   </div>
 </template>
@@ -88,6 +100,74 @@ export default {
     Images
   },
   props: { userId: Number, inReplyToID: String, destinations: String },
+  data () {
+    return {
+      toot: '',
+      visibility: 'public',
+      spoilerText: '',
+      maxTootLength,
+      isCW: false,
+      files: [],
+      keys: {},
+      sending: false,
+      copyInReplyToID: null,
+      copyDestination: null
+    }
+  },
+  computed: {
+    tootLength () {
+      return maxTootLength - this.toot.length
+    },
+    isPreparingImage () {
+      return (
+        this.files.find(
+          val =>
+            val.state === FileState.error || val.state === FileState.uploading
+        ) !== undefined
+      )
+    },
+    isCanToot () {
+      if (this.sending) {
+        return false
+      } else if (
+        this.isPreparingImage ||
+        ((this.toot.length <= 0 || this.toot.length > 500) &&
+          this.files.length <= 0)
+      ) {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
+  watch: {
+    isCW (newVal) {
+      if (newVal === false) {
+        this.spoilerText = ''
+      }
+      this.$emit('requireHeightChange', {
+        cw: newVal,
+        fileList: this.files.length > 0
+      })
+    },
+    files (newVal) {
+      this.$emit('requireHeightChange', {
+        cw: this.isCW,
+        fileList: newVal.length > 0
+      })
+    }
+  },
+  mounted () {
+    const menu = contextMenu(remote)
+    this.$refs.toottext.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+      menu.popup(remote.getCurrentWindow())
+    })
+  },
+  beforeDestroy () {
+    this.$refs.toottext.removeListener('contextmenu', () => { })
+    window.removeEventListener('keydown', () => { })
+  },
   methods: {
     setup () {
       this.copyDestination = this.destinations
@@ -105,7 +185,7 @@ export default {
       const { accessToken, host } = this.$store.getters['users/getCurrentUser']
       this.keys.accessToken = accessToken
       this.keys.host = host
-      window.addEventListener('keydown', e => {
+      window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.keyCode === 13 && this.isCanToot) {
           this.postToot()
         }
@@ -143,7 +223,7 @@ export default {
         this.clearForm()
         this.sending = false
         this.$refs.toottext.focus()
-      }).catch(e => {
+      }).catch((e) => {
         if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
           return
         }
@@ -156,7 +236,7 @@ export default {
       this.toot = value
     },
     addFile () {
-      ipcRenderer.invoke('openDialog').then(appendFile => {
+      ipcRenderer.invoke('openDialog').then((appendFile) => {
         if (appendFile !== null) {
           const { filePaths } = appendFile
           filePaths.forEach((filePath) => {
@@ -170,7 +250,7 @@ export default {
     uploadFile (file) {
       const { accessToken, host } = this.keys
       const { filePath, uuid } = file
-      Mastodon.getMastodon({ accessToken, host }).uploadFile({ filePath }).then(data => {
+      Mastodon.getMastodon({ accessToken, host }).uploadFile({ filePath }).then((data) => {
         if (host !== this.keys.host && accessToken !== this.keys.accessToken) {
           return
         }
@@ -184,7 +264,7 @@ export default {
               ? val.changeState({ newState: FileState.done, id })
               : val
         )
-      }).catch(err => {
+      }).catch((err) => {
         if (err instanceof ServerSideError) {
           this.files = this.files.map(
             val =>
@@ -211,74 +291,6 @@ export default {
       this.copyInReplyToID = null
       this.copyDestination = null
     }
-  },
-  data () {
-    return {
-      toot: '',
-      visibility: 'public',
-      spoilerText: '',
-      maxTootLength,
-      isCW: false,
-      files: [],
-      keys: {},
-      sending: false,
-      copyInReplyToID: null,
-      copyDestination: null
-    }
-  },
-  watch: {
-    isCW (newVal) {
-      if (newVal === false) {
-        this.spoilerText = ''
-      }
-      this.$emit('requireHeightChange', {
-        cw: newVal,
-        fileList: this.files.length > 0
-      })
-    },
-    files (newVal) {
-      this.$emit('requireHeightChange', {
-        cw: this.isCW,
-        fileList: newVal.length > 0
-      })
-    }
-  },
-  computed: {
-    tootLength () {
-      return maxTootLength - this.toot.length
-    },
-    isPreparingImage () {
-      return (
-        this.files.find(
-          val =>
-            val.state === FileState.error || val.state === FileState.uploading
-        ) !== undefined
-      )
-    },
-    isCanToot () {
-      if (this.sending) {
-        return false
-      } else if (
-        this.isPreparingImage ||
-        ((this.toot.length <= 0 || this.toot.length > 500) &&
-          this.files.length <= 0)
-      ) {
-        return false
-      } else {
-        return true
-      }
-    }
-  },
-  mounted () {
-    const menu = contextMenu(remote)
-    this.$refs.toottext.addEventListener('contextmenu', (e) => {
-      e.preventDefault()
-      menu.popup(remote.getCurrentWindow())
-    })
-  },
-  beforeDestroy () {
-    this.$refs.toottext.removeListener('contextmenu', () => { })
-    window.removeEventListener('keydown', () => { })
   }
 }
 </script>

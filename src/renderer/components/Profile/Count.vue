@@ -4,24 +4,36 @@
       class="status"
       @click="toggle('status')"
     >
-      <div class="title">トゥート</div>
-      <div class="count">{{toot}}</div>
+      <div class="title">
+        トゥート
+      </div>
+      <div class="count">
+        {{ toot }}
+      </div>
     </div>
     <div
       class="following"
       @click="toggle('following')"
     >
-      <div class="title">フォロー</div>
-      <div class="count">{{following}}</div>
+      <div class="title">
+        フォロー
+      </div>
+      <div class="count">
+        {{ following }}
+      </div>
     </div>
     <div
       class="followers"
       @click="toggle('followers')"
     >
-      <div class="title">フォロワー</div>
-      <div class="count">{{follower}}</div>
+      <div class="title">
+        フォロワー
+      </div>
+      <div class="count">
+        {{ follower }}
+      </div>
     </div>
-    <div class="other"></div>
+    <div class="other" />
   </div>
 </template>
 

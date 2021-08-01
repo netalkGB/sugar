@@ -1,18 +1,20 @@
 <template>
   <div class="searchBox">
     <MtTextBox
+      v-model="query"
       class="textbox"
       type="search"
-      v-model="query"
       placeholder="idまたはユーザ名"
       @cleared="clearList"
     />
     <MtButton
-      @click.native="search"
       type="submit"
       :disabled="query.length <= 0"
       class="searchButton"
-    >検索</MtButton>
+      @click.native="search"
+    >
+      検索
+    </MtButton>
   </div>
 </template>
 

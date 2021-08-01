@@ -1,5 +1,7 @@
 <template>
-  <div class="bot">bot</div>
+  <div class="bot">
+    bot
+  </div>
 </template>
 
 <script>

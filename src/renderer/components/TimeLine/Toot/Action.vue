@@ -11,7 +11,7 @@
         />
       </div>
       <div class="count">
-        <div>{{repliesCount}}</div>
+        <div>{{ repliesCount }}</div>
       </div>
     </div>
     <template v-if="visibility === 'public' || visibility === 'unlisted'">
@@ -30,7 +30,7 @@
         </div>
         <div class="count">
           <div v-if="displayBoostsCount > 0">
-            {{displayBoostsCount}}
+            {{ displayBoostsCount }}
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
             h="17"
           />
         </div>
-        <div class="count"></div>
+        <div class="count" />
       </div>
     </template>
     <template v-else>
@@ -54,7 +54,7 @@
             h="17"
           />
         </div>
-        <div class="count"></div>
+        <div class="count" />
       </div>
     </template>
     <div
@@ -71,12 +71,14 @@
         />
       </div>
       <div class="count">
-        <div v-if="displayFavoritesCount > 0">{{displayFavoritesCount}}</div>
+        <div v-if="displayFavoritesCount > 0">
+          {{ displayFavoritesCount }}
+        </div>
       </div>
     </div>
     <div
-      class="flex"
       v-if="isTootByOwn"
+      class="flex"
     >
       <div
         class="button"

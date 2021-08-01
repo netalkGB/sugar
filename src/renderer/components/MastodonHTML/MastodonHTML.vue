@@ -2,7 +2,7 @@
   <span
     ref="tltext"
     v-html="html"
-  ></span>
+  />
 </template>
 
 <script>
@@ -17,6 +17,34 @@ export default {
       atag: null
     }
   },
+  updated () {
+    this.setup()
+  },
+  mounted () {
+    this.setup()
+  },
+  beforeDestroy () {
+    if (this.users !== null) {
+      for (const a of this.users) {
+        a.removeEventListener('click', (e) => { })
+      }
+    }
+    if (this.hashtags !== null) {
+      for (const a of this.hashtags) {
+        a.removeEventListener('click', (e) => { })
+      }
+    }
+    if (this.links !== null) {
+      for (const a of this.links) {
+        a.removeEventListener('click', (e) => { })
+      }
+    }
+    if (this.atag !== null) {
+      for (const a of this.atag) {
+        a.removeEventListener('click', (e) => { })
+      }
+    }
+  },
   methods: {
     setup () {
       if (!this.html) {
@@ -24,14 +52,14 @@ export default {
       }
       const tltext = this.$refs.tltext
       this.atag = tltext.querySelectorAll('a')
-      for (let a of this.atag) {
-        a.addEventListener('click', e => {
+      for (const a of this.atag) {
+        a.addEventListener('click', (e) => {
           e.preventDefault()
         })
       }
       this.users = tltext.querySelectorAll('a.u-url')
-      for (let user of this.users) {
-        user.addEventListener('click', e => {
+      for (const user of this.users) {
+        user.addEventListener('click', (e) => {
           e.preventDefault()
           const href = user.href
           const split = href.split('/')
@@ -44,8 +72,8 @@ export default {
         })
       }
       this.hashtags = tltext.querySelectorAll('a.hashtag')
-      for (let hashtag of this.hashtags) {
-        hashtag.addEventListener('click', e => {
+      for (const hashtag of this.hashtags) {
+        hashtag.addEventListener('click', (e) => {
           e.preventDefault()
           const href = hashtag.href
           const tag = hashtag.querySelector('a > span').textContent
@@ -60,8 +88,8 @@ export default {
         })
       }
       this.links = tltext.querySelectorAll('a[target="_blank"]')
-      for (let link of this.links) {
-        link.addEventListener('click', e => {
+      for (const link of this.links) {
+        link.addEventListener('click', (e) => {
           e.preventDefault()
           if (link.textContent && link.textContent.split('')[0] === '@') {
             return
@@ -74,34 +102,6 @@ export default {
           }
           this.$emit('click', click)
         })
-      }
-    }
-  },
-  updated () {
-    this.setup()
-  },
-  mounted () {
-    this.setup()
-  },
-  beforeDestroy () {
-    if (this.users !== null) {
-      for (let a of this.users) {
-        a.removeEventListener('click', (e) => { })
-      }
-    }
-    if (this.hashtags !== null) {
-      for (let a of this.hashtags) {
-        a.removeEventListener('click', (e) => { })
-      }
-    }
-    if (this.links !== null) {
-      for (let a of this.links) {
-        a.removeEventListener('click', (e) => { })
-      }
-    }
-    if (this.atag !== null) {
-      for (let a of this.atag) {
-        a.removeEventListener('click', (e) => { })
       }
     }
   }

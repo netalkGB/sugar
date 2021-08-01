@@ -1,17 +1,17 @@
 <template>
   <div
+    ref="outerList"
     class="timelineContainer"
     @scroll="scrolling"
-    ref="outerList"
   >
     <div
-      class="innerTimeline"
       ref="list"
+      class="innerTimeline"
     >
       <Toot
         v-for="(toot) in timeline"
-        :toot="toot"
         :key="toot.id"
+        :toot="toot"
       />
       <div
         v-if="loadingPrev === true"
@@ -50,22 +50,8 @@ export default {
       prevScrollHeight: 0
     }
   },
-  methods: {
-    scrolling (e) {
-      const { scrollTop, offsetHeight, scrollHeight } = e.target
-      const loadTopHeight = scrollHeight - offsetHeight
-      const ceiledScrollTop = Math.ceil(scrollTop)
-      if (ceiledScrollTop <= 0) {
-        this.scrollState = 'loading(next)'
-      } else if (ceiledScrollTop >= loadTopHeight) {
-        this.scrollState = 'loading(prev)'
-      } else {
-        this.scrollState = 'buffering'
-      }
-    }
-  },
   watch: {
-    scrollState: function () {
+    scrollState () {
       if (this.infiniteMode === false) {
         return
       }
@@ -92,6 +78,20 @@ export default {
   },
   beforeDestroy () {
     this.$off('loadOldTootDone')
+  },
+  methods: {
+    scrolling (e) {
+      const { scrollTop, offsetHeight, scrollHeight } = e.target
+      const loadTopHeight = scrollHeight - offsetHeight
+      const ceiledScrollTop = Math.ceil(scrollTop)
+      if (ceiledScrollTop <= 0) {
+        this.scrollState = 'loading(next)'
+      } else if (ceiledScrollTop >= loadTopHeight) {
+        this.scrollState = 'loading(prev)'
+      } else {
+        this.scrollState = 'buffering'
+      }
+    }
   }
 }
 </script>
