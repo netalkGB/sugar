@@ -43,22 +43,22 @@ export default {
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
     await this.fetchOwnFollowerAndFollowing()
-    // this.firstFetch({ type: TimelineType.localtl }).then(() => {
-    //   this.startStreaming({ type: TimelineType.localtl }).catch(e => {
-    //     logger.debug(e)
-    //   })
-    // })
+    this.firstFetch({ type: TimelineType.localtl }).then(() => {
+      this.startStreaming({ type: TimelineType.localtl }).catch((e) => {
+        logger.debug(e)
+      })
+    })
     this.firstFetch({ type: TimelineType.hometl }).then(() => {
       this.startStreaming({ type: TimelineType.hometl }).catch((e) => {
         logger.debug(e)
       })
     })
-    // this.firstFetch({ type: TimelineType.publictl }).then(() => {
-    //   this.startStreaming({ type: TimelineType.publictl }).catch(e => {
-    //     logger.debug(e)
-    //   })
-    // })
-    // this.firstFetch({ type: TimelineType.notification }).then(() => { })
+    this.firstFetch({ type: TimelineType.publictl }).then(() => {
+      this.startStreaming({ type: TimelineType.publictl }).catch((e) => {
+        logger.debug(e)
+      })
+    })
+    this.firstFetch({ type: TimelineType.notification }).then(() => { })
   },
   mounted () {
     this.width = window.innerWidth
