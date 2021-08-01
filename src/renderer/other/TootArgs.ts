@@ -17,7 +17,7 @@ export default interface TootArgs {
   boostedBy?: Profile
   followedBy?: Profile
   originalId?: string
-  isTootByOwn: boolean
+  isTootByOwn?: boolean
   mentions?: Array<{
     id: string
     acct: string
