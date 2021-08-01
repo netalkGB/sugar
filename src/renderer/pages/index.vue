@@ -26,10 +26,12 @@ export default Vue.extend({
       if (!this.userList[0].menu) {
         this.$router.push('/user/1/hometimeline')
       } else {
-        this.$router.push(this.userList[0].menu[0].to)
+        const name = this.userList[0].menu[0].to.name
+        const defaultUserId = '1'
+        this.$router.push({name, params: {userId: defaultUserId}})
       }
     }
-  },
+      },
   methods: {
     ...mapActions(['loadUserConfig'])
   }
