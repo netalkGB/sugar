@@ -28,10 +28,10 @@ export default Vue.extend({
       } else {
         const name = this.userList[0].menu[0].to.name
         const defaultUserId = '1'
-        this.$router.push({name, params: {userId: defaultUserId}})
+        this.$router.push({ name, params: { userId: defaultUserId } })
       }
     }
-      },
+  },
   methods: {
     ...mapActions(['loadUserConfig'])
   }
