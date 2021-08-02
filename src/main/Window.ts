@@ -5,7 +5,7 @@ export default class Window {
   private name: string
   private devMode: boolean
   private browserWindow!: BrowserWindow
-
+  private _onClosed: Function | undefined
   constructor (name: string, isDevMode: boolean, args: Electron.BrowserWindowConstructorOptions) {
     this.name = name
     this.devMode = isDevMode
@@ -20,6 +20,14 @@ export default class Window {
     this.name = name
   }
 
+  get onClosed () {
+    return this._onClosed
+  }
+
+  set onClosed (onClosed: Function | undefined) {
+    this._onClosed = onClosed
+  }
+
   public setBrowserWindow (args: Electron.BrowserWindowConstructorOptions): void {
     const webPreferences = {
       nodeIntegration: false,
@@ -32,7 +40,11 @@ export default class Window {
       ...args,
       webPreferences
     })
-
+    this.browserWindow.on('closed', () => {
+      if (this.onClosed) {
+        this.onClosed(this.name)
+      }
+    })
     if (process.platform !== 'darwin') {
       this.browserWindow.setMenu(null)
     }

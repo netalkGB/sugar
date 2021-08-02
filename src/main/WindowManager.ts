@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { ipcMain, app } from 'electron'
 import Window from '~/Window'
 import WindowManagerArgs from '~/interfaces/WindowManagerArgs'
 import WindowManagerFileArgs from '~/interfaces/WindowManagerFileArgs'
@@ -31,7 +31,12 @@ export default class WindowManager {
         }
       })
     }
-
+    window.onClosed = (name:string) => {
+      this.windows = this.windows.filter(w => w.getName() !== name)
+      if (name === 'main') {
+        app.quit()
+      }
+    }
     if (file.filename) {
       window.loadFile(file.filename)
     }
