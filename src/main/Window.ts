@@ -2,22 +2,22 @@ import * as path from 'path'
 import { BrowserWindow, app } from 'electron'
 
 export default class Window {
-  private name: string
-  private devMode: boolean
-  private browserWindow!: BrowserWindow
+  private _name: string
+  private _devMode: boolean
+  private _browserWindow!: BrowserWindow
   private _onClosed: Function | undefined
   constructor (name: string, isDevMode: boolean, args: Electron.BrowserWindowConstructorOptions) {
-    this.name = name
-    this.devMode = isDevMode
+    this._name = name
+    this._devMode = isDevMode
     this.setBrowserWindow(args)
   }
 
-  public getName (): string {
-    return this.name
+  get name (): string {
+    return this._name
   }
 
-  public setName (name: string): void {
-    this.name = name
+  set name (name: string) {
+    this._name = name
   }
 
   get onClosed () {
@@ -36,44 +36,44 @@ export default class Window {
       preload: path.join(app.getAppPath(), 'out/preload/preload.js'),
       enableRemoteModule: true
     }
-    this.browserWindow = new BrowserWindow({
+    this._browserWindow = new BrowserWindow({
       ...args,
       webPreferences
     })
-    this.browserWindow.on('closed', () => {
+    this._browserWindow.on('closed', () => {
       if (this.onClosed) {
-        this.onClosed(this.name)
+        this.onClosed(this._name)
       }
     })
     if (process.platform !== 'darwin') {
-      this.browserWindow.setMenu(null)
+      this._browserWindow.setMenu(null)
     }
-    if (this.devMode === true) {
-      this.browserWindow.webContents.openDevTools()
+    if (this._devMode === true) {
+      this._browserWindow.webContents.openDevTools()
     }
 
-    this.browserWindow.webContents.on('new-window', (e) => {
+    this._browserWindow.webContents.on('new-window', (e) => {
       e.preventDefault()
     })
-    this.browserWindow.webContents.on('will-navigate', (e) => {
+    this._browserWindow.webContents.on('will-navigate', (e) => {
       e.preventDefault()
     })
   }
 
   loadFile (fname: string) {
-    this.browserWindow.loadFile(fname)
+    this._browserWindow.loadFile(fname)
   }
 
   loadURL (url: string) {
-    this.browserWindow.loadURL(url)
+    this._browserWindow.loadURL(url)
   }
 
   show () {
-    this.browserWindow.show()
-    this.browserWindow.focus()
+    this._browserWindow.show()
+    this._browserWindow.focus()
   }
 
   setSize (w: number, h: number) {
-    this.browserWindow.setSize(w, h)
+    this._browserWindow.setSize(w, h)
   }
 }
