@@ -19,7 +19,6 @@ const defaultWindowHeight = 138
 const defaultWindowWidth = 330
 export default {
   components: { NewToot },
-  props: { userId: Number, inReplyToID: String, destinations: String },
   data () {
     return {
       width: 0,
@@ -29,6 +28,17 @@ export default {
       defaultWindowWidth,
       marginH: 0,
       marginW: 0
+    }
+  },
+  computed: {
+    userId () {
+      return Number(this.$route.params.userId)
+    },
+    inReplyToID () {
+      return String(this.$route.query.inReplyToID)
+    },
+    destinations () {
+      return String(this.$route.query.destinations)
     }
   },
   methods: {
