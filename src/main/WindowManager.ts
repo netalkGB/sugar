@@ -3,22 +3,22 @@ import Window from '~/Window'
 import WindowManagerArgs from '~/interfaces/WindowManagerArgs'
 import WindowManagerFileArgs from '~/interfaces/WindowManagerFileArgs'
 export default class WindowManager {
-  private windows: Array<Window>
-  private isDevMode: boolean
+  private _windows: Array<Window>
+  private _isDevMode: boolean
 
   constructor (args: WindowManagerArgs) {
-    this.windows = []
-    this.isDevMode = args && args.devMode
+    this._windows = []
+    this._isDevMode = args && args.devMode
   }
 
   public add (name: string, file: WindowManagerFileArgs, bwArgs: Electron.BrowserWindowConstructorOptions): void {
     let window: Window | undefined
-    window = this.windows.find(w => w.getName() === name)
+    window = this._windows.find(w => w.name === name)
     if (window !== undefined) {
       window.show()
       return
     }
-    window = new Window(name, this.isDevMode, bwArgs)
+    window = new Window(name, this._isDevMode, bwArgs)
 
     if (name === 'main') {
       ipcMain.on('changeWindowSize', (_, type) => {
@@ -32,7 +32,7 @@ export default class WindowManager {
       })
     }
     window.onClosed = (name:string) => {
-      this.windows = this.windows.filter(w => w.getName() !== name)
+      this._windows = this._windows.filter(w => w.name !== name)
       if (name === 'main') {
         app.quit()
       }
@@ -44,6 +44,6 @@ export default class WindowManager {
       window.loadURL(file.url)
     }
 
-    this.windows.push(window)
+    this._windows.push(window)
   }
 }
