@@ -8,7 +8,7 @@
 import Preview from '@/components/ImagePreview/Preview'
 export default {
   name: 'ImagePreview',
-  props: ['url'],
+  props: [''],
   components: {
     Preview
   },
@@ -16,6 +16,11 @@ export default {
     return {
       width: 0,
       height: 0
+    }
+  },
+  computed: {
+    url () {
+      return String(this.$route.params.url)
     }
   },
   mounted () {
