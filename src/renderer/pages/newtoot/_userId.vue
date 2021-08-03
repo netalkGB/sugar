@@ -1,13 +1,13 @@
 <template>
   <NewToot
+    ref="nt"
     class="newtoot"
-    @requireHeightChange="changeHeight"
     :style="{ width: width + 'px', height: height + 'px',padding: padding + 'px' }"
     :destinations="destinations"
-    :inReplyToID="inReplyToID"
-    :userId="userId"
-    ref="nt"
-  ></NewToot>
+    :in-reply-to-i-d="inReplyToID"
+    :user-id="userId"
+    @requireHeightChange="changeHeight"
+  />
 </template>
 
 <script>
@@ -63,7 +63,7 @@ export default {
     window.resizeTo(this.defaultWindowWidth + this.marginW, this.defaultWindowHeight + this.marginH)
     this.width = window.innerWidth - this.padding * 2
     this.height = window.innerHeight - this.padding * 2
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.width = window.innerWidth - this.padding * 2
       this.height = window.innerHeight - this.padding * 2
     })
