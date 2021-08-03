@@ -117,12 +117,26 @@ export default {
     handleChange (newVal) {
       logger.debug('menu', JSON.stringify(newVal))
       this.setMenu(newVal)
+    },
+    setupMenu () {
+      const defaultMenu = [
+        { icon: 'home_timeline', to: { name: 'user-userId-hometimeline' } },
+        { icon: 'local_timeline', to: { name: 'user-userId-localtimeline' } },
+        { icon: 'public_timeline', to: { name: 'user-userId-publictimeline' } },
+        { icon: 'notifications', to: { name: 'user-userId-notification' } }
+      ]
+      let menu = this.currentUser.menu
+      if (!menu) {
+        logger.debug('load default value(sidebar config)')
+        menu = defaultMenu
+      }
+      const userId = this.userId
+      const params = { userId }
+      this.menu = menu.map(val => ({ ...val, to: { ...val.to, params } }))
     }
   },
   created () {
-    if (this.currentUser.menu) {
-      this.menu = this.currentUser.menu
-    }
+    this.setupMenu()
   },
   mounted () {
     window.addEventListener('click', (e) => {

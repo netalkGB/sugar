@@ -29,12 +29,7 @@ export default {
   data () {
     return {
       drag: false,
-      menu: [
-        { icon: 'home_timeline', to: { name: 'user-userId-hometimeline' } },
-        { icon: 'local_timeline', to: { name: 'user-userId-localtimeline' } },
-        { icon: 'public_timeline', to: { name: 'user-userId-publictimeline' } },
-        { icon: 'notifications', to: { name: 'user-userId-notification' } }
-      ]
+      menu: []
     }
   },
   watch: {
@@ -46,23 +41,7 @@ export default {
     }
   },
   created () {
-    this.merge()
-  },
-  methods: {
-    merge () {
-      const menu = this.menu
-      let items = this.items
-      if (!items) {
-        return
-      }
-      for (const i of menu) {
-        const r = this.items.find(item => item.icon === i.icon)
-        if (!r) {
-          items = [...items, r]
-        }
-      }
-      this.menu = items
-    }
+    this.menu = this.items
   }
 }
 </script>
