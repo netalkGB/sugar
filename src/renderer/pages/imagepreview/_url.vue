@@ -1,6 +1,6 @@
 <template>
   <div :style="{ width: width - 8 + 'px', height: height -8 + 'px' }">
-    <Preview :url="url" :height="height"></Preview>
+    <Preview :url="url" :height="height" />
   </div>
 </template>
 
@@ -8,10 +8,10 @@
 import Preview from '@/components/ImagePreview/Preview'
 export default {
   name: 'ImagePreview',
-  props: [''],
   components: {
     Preview
   },
+  props: [''],
   data () {
     return {
       width: 0,
@@ -26,7 +26,7 @@ export default {
   mounted () {
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
     })
