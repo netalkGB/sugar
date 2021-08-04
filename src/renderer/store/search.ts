@@ -1,4 +1,4 @@
-import { GetterTree, ActionTree, MutationTree } from 'vuex'
+import { ActionTree, MutationTree } from 'vuex'
 import { RootState } from '@/store'
 import Profile from '@/other/Profile'
 import Toot from '@/other/Toot'
@@ -51,7 +51,7 @@ export const actions: ActionTree<CounterState, RootState> = {
   clearSearchList ({ commit }) {
     commit('clear')
   },
-  searchMastodon ({ commit, state }, payload) {
+  searchMastodon ({ commit }, payload) {
     const currentUser = this.getters['users/getCurrentUser']
     const { accessToken, host } = currentUser
     const ownFollowers = currentUser.followers
