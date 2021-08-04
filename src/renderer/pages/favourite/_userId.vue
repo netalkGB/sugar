@@ -11,7 +11,6 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('users')
 
 export default {
-  props: ['userId', 'screenName'],
   components: {
     Favourite
   },
@@ -19,6 +18,14 @@ export default {
     return {
       width: 0,
       height: 0
+    }
+  },
+  computed: {
+    userId () {
+      return Number(this.$route.params.userId)
+    },
+    screenName () {
+      return String(this.$route.query.screenName)
     }
   },
   methods: {
@@ -31,12 +38,12 @@ export default {
   mounted () {
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
     })
-    window.addEventListener('storage', event => {
+    window.addEventListener('storage', (event) => {
       if (event.key === 'user' + this.userId) {
         const val = JSON.parse(event.newValue)
         if (val.type === 'deleteToot') {
