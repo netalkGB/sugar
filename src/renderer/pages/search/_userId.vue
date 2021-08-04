@@ -35,12 +35,12 @@ export default {
   mounted () {
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
     })
-    window.addEventListener('storage', event => {
+    window.addEventListener('storage', (event) => {
       if (event.key === 'user' + this.userId) {
         const val = JSON.parse(event.newValue)
         if (val.type === 'deleteToot') {
