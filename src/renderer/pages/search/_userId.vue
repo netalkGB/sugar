@@ -11,7 +11,6 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('users')
 
 export default {
-  props: ['userId'],
   components: {
     Search
   },
@@ -19,6 +18,11 @@ export default {
     return {
       width: 0,
       height: 0
+    }
+  },
+  computed: {
+    userId () {
+      return Number(this.$route.params.userId)
     }
   },
   methods: {
