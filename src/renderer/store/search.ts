@@ -14,9 +14,9 @@ export const state = (): Search => ({
   active: 'user'
 })
 
-export type CounterState = ReturnType<typeof state>
+export type SearchState = ReturnType<typeof state>
 
-export const mutations: MutationTree<CounterState> = {
+export const mutations: MutationTree<SearchState> = {
   setAccounts (state, accounts) {
     state.accounts = accounts
   },
@@ -39,7 +39,7 @@ export const mutations: MutationTree<CounterState> = {
   }
 }
 
-export const actions: ActionTree<CounterState, RootState> = {
+export const actions: ActionTree<SearchState, RootState> = {
   removeToot ({ commit }, payload) {
     const id = payload.id
     commit('removeTootFromTl', { id })
