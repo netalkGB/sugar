@@ -5,8 +5,8 @@
     :style="{ width: width + 'px', height: height + 'px' }"
   >
     <Conversations
-      ref="conversations"
       :id="id"
+      ref="conversations"
     />
   </div>
 </template>
@@ -18,11 +18,18 @@ import Conversations from '@/components/Conversations/Conversations'
 
 export default {
   components: { Conversations },
-  props: { userId: Number, id: String },
   data () {
     return {
       width: 0,
       height: 0
+    }
+  },
+  computed: {
+    userId () {
+      return Number(this.$route.params.userId)
+    },
+    id () {
+      return String(this.$route.query.id)
     }
   },
   methods: {
@@ -33,7 +40,7 @@ export default {
     this.loadUserConfig()
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
-    window.addEventListener('storage', event => {
+    window.addEventListener('storage', (event) => {
       if (event.key === 'user' + this.userId) {
         const val = JSON.parse(event.newValue)
         if (val.type === 'deleteToot') {
@@ -46,7 +53,7 @@ export default {
     this.$refs.conversations.loadToot()
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
