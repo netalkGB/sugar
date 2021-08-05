@@ -1,10 +1,10 @@
 <template>
   <div :style="{ width: width + 'px', height: height + 'px' }">
     <Profile
-      class="profileContainer"
-      :userId="userId"
-      :internalId="internalId"
       ref="profile"
+      class="profileContainer"
+      :user-id="userId"
+      :internal-id="internalId"
     />
   </div>
 </template>
@@ -41,12 +41,12 @@ export default {
     this.$refs.profile.fetch()
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
     })
-    window.addEventListener('storage', event => {
+    window.addEventListener('storage', (event) => {
       if (event.key === 'user' + this.userId) {
         const val = JSON.parse(event.newValue)
         if (val.type === 'deleteToot') {
