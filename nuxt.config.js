@@ -14,5 +14,6 @@ export default {
   },
   generate: {
     dir: 'out/renderer'
-  }
+  },
+  plugins: ['@/plugins/loadIonicons.ts']
 }
