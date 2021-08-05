@@ -1,5 +1,5 @@
-# nuxt-typescript-electron
-nuxt.js + electron + typescript
+# Sugar
+Realtime Mastodon Client built with Nuxt.js and Electron.
 ## Development
 ### yarn
 ```
