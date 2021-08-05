@@ -186,11 +186,9 @@ export default {
 }
 .favorited {
   color: #ffaa00;
-  fill: #ffaa00;
 }
 .boosted {
   color: #0000ff;
-  fill: #0000ff;
 }
 
 .button {

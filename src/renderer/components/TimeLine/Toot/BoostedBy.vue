@@ -44,6 +44,6 @@ export default {
   width: calc(100% - var(--icon-size));
 }
 .boosted {
-  fill: #0000ff;
+  color: #0000ff;
 }
 </style>

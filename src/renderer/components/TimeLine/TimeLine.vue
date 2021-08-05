@@ -106,6 +106,6 @@ export default {
 }
 .loading {
   text-align: center;
-  fill: #00aaff;
+  color: #00aaff;
 }
 </style>

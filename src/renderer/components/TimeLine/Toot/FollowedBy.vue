@@ -36,7 +36,7 @@ export default {
 }
 
 .followedBy {
-  fill: #0000ff;
+  color: #0000ff;
 }
 
 </style>
