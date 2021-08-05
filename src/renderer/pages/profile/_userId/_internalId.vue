@@ -14,12 +14,19 @@ import { mapActions } from 'vuex'
 import Profile from '@/components/Profile/Profile'
 import logger from '@/other/Logger'
 export default {
-  props: ['userId', 'internalId'],
   components: { Profile },
   data () {
     return {
       width: 0,
       height: 0
+    }
+  },
+  computed: {
+    userId () {
+      return Number(this.$route.params.userId)
+    },
+    internalId () {
+      return String(this.$route.params.internalId)
     }
   },
   methods: {
