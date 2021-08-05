@@ -13,9 +13,9 @@ const upperLimitToot = 50
 
 export const namespaced = true
 
-export const state = () => ({
+export const state = ():Timelines => ({
   timelines: []
-}) as Timelines
+})
 
 export type TimelinesState = ReturnType<typeof state>
 
