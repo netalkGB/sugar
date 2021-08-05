@@ -1,7 +1,7 @@
 {
-  "name": "nuxt-typescript-electron",
+  "name": "sugar",
   "main": "out/main/main.js",
-  "description": "this is sample.",
+  "description": "Mastodon Client built with Nuxt.js and Electron",
   "author": {
     "name": "gb"
   },

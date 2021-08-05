@@ -1,7 +1,7 @@
 export default {
   ssr: false,
   head: {
-    title: 'mastoot',
+    title: 'Sugar',
     meta: [
       { charset: 'utf-8' }
     ]

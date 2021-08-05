@@ -1,6 +1,6 @@
 {
-    "appId": "io.netalk.gb.labo.sample",
-    "productName": "Sample",
+    "appId": "io.netalk.gb.app.sugar",
+    "productName": "Sugar",
     "files": [
         "out/**/*",
         "!node_modules/"
