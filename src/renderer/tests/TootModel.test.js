@@ -12,7 +12,7 @@ describe('Toot', () => {
     const toot = tootData[0]
     let converted = Toot.fromMastodon(toot, user)
     expect(converted.profile.userid).toBe('netalkGB@example.com')
-    expect(converted.content).toBe('\u003cp\u003emastodon\u003c/p\u003e')
+    expect(converted.content).toBe('\u003Cp\u003Emastodon\u003C/p\u003E')
     expect(converted.favorited).toBe(false)
     expect(converted.isTootByOwn).toBe(true)
     expect(converted.boosted).toBe(false)
@@ -35,7 +35,7 @@ describe('Toot', () => {
     expect(converted.boosted).toBe(true)
     expect(converted.boostedBy.userid).toBe('netalkGB')
     expect(converted.profile.userid).toBe('netalkGB2@example.com')
-    expect(converted.content).toBe('\u003cp\u003eboost\u003c/p\u003e')
+    expect(converted.content).toBe('\u003Cp\u003Eboost\u003C/p\u003E')
     expect(converted.date.toString()).toBe(new Date(converted.date).toString())
     expect(converted.boostsCount).toBe(20)
     expect(converted.favoritesCount).toBe(7)
@@ -54,7 +54,7 @@ describe('Toot', () => {
     const converted = Toot.fromMastodon(toot, user3)
     expect(converted.profile.userid).toBe('netalkGB')
     expect(converted.content).toBe(
-      '\u003cp\u003e\u003cspan class="h-card"\u003e\u003ca href="https://example.com/@kaziki" class="u-url mention"\u003e@\u003cspan\u003ekaziki\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e test\u003c/p\u003e'
+      '\u003Cp\u003E\u003Cspan class="h-card"\u003E\u003Ca href="https://example.com/@kaziki" class="u-url mention"\u003E@\u003Cspan\u003Ekaziki\u003C/span\u003E\u003C/a\u003E\u003C/span\u003E test\u003C/p\u003E'
     )
     expect(converted.favorited).toBe(false)
     expect(converted.isTootByOwn).toBe(true)
@@ -92,7 +92,7 @@ describe('Toot', () => {
     expect(converted.favorited).toBe(false)
     expect(converted.boosted).toBe(false)
     expect(converted.profile.userid).toBe('gb@www1.example.com')
-    expect(converted.content).toBe(`<p>ok</p>`)
+    expect(converted.content).toBe('<p>ok</p>')
     expect(converted.date.toString()).toBe(new Date(converted.date).toString())
     expect(converted.boostsCount).toBe(0)
     expect(converted.isTootByOwn).toBe(false)

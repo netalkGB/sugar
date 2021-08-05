@@ -48,7 +48,7 @@ describe('Profile', () => {
     )
     expect(converted.displayName).toBe('')
     expect(converted.userid).toBe('netalkGB@example.com')
-    expect(converted.note).toBe('\u003cp\u003e\u003c/p\u003e')
+    expect(converted.note).toBe('\u003Cp\u003E\u003C/p\u003E')
     expect(converted.locked).toBe(false)
     expect(converted.internalid).toBe('610998')
     expect(converted.followersCount).toBe(1)

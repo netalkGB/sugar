@@ -16,10 +16,10 @@ describe('Media', () => {
   it('should be convert correctly(multiple)', () => {
     const mediaAttachments = data[0].media_attachments
     const converted = Media.fromMediaAttachments(mediaAttachments)
-    for (let media of converted) {
+    for (const media of converted) {
       expect(media.type).toBe('image')
-      expect(media.url.indexOf('http') >= 0 && media.url.indexOf('png') >= 0).toBe(true)
-      expect(media.previewUrl.indexOf('http') >= 0 && media.url.indexOf('png') >= 0).toBe(true)
+      expect(media.url.includes('http') && media.url.includes('png')).toBe(true)
+      expect(media.previewUrl.includes('http') && media.url.includes('png')).toBe(true)
     }
   })
 })
