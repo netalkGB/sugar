@@ -13,11 +13,11 @@ const userCountlimit = '1000'
 
 export const namespaced = true
 
-export const state = () => ({
+export const state = ():Users => ({
   userList: [],
   currentUser: 0,
   nextUserId: 1
-}) as Users
+})
 
 export type UsersState = ReturnType<typeof state>
 
