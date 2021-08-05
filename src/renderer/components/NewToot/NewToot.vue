@@ -258,11 +258,14 @@ export default {
           return
         }
         const id = data.id
+        const url = data.url
         this.files = this.files.map(
-          val =>
-            val.uuid === uuid
-              ? val.changeState({ newState: FileState.done, id })
-              : val
+          (val) => {
+            if (val.uuid === uuid) {
+              return val.changeState({ newState: FileState.done, id, url })
+            }
+            return val
+          }
         )
       }).catch((err) => {
         if (err instanceof ServerSideError) {
