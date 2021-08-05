@@ -1,12 +1,17 @@
 <template>
   <div class="image" :style="{width: imageWidth + 'px',height: imageHeight + 'px'}">
-    <div>
+    <div v-if="file.state === 'done'">
       <template v-if="file.filePath.split('.').pop() !== 'mp4'">
-        <img ref="realImage" class="img" :src="file.filePath" alt="">
+        <img ref="imgPreview" class="img" :src="file.filePath" alt="">
       </template>
       <template v-else>
-        <video ref="realVideo" class="img" :src="file.filePath" />
+        <video ref="videoPreview" class="img" :src="file.filePath" />
       </template>
+    </div>
+    <div v-else>
+      <svg ref="imgPreview" class="img" width="100" height="100">
+        <rect x="0" y="0" width="100" height="100" fill="gray" />
+      </svg>
     </div>
     <div class="absolute" :class="{ uploading:file.state === 'uploading',error: file.state === 'error' }">
       <div v-if="file.state === 'uploading'" class="state">
@@ -45,25 +50,25 @@ export default {
     }
   },
   mounted () {
-    if (this.$refs.realImage !== undefined) {
-      this.$refs.realImage.addEventListener('load', () => {
-        this.imageWidth = this.$refs.realImage.width
-        this.imageHeight = this.$refs.realImage.height
+    if (this.$refs.imgPreview !== undefined) {
+      this.$refs.imgPreview.addEventListener('load', () => {
+        this.imageWidth = this.$refs.imgPreview.width
+        this.imageHeight = this.$refs.imgPreview.height
       })
     }
-    if (this.$refs.realVideo !== undefined) {
-      this.$refs.realVideo.addEventListener('canplay', () => {
-        this.imageWidth = this.$refs.realVideo.getBoundingClientRect().width
-        this.imageHeight = this.$refs.realVideo.getBoundingClientRect().height
+    if (this.$refs.videoPreview !== undefined) {
+      this.$refs.videoPreview.addEventListener('canplay', () => {
+        this.imageWidth = this.$refs.videoPreview.getBoundingClientRect().width
+        this.imageHeight = this.$refs.videoPreview.getBoundingClientRect().height
       })
     }
   },
   beforeDestroy () {
-    if (this.$refs.realImage !== undefined) {
-      this.$refs.realImage.removeEventListener('load', () => { })
+    if (this.$refs.imgPreview !== undefined) {
+      this.$refs.imgPreview.removeEventListener('load', () => { })
     }
-    if (this.$refs.realVideo !== undefined) {
-      this.$refs.realImage.removeEventListener('loaddeddata', () => { })
+    if (this.$refs.videoPreview !== undefined) {
+      this.$refs.imgPreview.removeEventListener('loaddeddata', () => { })
     }
   },
   methods: {

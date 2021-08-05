@@ -51,9 +51,13 @@ export default class File {
     return new File({ filePath, uuid, state })
   }
 
-  changeState ({ newState, id }:{newState: 'uploading' | 'done' | 'error';id:string}) {
+  changeState ({ newState, id, url }:{newState: 'uploading' | 'done' | 'error';id:string;url?:string}) {
+    let filePath = this._filePath
+    if (newState === 'done' && url !== undefined) {
+      filePath = url
+    }
     return new File({
-      filePath: this._filePath,
+      filePath,
       uuid: this._uuid,
       id,
       state: newState
