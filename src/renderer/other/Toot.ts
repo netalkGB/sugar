@@ -31,6 +31,8 @@ export default class Toot {
   private _warning?: boolean
   private _warningComment?:string
 
+  private _favoritedBy? : Profile
+
   get profile () {
     return this._profile
   }
@@ -188,6 +190,14 @@ export default class Toot {
     this._warningComment = warningComment
   }
 
+  get favoritedBy () {
+    return this._favoritedBy
+  }
+
+  set favoritedBy (favoritedBy:Profile | undefined) {
+    this._favoritedBy = favoritedBy
+  }
+
   constructor (args:TootArgs) {
     this._profile = args.profile
     this._content = args.content
@@ -208,6 +218,7 @@ export default class Toot {
     this._mentions = args.mentions
     this._warning = args.warning
     this._warningComment = args.warningComment
+    this._favoritedBy = args.favoritedBy
   }
 
   static fromMastodon (data:Entity.Status, ownUser:User) {
