@@ -7,7 +7,7 @@ export default class Mastodon {
   static async loginPhase1 (host:string) {
     const res = await M.createOAuthApp(
       `https://${host}/api/v1/apps`,
-      'mastoot',
+      'sugar',
       'read write follow'
     )
     const clientId = res.client_id
