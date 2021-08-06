@@ -84,7 +84,7 @@ export const mutations: MutationTree<TimelinesState> = {
         data = statuses.map(item => Toot.fromMastodon(item, user))
       }
     } else if (notifications) {
-      notifications.map(item => Toot.fromMastodonNotification(item))
+      data = notifications.map(item => Toot.fromMastodonNotification(item))
     }
 
     const timeline:Timeline = {
