@@ -171,8 +171,7 @@ export const mutations: MutationTree<TimelinesState> = {
       ) {
         const roundedId = parseInt(id, 10)
         timeline.data = timeline.data.filter(
-          timeline => timeline.originalId !== undefined && parseInt(timeline.originalId) !== roundedId
-        )
+          timeline => timeline.originalId === undefined || (timeline.originalId !== undefined && parseInt(timeline.originalId) !== roundedId)        )
       }
     }
   },
