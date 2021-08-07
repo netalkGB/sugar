@@ -2,7 +2,6 @@ import { GetterTree, ActionTree, MutationTree } from 'vuex'
 import Toot from '@/other/Toot'
 import TimelineType from '@/other/TimelineType'
 import { RootState } from '@/store'
-import logger from '@/other/Logger'
 import Mastodon from '../other/Mastodon'
 import { Timelines } from './types/Timelines'
 import { Timeline } from './types/Timeline'
@@ -172,7 +171,7 @@ export const mutations: MutationTree<TimelinesState> = {
       ) {
         const roundedId = parseInt(id, 10)
         timeline.data = timeline.data.filter(
-          timeline => timeline.originalId === undefined || (timeline.originalId !== undefined && parseInt(timeline.originalId) !== roundedId)
+          timeline => timeline.originalId !== undefined && parseInt(timeline.originalId) !== roundedId
         )
       }
     }
@@ -558,9 +557,6 @@ export const actions: ActionTree<TimelinesState, RootState> = {
               const id = msg.data
               commit('removeTootFromNotification', { host, accessToken, id })
               commit('removeTootFromTl', { host, accessToken, type, id })
-              logger.debug('なぜきえた')
-              logger.debug(msg)
-              logger.debug(type)
             }
           })
           stream.on('error', (error:any) => {
