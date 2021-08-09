@@ -72,7 +72,7 @@ export default {
     }
   },
   created () {
-    this.$on('loadOldTootDone', function (result) {
+    this.$on('loadOldTootDone', function () {
       this.loadingPrev = false
     })
   },

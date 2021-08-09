@@ -1,4 +1,4 @@
-import { GetterTree, ActionTree, MutationTree } from 'vuex'
+import { ActionTree, MutationTree } from 'vuex'
 import { RootState } from '@/store'
 import Profile from '@/other/Profile'
 import Toot from '@/other/Toot'
@@ -85,7 +85,7 @@ export const actions: ActionTree<OwnProfileState, RootState> = {
       })
     })
   },
-  async fetchProfileFollowing ({ commit }, { internalId }) {
+  fetchProfileFollowing ({ commit }, { internalId }) {
     const currentUser = this.getters['users/getCurrentUser']
     const { accessToken, host } = currentUser
     const ownFollowers = currentUser.followers
@@ -112,7 +112,7 @@ export const actions: ActionTree<OwnProfileState, RootState> = {
       })
     })
   },
-  async fetchProfileFollowers ({ commit }, { internalId }) {
+  fetchProfileFollowers ({ commit }, { internalId }) {
     const currentUser = this.getters['users/getCurrentUser']
     const { accessToken, host } = currentUser
     const ownFollowers = currentUser.followers
@@ -139,7 +139,7 @@ export const actions: ActionTree<OwnProfileState, RootState> = {
       })
     })
   },
-  async fetchProfileTimeline ({ commit }, { internalId }) {
+  fetchProfileTimeline ({ commit }, { internalId }) {
     const { accessToken, host, user } = this.getters['users/getCurrentUser']
     const mastodon = Mastodon.getMastodon({ accessToken, host })
     return new Promise<void>((resolve, reject) => {
@@ -158,7 +158,7 @@ export const actions: ActionTree<OwnProfileState, RootState> = {
       })
     })
   },
-  async loadOldToot ({ commit }, { internalId, maxID }) {
+  loadOldToot ({ commit }, { internalId, maxID }) {
     const { accessToken, host, user } = this.getters['users/getCurrentUser']
     const mastodon = Mastodon.getMastodon({ accessToken, host })
     return new Promise<void>((resolve, reject) => {

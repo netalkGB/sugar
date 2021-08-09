@@ -18,14 +18,14 @@ export default {
   components: {
     TimeLine
   },
-  methods: {
-    ...mapActions(['fetchFavourite'])
-  },
   computed: {
     ...mapState({ timeline: state => state.timeline })
   },
   mounted () {
     this.fetchFavourite()
+  },
+  methods: {
+    ...mapActions(['fetchFavourite'])
   }
 }
 </script>

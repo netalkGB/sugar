@@ -23,7 +23,16 @@
 
 <script>
 export default {
-  props: ['url', 'height'],
+  props: {
+    url: {
+      type: String,
+      required: true
+    },
+    height: {
+      type: Number,
+      required: true
+    }
+  },
   data () {
     return {
       zoom: 1,

@@ -31,7 +31,12 @@ import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 
 export default {
   components: { IosLockIcon },
-  props: ['profile']
+  props: {
+    profile: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 

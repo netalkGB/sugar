@@ -42,7 +42,16 @@ export default {
     IosSyncIcon,
     IosCloseIcon
   },
-  props: ['file', 'idx'],
+  props: {
+    file: {
+      type: String,
+      required: true
+    },
+    idx: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       imageWidth: 100,

@@ -34,10 +34,6 @@ export default {
       return parseInt(userId, base)
     }
   },
-  methods: {
-    ...mapActions('users', ['setCurrentUserId', 'fetchOwnFollowerAndFollowing']),
-    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
-  },
   async created () {
     ipcRenderer.send('changeWindowSize', 'main')
     logger.debug('userId', this.userId)
@@ -63,7 +59,7 @@ export default {
   mounted () {
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', (e) => {
+    window.addEventListener('resize', (_event) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
@@ -71,6 +67,10 @@ export default {
   },
   beforeDestroy () {
     window.removeEventListener('resize', () => { })
+  },
+  methods: {
+    ...mapActions('users', ['setCurrentUserId', 'fetchOwnFollowerAndFollowing']),
+    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
   }
 }
 </script>

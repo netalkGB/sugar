@@ -10,7 +10,12 @@
 
 <script>
 export default {
-  props: ['date'],
+  props: {
+    date: {
+      type: Date,
+      required: true
+    }
+  },
   data () {
     return {
       nowDate: Date.now(),
