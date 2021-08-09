@@ -54,7 +54,7 @@ export default {
     }
   },
   created () {
-    this.$on('loadOldUserDone', function (result) {
+    this.$on('loadOldUserDone', function () {
       this.loadingPrev = false
     })
   },

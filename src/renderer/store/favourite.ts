@@ -1,4 +1,4 @@
-import { GetterTree, ActionTree, MutationTree } from 'vuex'
+import { ActionTree, MutationTree } from 'vuex'
 import { RootState } from '@/store'
 import Toot from '@/other/Toot'
 import { Favourite } from '@/store/types/Favourite'
@@ -32,7 +32,7 @@ export const actions: ActionTree<FavouriteState, RootState> = {
     const id = payload.id
     commit('removeTootFromTl', { id })
   },
-  fetchFavourite ({ commit, state }) {
+  fetchFavourite ({ commit }) {
     const currentUser = this.getters['users/getCurrentUser']
     const { accessToken, host } = currentUser
     const ownUser = currentUser.user

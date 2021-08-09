@@ -159,39 +159,31 @@ export const actions: ActionTree<UsersState, RootState> = {
       })
     })
   },
-  addUser ({ commit }, payload) {
+  async addUser ({ commit }, payload) {
     const { clientId, clientSecret, pin, host } = payload
-    return new Promise<void>(async (resolve, reject) => {
-      let accessToken
-      try {
-        accessToken = await Mastodon.loginPhase2(
-          clientId,
-          clientSecret,
-          pin,
-          host
-        )
-        const mastodon = Mastodon.getMastodon({ accessToken, host })
-        const result = await mastodon.fetchOwnAccount()
-        if (result.resp.statusCode !== 200) {
-          reject(result)
-        }
-        commit('add', {
-          clientId,
-          clientSecret,
-          accessToken,
-          host,
-          user: Profile.fromAccount(result.data)
-        })
-        resolve()
-      } catch (e) {
-        const returnErr = {
-          error: e,
-          host,
-          accessToken
-        }
-        reject(returnErr)
+    let accessToken
+    try {
+      accessToken = await Mastodon.loginPhase2(
+        clientId,
+        clientSecret,
+        pin,
+        host
+      )
+      const mastodon = Mastodon.getMastodon({ accessToken, host })
+      const result = await mastodon.fetchOwnAccount()
+      if (result.resp.statusCode !== 200) {
+        throw new Error(result)
       }
-    })
+      commit('add', {
+        clientId,
+        clientSecret,
+        accessToken,
+        host,
+        user: Profile.fromAccount(result.data)
+      })
+    } catch (e) {
+      throw new Error(e)
+    }
   },
   getPIN (_, host) {
     return Mastodon.loginPhase1(host)

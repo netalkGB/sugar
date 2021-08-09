@@ -13,7 +13,12 @@
 
 <script>
 export default {
-  props: ['profile']
+  props: {
+    profile: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 

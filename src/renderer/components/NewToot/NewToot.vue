@@ -99,7 +99,20 @@ export default {
     MtSelect,
     Images
   },
-  props: { userId: Number, inReplyToID: String, destinations: String },
+  props: {
+    userId: {
+      type: Number,
+      required: true
+    },
+    inReplyToID: {
+      type: String,
+      default: null
+    },
+    destinations: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       toot: '',
@@ -284,7 +297,7 @@ export default {
       })
     },
     removeFile (idx) {
-      this.files = this.files.filter((val, index) => idx !== index)
+      this.files = this.files.filter((_val, index) => idx !== index)
     },
     clearForm () {
       this.toot = ''

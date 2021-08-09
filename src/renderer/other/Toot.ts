@@ -54,7 +54,7 @@ export default class Toot {
   }
 
   set date (date:Date) {
-    this._date
+    this._date = date
   }
 
   get id () {

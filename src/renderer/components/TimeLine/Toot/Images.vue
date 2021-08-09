@@ -18,7 +18,12 @@
 <script>
 
 export default {
-  props: ['medium'],
+  props: {
+    medium: {
+      type: Array,
+      required: true
+    }
+  },
   methods: {
     openImage (imageUrl) {
       const currentPath = localStorage.getItem('currentPath')

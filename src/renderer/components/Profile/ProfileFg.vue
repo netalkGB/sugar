@@ -47,6 +47,7 @@
       class="paddingLR"
     >
       <MastodonHTML
+        v-if="note"
         :html="note"
         @click="handleClick"
       />
@@ -76,7 +77,49 @@ export default {
     FollowStatus,
     IosLockIcon
   },
-  props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot', 'fields', 'isFollowing', 'isFollower'],
+  // props: ['shortMode', 'avatar', 'displayName', 'locked', 'userid', 'note', 'bot', 'fields', 'isFollowing', 'isFollower'],
+  props: {
+    shortMode: {
+      type: Boolean,
+      default: false
+    },
+    avatar: {
+      type: String,
+      required: true
+    },
+    displayName: {
+      type: String,
+      required: true
+    },
+    locked: {
+      type: Boolean,
+      required: true
+    },
+    userid: {
+      type: String,
+      required: true
+    },
+    note: {
+      type: String,
+      required: true
+    },
+    bot: {
+      type: Boolean,
+      required: true
+    },
+    fields: {
+      type: Array,
+      required: true
+    },
+    isFollowing: {
+      type: Boolean,
+      required: true
+    },
+    isFollower: {
+      type: Boolean,
+      required: true
+    }
+  },
   methods: {
     handleClick (ev) {
       const { type } = ev

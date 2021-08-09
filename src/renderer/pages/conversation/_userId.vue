@@ -32,10 +32,6 @@ export default {
       return String(this.$route.query.id)
     }
   },
-  methods: {
-    ...mapActions('users', ['setCurrentUserId', 'loadUserConfig']),
-    ...mapActions('conversation', ['removeToot'])
-  },
   created () {
     this.loadUserConfig()
     logger.debug('userId', this.userId)
@@ -53,7 +49,7 @@ export default {
     this.$refs.conversations.loadToot()
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', (e) => {
+    window.addEventListener('resize', (_event) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
@@ -62,6 +58,10 @@ export default {
   beforeDestroy () {
     window.removeEventListener('resize', () => { })
     window.removeEventListener('storage', () => { })
+  },
+  methods: {
+    ...mapActions('users', ['setCurrentUserId', 'loadUserConfig']),
+    ...mapActions('conversation', ['removeToot'])
   }
 }
 </script>

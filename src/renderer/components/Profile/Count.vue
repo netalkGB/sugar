@@ -41,8 +41,23 @@
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('profile')
 
+const defaultDisplayCount = '-'
+
 export default {
-  props: ['follower', 'following', 'toot'],
+  props: {
+    follower: {
+      type: String,
+      default: defaultDisplayCount
+    },
+    following: {
+      type: String,
+      default: defaultDisplayCount
+    },
+    toot: {
+      type: String,
+      default: defaultDisplayCount
+    }
+  },
   data () {
     return {
       lastClickCountType: 'status',

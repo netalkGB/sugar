@@ -12,7 +12,12 @@ import TimeLine from '@/components/TimeLine/TimeLine'
 const { mapActions, mapGetters } = createNamespacedHelpers('conversation')
 export default {
   components: { TimeLine },
-  props: ['id'],
+  props: {
+    id: {
+      type: String,
+      default: null
+    }
+  },
   computed: {
     ...mapGetters({ conversations: 'getConversations' })
   },

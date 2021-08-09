@@ -25,7 +25,12 @@ import Icon from '@/components/Sidebar/Icon'
 
 export default {
   components: { Icon, draggable },
-  props: ['items'],
+  props: {
+    items: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
       drag: false,

@@ -27,6 +27,14 @@
       :h="height"
       class="icon"
     />
+  </router-link>
+  <div v-else>
+    <IosMegaphoneIcon
+      v-if="icon === 'toot'"
+      :w="width"
+      :h="height"
+      class="icon"
+    />
     <IosAddIcon
       v-if="icon === 'addTab'"
       :w="width"
@@ -35,14 +43,6 @@
     />
     <MdSettingsIcon
       v-if="icon === 'settings'"
-      :w="width"
-      :h="height"
-      class="icon"
-    />
-  </router-link>
-  <div v-else>
-    <IosMegaphoneIcon
-      v-if="icon === 'toot'"
       :w="width"
       :h="height"
       class="icon"
@@ -60,7 +60,16 @@ import IosMegaphoneIcon from 'vue-ionicons/dist/ios-megaphone.vue'
 import IosNotificationsIcon from 'vue-ionicons/dist/ios-notifications.vue'
 export default {
   components: { MdHomeIcon, IosPeopleIcon, IosAddIcon, MdSettingsIcon, IosGlobeIcon, IosMegaphoneIcon, IosNotificationsIcon },
-  props: ['to', 'icon'],
+  props: {
+    to: {
+      type: Object,
+      default: undefined
+    },
+    icon: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       width: '26',

@@ -1,5 +1,6 @@
 <template>
   <MastodonHTML
+    v-if="content"
     :html="content"
     @click="handleClick"
   />
@@ -15,7 +16,16 @@ export default {
   components: {
     MastodonHTML
   },
-  props: ['content', 'mentions'],
+  props: {
+    content: {
+      type: String,
+      required: true
+    },
+    mentions: {
+      type: Array,
+      default: null
+    }
+  },
   data () {
     return {
       users: null,

@@ -22,7 +22,12 @@ import NotificationName from '@/components/TimeLine/Toot/NotificationName'
 
 export default {
   components: { MdRepeatIcon, NotificationName },
-  props: ['boostedBy']
+  props: {
+    boostedBy: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 

@@ -14,7 +14,12 @@ import MdPersonAddIcon from 'vue-ionicons/dist/md-person-add.vue'
 
 export default {
   components: { MdPersonAddIcon },
-  props: ['followedBy']
+  props: {
+    followedBy: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 
