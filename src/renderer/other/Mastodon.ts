@@ -66,146 +66,126 @@ export default class Mastodon {
   }
 
   async fetchProfile (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.get('accounts/' + id)
     const { statusCode } = resp
-    returnData = data
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async searchMastodon (q:string) {
-    let returnData
     const params = { q }
     const { resp, data } = await this.mastodon2.get('search', params)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchOwnFavouriteTimeline (appendParams:any = undefined) {
-    let returnData
     let params = {}
     if (appendParams && appendParams.limit) {
       params = { ...params, limit: appendParams.limit }
     }
     const { resp, data } = await this.mastodon.get('favourites', params)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchProfileTimeline (id:string, appendParams:any = undefined) {
-    let returnData
     let params = {}
     if (appendParams && appendParams.maxID) {
       params = { ...params, max_id: appendParams.maxID }
     }
     const { resp, data } = await this.mastodon.get('accounts/' + id + '/statuses', params)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchProfileFollowers (id:string, appendParams:any = undefined):Promise<Array<Entity.Account>> {
-    let returnData:Array<Entity.Account>
     let params = {}
     if (appendParams && appendParams.limit) {
       params = { ...params, limit: appendParams.limit }
     }
     const { resp, data } = await this.mastodon.get('accounts/' + id + '/followers', params)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchProfileFollowing (id:string, appendParams:any = undefined):Promise<Array<Entity.Account>> {
-    let returnData
     let params = {}
     if (appendParams && appendParams.limit) {
       params = { ...params, limit: appendParams.limit }
     }
     const { resp, data } = await this.mastodon.get('accounts/' + id + '/following', params)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchHomeTimeline (appendParams:any = undefined) {
-    let returnData
     let params = {}
     if (appendParams && appendParams.maxID) {
       params = { ...params, max_id: appendParams.maxID }
     }
     const { resp, data } = await this.mastodon.get('timelines/home', params)
     const { statusCode } = resp
-    returnData = data
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchLocalTimeline (appendParams:any = undefined) {
-    let returnData
     let params:any = { local: true }
     if (appendParams && appendParams.maxID) {
       params = { ...params, max_id: appendParams.maxID }
     }
     const { resp, data } = await this.mastodon.get('timelines/public', params)
     const { statusCode } = resp
-    returnData = data
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchPublicTimeline (appendParams:any = undefined) {
-    let returnData
     let params:any = { local: false }
     if (appendParams && appendParams.maxID) {
       params = { ...params, max_id: appendParams.maxID }
     }
     const { resp, data } = await this.mastodon.get('timelines/public', params)
     const { statusCode } = resp
-    returnData = data
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchNotification (appendParams:any = undefined) {
-    let returnData
     let params = {}
     if (appendParams && appendParams.maxID) {
       params = { ...params, max_id: appendParams.maxID }
     }
     const { resp, data } = await this.mastodon.get('notifications', params)
     const { statusCode } = resp
-    returnData = data
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   streamHomeTimeline () {
@@ -221,7 +201,6 @@ export default class Mastodon {
   }
 
   async postToot (params:any) {
-    let returnData
     const {
       status,
       visibility,
@@ -251,102 +230,85 @@ export default class Mastodon {
       opts = { ...opts, spoiler_text: spoilerText }
     }
     const { resp, data } = await this.mastodon.post('statuses', opts)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async uploadFile (params:any) {
-    let returnData
     const { filePath } = params
     const { resp, data } = await this.mastodon.post('media', {
       file: fs.createReadStream(filePath)
     })
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async deleteOwnToot (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.delete(`statuses/${id}`)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async favorite (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.post(`statuses/${id}/favourite`)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async unFavorite (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.post(`statuses/${id}/unfavourite`)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async boost (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.post(`statuses/${id}/reblog`)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async unBoost (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.post(`statuses/${id}/unreblog`)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchToot (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.get(`statuses/${id}`)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 
   async fetchContext (id:string) {
-    let returnData
     const { resp, data } = await this.mastodon.get(`statuses/${id}/context`)
-    returnData = data
     const { statusCode } = resp
     if (statusCode !== 200) {
       throw new ServerSideError(statusCode)
     }
-    return returnData
+    return data
   }
 }
