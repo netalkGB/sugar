@@ -3,11 +3,13 @@
     ref="container"
     class="profile"
   >
-    <Header
-      ref="profile"
-      :profile="profile"
-      @wantRecalculateHeight="calculateHeight"
-    />
+    <template v-if="loadDone">
+      <Header
+        ref="profile"
+        :profile="profile"
+        @wantRecalculateHeight="calculateHeight"
+      />
+    </template>
     <Timeline
       ref="timeline"
       :timeline="timeline"
@@ -32,11 +34,24 @@ export default {
   components: {
     Header, Timeline
   },
-  props: ['internalId', 'userId'],
+  props: {
+    internalId: {
+      type: String,
+      required: true
+    },
+    userId: {
+      type: Number,
+      required: true
+    }
+  },
   data () {
     return {
-      profileHeight: '50%'
+      profileHeight: '50%',
+      loadDone: false
     }
+  },
+  computed: {
+    ...mapState({ profile: state => state.profile, timeline: state => state.timeline, followers: state => state.followers, following: state => state.following, active: state => state.active })
   },
   methods: {
     ...mapActions(['fetchProfile', 'fetchProfileTimeline', 'loadOldToot', 'fetchProfileFollowers', 'fetchProfileFollowing']),
@@ -46,7 +61,10 @@ export default {
       this.fetchProfileFollowers({ internalId }).then(() => logger.debug(`follower: ${this.followers.length}`)).catch(e => logger.error(e))
       this.fetchProfileFollowing({ internalId }).then(() => logger.debug(`following: ${this.following.length}`)).catch(e => logger.error(e))
       this.fetchProfile({ internalId }).then(() => {
-        this.calculateHeight()
+        this.loadDone = true
+        this.$nextTick(function () {
+          this.calculateHeight()
+        })
       }).catch((e) => { logger.error(e) })
     },
     wantOldToot (maxID) {
@@ -59,9 +77,6 @@ export default {
     calculateHeight () {
       this.profileHeight = this.$refs.profile.$el.clientHeight + 'px'
     }
-  },
-  computed: {
-    ...mapState({ profile: state => state.profile, timeline: state => state.timeline, followers: state => state.followers, following: state => state.following, active: state => state.active })
   }
 }
 </script>

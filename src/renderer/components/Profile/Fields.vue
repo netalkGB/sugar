@@ -1,11 +1,12 @@
 <template>
-  <div class="fields">
+  <div v-if="fields" class="fields">
     <div
       v-for="(item, index) in fields"
       :key="index"
     >
       {{ item.name }}:
       <MastodonHTML
+        v-if="item.value"
         :html="item.value"
         @click="handleClick"
       />
@@ -21,7 +22,12 @@ export default {
   components: {
     MastodonHTML
   },
-  props: ['fields'],
+  props: {
+    fields: {
+      type: Array,
+      default: null
+    }
+  },
   methods: {
     handleClick (ev) {
       const { type } = ev

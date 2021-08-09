@@ -21,7 +21,12 @@ import IosStarIcon from 'vue-ionicons/dist/ios-star.vue'
 import NotificationName from './NotificationName'
 export default {
   components: { IosStarIcon, NotificationName },
-  props: ['favoritedBy']
+  props: {
+    favoritedBy: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 

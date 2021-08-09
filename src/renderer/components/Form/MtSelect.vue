@@ -1,5 +1,5 @@
 <template>
-  <select :disabled="disabled" :value="value" class="select" @change="handleChange">
+  <select :disabled="disabled" class="select" @change="handleChange">
     <slot />
   </select>
 </template>
@@ -11,9 +11,6 @@ export default {
       type: Boolean,
       defualt: false,
       required: false
-    },
-    value: {
-      type: String
     }
   },
   methods: {

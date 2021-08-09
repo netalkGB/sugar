@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-v-html -->
   <span
     ref="tltext"
     v-html="html"
@@ -8,7 +9,12 @@
 <script>
 import logger from '@/other/Logger'
 export default {
-  props: ['html'],
+  props: {
+    html: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       users: null,
@@ -26,22 +32,22 @@ export default {
   beforeDestroy () {
     if (this.users !== null) {
       for (const a of this.users) {
-        a.removeEventListener('click', (e) => { })
+        a.removeEventListener('click', (_event) => { })
       }
     }
     if (this.hashtags !== null) {
       for (const a of this.hashtags) {
-        a.removeEventListener('click', (e) => { })
+        a.removeEventListener('click', (_event) => { })
       }
     }
     if (this.links !== null) {
       for (const a of this.links) {
-        a.removeEventListener('click', (e) => { })
+        a.removeEventListener('click', (_event) => { })
       }
     }
     if (this.atag !== null) {
       for (const a of this.atag) {
-        a.removeEventListener('click', (e) => { })
+        a.removeEventListener('click', (_event) => { })
       }
     }
   },

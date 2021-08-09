@@ -105,7 +105,48 @@ import logger from '@/other/Logger'
 
 export default {
   components: { IosUndoIcon, MdRepeatIcon, IosStarIcon, IosLockIcon, IosMailIcon, MdTrashIcon },
-  props: ['visibility', 'boostsCount', 'favoritesCount', 'repliesCount', 'favorited', 'boosted', 'id', 'userid', 'isTootByOwn', 'mentions'],
+  props: {
+    visibility: {
+      type: String,
+      required: true
+    },
+    boostsCount: {
+      type: Number,
+      default: 0
+    },
+    favoritesCount: {
+      type: Number,
+      default: 0
+    },
+    repliesCount: {
+      type: Number,
+      default: 0
+    },
+    favorited: {
+      type: Boolean,
+      default: false
+    },
+    boosted: {
+      type: Boolean,
+      default: false
+    },
+    id: {
+      type: String,
+      required: true
+    },
+    userid: {
+      type: String,
+      required: true
+    },
+    isTootByOwn: {
+      type: Boolean,
+      require: true
+    },
+    mentions: {
+      type: Array,
+      default: null
+    }
+  },
   data () {
     return {
       displayBoosted: false,
@@ -114,17 +155,17 @@ export default {
       displayBoostsCount: 0
     }
   },
-  created () {
-    this.displayBoosted = this.boosted
-    this.displayFavorited = this.favorited
-    this.displayFavoritesCount = this.favoritesCount
-    this.displayBoostsCount = this.boostsCount
-  },
   computed: {
     ...mapGetters('users', { currentUser: 'getCurrentUser' }),
     myID () {
       return this.currentUser.user.userid
     }
+  },
+  created () {
+    this.displayBoosted = this.boosted
+    this.displayFavorited = this.favorited
+    this.displayFavoritesCount = this.favoritesCount
+    this.displayBoostsCount = this.boostsCount
   },
   methods: {
     deleteToot () {
@@ -140,14 +181,14 @@ export default {
         logger.debug('to unfavorite')
         this.displayFavorited = false
         this.displayFavoritesCount--
-        this.unFavorite({ id: this.id }).catch((e) => {
+        this.unFavorite({ id: this.id }).catch((_e) => {
           this.displayFavorited = true
         })
       } else {
         logger.debug('to favorite')
         this.displayFavoritesCount++
         this.displayFavorited = true
-        this.favorite({ id: this.id }).catch((e) => {
+        this.favorite({ id: this.id }).catch((_e) => {
           this.displayFavorited = false
         })
       }
@@ -157,14 +198,14 @@ export default {
         logger.debug('to unboost')
         this.displayBoosted = false
         this.displayBoostsCount--
-        this.unBoost({ id: this.id }).catch((e) => {
+        this.unBoost({ id: this.id }).catch((_e) => {
           this.displayBoosted = true
         })
       } else {
         logger.debug('to boost')
         this.displayBoostsCount++
         this.displayBoosted = true
-        this.boost({ id: this.id }).catch((e) => {
+        this.boost({ id: this.id }).catch((_e) => {
           this.displayBoosted = false
         })
       }

@@ -28,7 +28,24 @@ import UserList from '@/components/TimeLine/UserList'
 
 export default {
   components: { TimeLine, UserList },
-  props: ['timeline', 'active', 'followers', 'following'],
+  props: {
+    timeline: {
+      type: Array,
+      required: true
+    },
+    active: {
+      type: String,
+      default: 'status'
+    },
+    followers: {
+      type: Array,
+      required: true
+    },
+    following: {
+      type: Array,
+      required: true
+    }
+  },
   methods: {
     wantOldToot (args) {
       const { maxID } = args

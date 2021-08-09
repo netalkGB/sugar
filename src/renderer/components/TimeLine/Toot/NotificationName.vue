@@ -4,7 +4,12 @@
 
 <script>
 export default {
-  props: ['profile'],
+  props: {
+    profile: {
+      type: Object,
+      required: true
+    }
+  },
   computed: {
     name () {
       const { userid, displayName } = this.profile

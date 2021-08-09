@@ -102,11 +102,19 @@ const { mapActions } = createNamespacedHelpers('timelines')
 
 export default {
   components: { BoostedBy, FavoritedBy, FollowedBy, ProfileImage, Profile, Time, TlText, Action, Images, Warning },
-  props: ['toot'],
+  props: {
+    toot: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       showToot: true
     }
+  },
+  created () {
+    this.showToot = this.toot.warning === false
   },
   methods: {
     ...mapActions(['conversation', 'profile']),
@@ -118,9 +126,6 @@ export default {
       const internalid = profile.internalid
       this.profile({ internalid })
     }
-  },
-  created () {
-    this.showToot = this.toot.warning === false
   }
 }
 </script>

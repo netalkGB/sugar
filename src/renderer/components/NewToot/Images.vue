@@ -18,7 +18,12 @@ export default {
   components: {
     ImagePreview
   },
-  props: ['files'],
+  props: {
+    files: {
+      type: Array,
+      required: true
+    }
+  },
   methods: {
     removeFile (idx) {
       this.$emit('removeFile', idx)

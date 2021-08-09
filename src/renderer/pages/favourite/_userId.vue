@@ -28,9 +28,6 @@ export default {
       return String(this.$route.query.screenName)
     }
   },
-  methods: {
-    ...mapActions(['setCurrentUserId', 'loadUserConfig'])
-  },
   created () {
     this.loadUserConfig()
     this.setCurrentUserId(this.userId)
@@ -38,7 +35,7 @@ export default {
   mounted () {
     this.width = window.innerWidth
     this.height = window.innerHeight
-    window.addEventListener('resize', (e) => {
+    window.addEventListener('resize', (_event) => {
       this.width = window.innerWidth
       this.height = window.innerHeight
       logger.debug(this.width, this.height)
@@ -55,6 +52,9 @@ export default {
   beforeDestroy () {
     window.removeEventListener('resize', () => { })
     window.removeEventListener('storage', () => { })
+  },
+  methods: {
+    ...mapActions(['setCurrentUserId', 'loadUserConfig'])
   }
 }
 </script>

@@ -11,6 +11,12 @@ import logger from '@/other/Logger'
 export default {
   components: { TimeLine },
   layout: 'main',
+  data () {
+    return {
+      type: TimelineType.publictl,
+      state: 'loading(next)'
+    }
+  },
   computed: {
     ...mapGetters('users', { currentUser: 'getCurrentUser' }),
     ...mapState({ tl: state => state.timelines.timelines }),
@@ -22,11 +28,8 @@ export default {
       return timeline ? timeline.data : []
     }
   },
-  data () {
-    return {
-      type: TimelineType.publictl,
-      state: 'loading(next)'
-    }
+  mounted () {
+    this.setActive({ type: this.type })
   },
   methods: {
     ...mapActions('users', ['loadUserConfig']),
@@ -41,9 +44,6 @@ export default {
     handleScrollState (state) {
       this.state = state
     }
-  },
-  mounted () {
-    this.setActive({ type: this.type })
   }
 }
 </script>

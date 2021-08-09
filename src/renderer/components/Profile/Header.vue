@@ -29,9 +29,9 @@
       </div>
       <Count
         class="paddingLR"
-        :follower="profile.followersCount"
-        :following="profile.followingCount"
-        :toot="profile.statusesCount"
+        :follower="followersCount"
+        :following="followingCount"
+        :toot="tootCount"
         @toggle="toggleShortMode"
       />
     </div>
@@ -39,20 +39,37 @@
 </template>
 
 <script>
-import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import Count from '@/components/Profile/Count'
 import ProfileFg from '@/components/Profile/ProfileFg'
 
 export default {
   components: {
-    IosLockIcon,
     Count,
     ProfileFg
   },
-  props: ['profile'],
+  props: {
+    profile: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       shortMode: false
+    }
+  },
+  computed: {
+    followersCount () {
+      const followersCount = this.profile.followersCount
+      return followersCount && String(followersCount)
+    },
+    followingCount () {
+      const followingCount = this.profile.followingCount
+      return followingCount && String(followingCount)
+    },
+    tootCount () {
+      const statusesCount = this.profile.statusesCount
+      return statusesCount && String(statusesCount)
     }
   },
   methods: {

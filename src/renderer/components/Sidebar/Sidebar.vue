@@ -6,7 +6,7 @@
         @onChanged="handleChange"
       />
       <Icon
-        to="#"
+
         icon="addTab"
       />
     </div>
@@ -19,7 +19,7 @@
         @click="openSettingsMenu"
       >
         <Icon
-          to="#"
+
           icon="settings"
         />
       </div>
@@ -70,9 +70,11 @@ const ipcRenderer = window.ipc
 const keyCodeN = 78
 export default {
   components: { SortableMenu, Icon },
-  props: { userId: Number },
-  computed: {
-    ...mapGetters({ currentUser: 'getCurrentUser' })
+  props: {
+    userId: {
+      type: Number,
+      required: true
+    }
   },
   data () {
     return {
@@ -80,23 +82,48 @@ export default {
       isShowSettingMenu: false
     }
   },
+  computed: {
+    ...mapGetters({ currentUser: 'getCurrentUser' })
+  },
+  created () {
+    this.setupMenu()
+  },
+  mounted () {
+    window.addEventListener('click', (e) => {
+      const { path } = e
+      const firstElem = path[0]
+      const firstElemTagName = firstElem.tagName
+      if (!(firstElemTagName === 'path' || firstElemTagName === 'svg')) {
+        this.isShowSettingMenu = false
+      }
+    })
+    window.addEventListener('keydown', (e) => {
+      if (((e.ctrlKey || e.metaKey) && e.keyCode === keyCodeN)) {
+        this.newToot()
+      }
+    })
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', () => { })
+    window.removeEventListener('click', () => { })
+  },
   methods: {
     ...mapActions('users', ['setMenu']),
     ...mapActions('timelines', ['profile']),
-    openSettingsMenu (e, type) {
+    openSettingsMenu () {
       if (this.isShowSettingMenu) {
         this.isShowSettingMenu = false
         return
       }
       this.$nextTick(() => { this.isShowSettingMenu = !this.isShowSettingMenu })
     },
-    openSearchWindow (e) {
+    openSearchWindow () {
       const url = this.$router.resolve(`/search/${this.userId}`).href
       const currentPath = localStorage.getItem('currentPath')
       ipcRenderer.send('newWindow', `${currentPath}${url}`, 'searchWindow')
       this.isShowSettingMenu = false
     },
-    openFavouriteWindow (e) {
+    openFavouriteWindow () {
       const currentPath = localStorage.getItem('currentPath')
       const currentUser = this.currentUser
       const { user } = currentUser
@@ -134,28 +161,6 @@ export default {
       const params = { userId }
       this.menu = menu.map(val => ({ ...val, to: { ...val.to, params } }))
     }
-  },
-  created () {
-    this.setupMenu()
-  },
-  mounted () {
-    window.addEventListener('click', (e) => {
-      const { path } = e
-      const firstElem = path[0]
-      const firstElemTagName = firstElem.tagName
-      if (!(firstElemTagName === 'path' || firstElemTagName === 'svg')) {
-        this.isShowSettingMenu = false
-      }
-    })
-    window.addEventListener('keydown', (e) => {
-      if (((e.ctrlKey || e.metaKey) && e.keyCode === keyCodeN)) {
-        this.newToot()
-      }
-    })
-  },
-  beforeDestroy () {
-    window.removeEventListener('keydown', () => { })
-    window.removeEventListener('click', () => { })
   }
 }
 </script>

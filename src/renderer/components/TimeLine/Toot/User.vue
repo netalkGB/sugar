@@ -30,7 +30,12 @@ const { mapActions } = createNamespacedHelpers('timelines')
 
 export default {
   components: { ProfileImage, Profile, TlText },
-  props: ['user'],
+  props: {
+    user: {
+      type: Object,
+      required: true
+    }
+  },
   methods: {
     ...mapActions(['profile']),
     openProfile (profile) {

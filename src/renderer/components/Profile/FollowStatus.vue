@@ -14,7 +14,16 @@
 
 <script>
 export default {
-  props: ['isFollower', 'isFollowing']
+  props: {
+    isFollower: {
+      type: Boolean,
+      default: false
+    },
+    isFollowing: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
 

@@ -41,6 +41,25 @@ export default {
       return String(this.$route.query.destinations)
     }
   },
+  created () {
+    this.loadUserConfig()
+    this.setCurrentUserId(this.userId)
+    this.marginH = window.outerHeight - window.innerHeight
+    this.marginW = window.outerWidth - window.innerWidth
+    window.resizeTo(this.defaultWindowWidth + this.marginW, this.defaultWindowHeight + this.marginH)
+    this.width = window.innerWidth - this.padding * 2
+    this.height = window.innerHeight - this.padding * 2
+    window.addEventListener('resize', (_event) => {
+      this.width = window.innerWidth - this.padding * 2
+      this.height = window.innerHeight - this.padding * 2
+    })
+  },
+  mounted () {
+    this.$refs.nt.setup()
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', () => { })
+  },
   methods: {
     ...mapActions(['loadUserConfig', 'setCurrentUserId']),
     changeHeight (ev) {
@@ -54,25 +73,6 @@ export default {
       }
       window.resizeTo(window.outerWidth, this.defaultWindowHeight + this.marginH + deltaHeight)
     }
-  },
-  created () {
-    this.loadUserConfig()
-    this.setCurrentUserId(this.userId)
-    this.marginH = window.outerHeight - window.innerHeight
-    this.marginW = window.outerWidth - window.innerWidth
-    window.resizeTo(this.defaultWindowWidth + this.marginW, this.defaultWindowHeight + this.marginH)
-    this.width = window.innerWidth - this.padding * 2
-    this.height = window.innerHeight - this.padding * 2
-    window.addEventListener('resize', (e) => {
-      this.width = window.innerWidth - this.padding * 2
-      this.height = window.innerHeight - this.padding * 2
-    })
-  },
-  mounted () {
-    this.$refs.nt.setup()
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', () => { })
   }
 }
 </script>
