@@ -7,6 +7,7 @@
       <Sidebar :user-id="userId" />
     </div>
     <nuxt id="content" />
+    <Modal />
   </div>
 </template>
 
@@ -15,11 +16,14 @@ import { mapActions } from 'vuex'
 import logger from '@/other/Logger'
 import TimelineType from '@/other/TimelineType'
 import Sidebar from '@/components/Sidebar/Sidebar'
+import Modal from '@/components/Modal/Modal'
+
 const ipcRenderer = window.ipc
 
 export default {
   components: {
-    Sidebar
+    Sidebar,
+    Modal
   },
   data () {
     return {
@@ -70,7 +74,8 @@ export default {
   },
   methods: {
     ...mapActions('users', ['setCurrentUserId', 'fetchOwnFollowerAndFollowing']),
-    ...mapActions('timelines', ['firstFetch', 'startStreaming'])
+    ...mapActions('timelines', ['firstFetch', 'startStreaming']),
+    ...mapActions('modal', ['showMessage'])
   }
 }
 </script>
