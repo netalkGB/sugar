@@ -39,7 +39,6 @@ import MtButton from '@/components/Form/MtButton.vue'
 
 const { mapActions, mapGetters } = createNamespacedHelpers('users')
 const ipcRenderer = window.ipc
-const remote = window.remote
 export default Vue.extend({
   components: {
     MtTextBox,
@@ -68,11 +67,10 @@ export default Vue.extend({
     ipcRenderer.send('changeWindowSize', 'adduser')
   },
   mounted () {
-    const menu = contextMenu(remote)
     const adduser = this.$refs.adduser as HTMLDivElement
     adduser.addEventListener('contextmenu', (e) => {
       e.preventDefault()
-      menu.popup({ window: remote.getCurrentWindow() })
+      contextMenu()
     })
   },
   beforeDestroy () {

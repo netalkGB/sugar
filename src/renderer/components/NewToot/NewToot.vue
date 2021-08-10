@@ -89,8 +89,7 @@ import MtButton from '@/components/Form/MtButton'
 import MtSelect from '@/components/Form/MtSelect'
 import Mastodon from '@/other/Mastodon'
 import ServerSideError from '@/other/ServerSideError'
-const ipcRenderer = window.ipc
-const remote = window.remote
+
 const maxTootLength = 500
 
 export default {
@@ -171,10 +170,9 @@ export default {
     }
   },
   mounted () {
-    const menu = contextMenu(remote)
     this.$refs.toottext.addEventListener('contextmenu', (e) => {
       e.preventDefault()
-      menu.popup(remote.getCurrentWindow())
+      contextMenu()
     })
   },
   beforeDestroy () {

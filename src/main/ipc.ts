@@ -1,8 +1,8 @@
-import { ipcMain, dialog, shell } from 'electron'
+import { ipcMain, dialog, shell, Menu, BrowserWindow } from 'electron'
 import { Logger } from 'log4js'
 import WindowManager from '~/WindowManager'
 
-export default function (_logger:Logger, windows:WindowManager) {
+export default function (logger:Logger, windows:WindowManager) {
   ipcMain.on('openURL', (_event, arg) => {
     const isURL = arg.match(/^((^http|^https):\/\/)/g) !== null
     if (isURL) {
@@ -50,5 +50,17 @@ export default function (_logger:Logger, windows:WindowManager) {
         newWindow({ width: 256, height: 500 })
         break
     }
+  })
+
+  const menu = Menu.buildFromTemplate([
+    { label: 'すべて選択', accelerator: 'CmdOrCtrl+A', role: 'selectAll' },
+    { label: 'カット', accelerator: 'CmdOrCtrl+X', role: 'cut' },
+    { label: 'コピー', accelerator: 'CmdOrCtrl+C', role: 'copy' },
+    { label: 'ペースト', accelerator: 'CmdOrCtrl+V', role: 'paste' }
+  ])
+  ipcMain.on('openContextMenu', () => {
+    logger.debug('openContextMenu')
+    const window = BrowserWindow.getFocusedWindow()
+    menu.popup({ window })
   })
 }

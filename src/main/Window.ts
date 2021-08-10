@@ -34,7 +34,7 @@ export default class Window {
       contextIsolation: false,
       webviewTag: false,
       preload: path.join(app.getAppPath(), 'out/preload/preload.js'),
-      enableRemoteModule: true
+      enableRemoteModule: false
     }
     this._browserWindow = new BrowserWindow({
       ...args,
