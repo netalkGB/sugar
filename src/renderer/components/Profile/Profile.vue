@@ -24,11 +24,10 @@
 
 <script>
 import logger from '@/other/Logger'
-import { createNamespacedHelpers } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import DialogMessage from '@/utils/DialogMessage'
 import Header from './Header'
 import Timeline from './Timeline'
-
-const { mapActions, mapState } = createNamespacedHelpers('profile')
 
 export default {
   components: {
@@ -51,28 +50,46 @@ export default {
     }
   },
   computed: {
-    ...mapState({ profile: state => state.profile, timeline: state => state.timeline, followers: state => state.followers, following: state => state.following, active: state => state.active })
+    ...mapState('profile', { profile: state => state.profile, timeline: state => state.timeline, followers: state => state.followers, following: state => state.following, active: state => state.active })
   },
   methods: {
-    ...mapActions(['fetchProfile', 'fetchProfileTimeline', 'loadOldToot', 'fetchProfileFollowers', 'fetchProfileFollowing']),
+    ...mapActions('profile', ['fetchProfile', 'fetchProfileTimeline', 'loadOldToot', 'fetchProfileFollowers', 'fetchProfileFollowing']),
+    ...mapActions('modal', ['showMessage']),
     fetch () {
       const internalId = this.internalId
-      this.fetchProfileTimeline({ internalId }).catch((e) => { logger.error(e) })
-      this.fetchProfileFollowers({ internalId }).then(() => logger.debug(`follower: ${this.followers.length}`)).catch(e => logger.error(e))
-      this.fetchProfileFollowing({ internalId }).then(() => logger.debug(`following: ${this.following.length}`)).catch(e => logger.error(e))
+      const messages = DialogMessage.getMessages('ja')
+      this.fetchProfileTimeline({ internalId }).catch((e) => {
+        logger.error(e)
+        this.showMessage({ message: messages.profileTimelineFetchError })
+      })
+      this.fetchProfileFollowers({ internalId }).then(() => logger.debug(`follower: ${this.followers.length}`)).catch((e) => {
+        logger.error(e)
+        this.showMessage({ message: messages.profileFollowersFetchError })
+      })
+      this.fetchProfileFollowing({ internalId }).then(() => logger.debug(`following: ${this.following.length}`)).catch((e) => {
+        logger.error(e)
+        this.showMessage({ message: messages.profileFollowingFetchError })
+      })
       this.fetchProfile({ internalId }).then(() => {
         this.loadDone = true
         this.$nextTick(function () {
           this.calculateHeight()
         })
-      }).catch((e) => { logger.error(e) })
+      }).catch((e) => {
+        logger.error(e)
+        this.showMessage({ message: messages.profileFetchError })
+      })
     },
     wantOldToot (maxID) {
       logger.debug('load old toots maxID:', maxID)
       const internalId = this.internalId
       this.loadOldToot({ internalId, maxID }).then(() => {
         this.$refs.timeline.loadOldTootDone()
-      }).catch((e) => { logger.error(e) })
+      }).catch((e) => {
+        const messages = DialogMessage.getMessages('ja')
+        logger.error(e)
+        this.showMessage({ message: messages.profileTimelineFetchError })
+      })
     },
     calculateHeight () {
       this.profileHeight = this.$refs.profile.$el.clientHeight + 'px'

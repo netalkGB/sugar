@@ -17,7 +17,7 @@ import logger from '@/other/Logger'
 import TimelineType from '@/other/TimelineType'
 import Sidebar from '@/components/Sidebar/Sidebar'
 import Modal from '@/components/Modal/Modal'
-
+import DialogMessage from '@/utils/DialogMessage'
 const ipcRenderer = window.ipc
 
 export default {
@@ -39,26 +39,42 @@ export default {
     }
   },
   async created () {
+    const messages = DialogMessage.getMessages('ja')
     ipcRenderer.send('changeWindowSize', 'main')
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
     await this.fetchOwnFollowerAndFollowing()
     this.firstFetch({ type: TimelineType.localtl }).then(() => {
       this.startStreaming({ type: TimelineType.localtl }).catch((e) => {
-        logger.debug(e)
+        logger.error(e)
+        this.showMessage({ message: messages.localTimelineStreamError })
       })
+    }).catch((e) => {
+      logger.error(e)
+      this.showMessage({ message: messages.localTimelineFetchError })
     })
     this.firstFetch({ type: TimelineType.hometl }).then(() => {
       this.startStreaming({ type: TimelineType.hometl }).catch((e) => {
-        logger.debug(e)
+        logger.error(e)
+        this.showMessage({ message: messages.homeTimelineStreamError })
       })
+    }).catch((e) => {
+      logger.error(e)
+      this.showMessage({ message: messages.homeTimelineFetchError })
     })
     this.firstFetch({ type: TimelineType.publictl }).then(() => {
       this.startStreaming({ type: TimelineType.publictl }).catch((e) => {
-        logger.debug(e)
+        logger.error(e)
+        this.showMessage({ message: messages.publicTimeLineStreamError })
       })
+    }).catch((e) => {
+      logger.error(e)
+      this.showMessage({ message: messages.publicTimelineFetchError })
     })
-    this.firstFetch({ type: TimelineType.notification }).then(() => { })
+    this.firstFetch({ type: TimelineType.notification }).catch((e) => {
+      logger.error(e)
+      this.showMessage({ message: messages.notificationFetchError })
+    })
   },
   mounted () {
     this.width = window.innerWidth
