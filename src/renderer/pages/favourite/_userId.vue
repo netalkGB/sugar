@@ -1,6 +1,7 @@
 <template>
   <div :style="{ width: width + 'px', height: height + 'px' }">
     <Favourite class="favourite" />
+    <Modal />
   </div>
 </template>
 
@@ -8,11 +9,13 @@
 import logger from '@/other/Logger'
 import Favourite from '@/components/Favourite/Favourite'
 import { createNamespacedHelpers } from 'vuex'
+import Modal from '@/components/Modal/Modal'
+
 const { mapActions } = createNamespacedHelpers('users')
 
 export default {
   components: {
-    Favourite
+    Favourite, Modal
   },
   data () {
     return {

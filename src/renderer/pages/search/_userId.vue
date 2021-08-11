@@ -1,6 +1,7 @@
 <template>
   <div :style="{ width: width + 'px', height: height + 'px' }">
     <Search class="searchContainer" />
+    <Modal />
   </div>
 </template>
 
@@ -8,11 +9,13 @@
 import logger from '@/other/Logger'
 import Search from '@/components/Search/Search'
 import { createNamespacedHelpers } from 'vuex'
+import Modal from '@/components/Modal/Modal'
 const { mapActions } = createNamespacedHelpers('users')
 
 export default {
   components: {
-    Search
+    Search,
+    Modal
   },
   data () {
     return {
