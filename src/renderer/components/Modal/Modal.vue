@@ -1,5 +1,5 @@
 <template>
-  <div class="background" @click.self="closeModal" v-if="open">
+  <div v-if="open" class="background" @click.self="closeModal">
     <dialog class="dialog centering">
       <div class="messages">
         <div v-for="(message, idx) in messages" :key="idx">
@@ -7,7 +7,9 @@
         </div>
       </div>
       <div class="ok oktopmargin">
-        <MtButton @click.native="closeModal">OK</MtButton>
+        <MtButton @click.native="closeModal">
+          OK
+        </MtButton>
       </div>
     </dialog>
   </div>
@@ -52,6 +54,8 @@ export default {
     transform: translate(-50%, -50%);
   }
   .background {
+    top: 0px;
+    left: 0px;
     position: fixed;
     background: rgba(50,50,50, 0.5);
     width: 100%;
