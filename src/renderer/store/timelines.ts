@@ -463,7 +463,7 @@ export const actions: ActionTree<TimelinesState, RootState> = {
     const { host, accessToken, user } = this.getters['users/getCurrentUser']
     const userNum = this.getters['users/getCurrentUserId']
     if (type === TimelineType.hometl) {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve, reject) => {
         try {
           const mastodon = Mastodon.getMastodon({ accessToken, host })
           const stream = mastodon.streamHomeTimeline()
@@ -501,10 +501,11 @@ export const actions: ActionTree<TimelinesState, RootState> = {
             }
           })
           stream.on('error', (error:any) => {
-            resolve(error)
+            reject(error)
           })
+          resolve()
         } catch (e) {
-          resolve(e)
+          reject(e)
         }
       })
     } else if (type === TimelineType.localtl) {
