@@ -8,6 +8,7 @@
       :id="id"
       ref="conversations"
     />
+    <Modal />
   </div>
 </template>
 
@@ -15,9 +16,10 @@
 import { mapActions } from 'vuex'
 import logger from '@/other/Logger'
 import Conversations from '@/components/Conversations/Conversations'
+import Modal from '@/components/Modal/Modal'
 
 export default {
-  components: { Conversations },
+  components: { Conversations, Modal },
   data () {
     return {
       width: 0,

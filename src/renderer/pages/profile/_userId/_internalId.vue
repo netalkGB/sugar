@@ -6,6 +6,7 @@
       :user-id="userId"
       :internal-id="internalId"
     />
+    <Modal />
   </div>
 </template>
 
@@ -13,8 +14,10 @@
 import { mapActions } from 'vuex'
 import Profile from '@/components/Profile/Profile'
 import logger from '@/other/Logger'
+import Modal from '@/components/Modal/Modal'
+
 export default {
-  components: { Profile },
+  components: { Profile, Modal },
   data () {
     return {
       width: 0,

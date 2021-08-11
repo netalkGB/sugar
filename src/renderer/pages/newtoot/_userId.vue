@@ -1,24 +1,26 @@
 <template>
-  <NewToot
-    ref="nt"
-    class="newtoot"
-    :style="{ width: width + 'px', height: height + 'px',padding: padding + 'px' }"
-    :destinations="destinations"
-    :in-reply-to-i-d="inReplyToID"
-    :user-id="userId"
-    @requireHeightChange="changeHeight"
-  />
+  <div class="newtoot" :style="{ width: width + 'px', height: height + 'px',padding: padding + 'px' }">
+    <NewToot
+      ref="nt"
+      :destinations="destinations"
+      :in-reply-to-i-d="inReplyToID"
+      :user-id="userId"
+      @requireHeightChange="changeHeight"
+    />
+    <Modal />
+  </div>
 </template>
 
 <script>
 import NewToot from '@/components/NewToot/NewToot'
+import Modal from '@/components/Modal/Modal'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('users')
 const padding = 4
 const defaultWindowHeight = 138
 const defaultWindowWidth = 330
 export default {
-  components: { NewToot },
+  components: { NewToot, Modal },
   data () {
     return {
       width: 0,
@@ -78,4 +80,7 @@ export default {
 </script>
 
 <style scoped>
+.newtoot {
+  background-color: #eeeeee;
+}
 </style>
