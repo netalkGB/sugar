@@ -69,12 +69,7 @@ export const actions: ActionTree<SearchState, RootState> = {
         ))
         resolve()
       }).catch((e) => {
-        const returnErr = {
-          error: e,
-          host,
-          accessToken
-        }
-        reject(returnErr)
+        reject(e)
       })
     })
   }

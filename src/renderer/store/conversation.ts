@@ -13,12 +13,7 @@ function loadToot ({ host, accessToken, id }:{host:string;accessToken:string;id:
     mastodon.fetchToot(id).then((result) => {
       resolve(result)
     }).catch((e) => {
-      const returnErr = {
-        error: e,
-        host,
-        accessToken
-      }
-      reject(returnErr)
+      reject(e)
     })
   })
 }
@@ -29,12 +24,7 @@ function loadContext ({ host, accessToken, id }:{host:string;accessToken:string;
     mastodon.fetchContext(id).then((result) => {
       resolve(result)
     }).catch((e) => {
-      const returnErr = {
-        error: e,
-        host,
-        accessToken
-      }
-      reject(returnErr)
+      reject(e)
     })
   })
 }

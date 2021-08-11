@@ -126,12 +126,7 @@ export const actions: ActionTree<UsersState, RootState> = {
         )
         resolve()
       }).catch((e:ServerSideError) => {
-        const returnErr = {
-          error: e,
-          host,
-          accessToken
-        }
-        reject(returnErr)
+        reject(e)
       })
     })
   },
@@ -150,12 +145,7 @@ export const actions: ActionTree<UsersState, RootState> = {
         )
         resolve()
       }).catch((e:ServerSideError) => {
-        const returnErr = {
-          error: e,
-          host,
-          accessToken
-        }
-        reject(returnErr)
+        reject(e)
       })
     })
   },
