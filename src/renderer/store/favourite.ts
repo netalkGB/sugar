@@ -44,12 +44,7 @@ export const actions: ActionTree<FavouriteState, RootState> = {
         commit('setTimeline', statuses.map(status => Toot.fromMastodon(status, ownUser)))
         resolve()
       }).catch((e) => {
-        const returnErr = {
-          error: e,
-          host,
-          accessToken
-        }
-        reject(returnErr)
+        reject(e)
       })
     })
   }
