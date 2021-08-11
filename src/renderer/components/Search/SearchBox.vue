@@ -19,10 +19,11 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
+import { mapActions } from 'vuex'
 import MtButton from '@/components/Form/MtButton'
 import MtTextBox from '@/components/Form/MtTextBox'
-const { mapActions } = createNamespacedHelpers('search')
+import DialogMessage from '@/utils/DialogMessage'
+import logger from '@/other/Logger'
 
 export default {
   components: {
@@ -36,9 +37,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['searchMastodon', 'clearSearchList']),
+    ...mapActions('search', ['searchMastodon', 'clearSearchList']),
+    ...mapActions('modal', ['showMessage']),
     search () {
-      this.searchMastodon({ q: this.query })
+      this.searchMastodon({ q: this.query }).catch((e) => {
+        const messages = DialogMessage.getMessages('ja')
+        logger.error(e)
+        this.showMessage({ message: messages.searchResultFetchError })
+      })
     },
     clearList () {
       this.clearSearchList()

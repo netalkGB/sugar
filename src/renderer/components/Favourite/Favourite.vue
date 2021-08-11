@@ -10,22 +10,27 @@
 
 <script>
 import TimeLine from '@/components/TimeLine/TimeLine'
-import { createNamespacedHelpers } from 'vuex'
-const { mapActions } = createNamespacedHelpers('favourite')
-const { mapState } = createNamespacedHelpers('favourite')
+import { mapActions, mapState } from 'vuex'
+import logger from '@/other/Logger'
+import DialogMessage from '@/utils/DialogMessage'
 
 export default {
   components: {
     TimeLine
   },
   computed: {
-    ...mapState({ timeline: state => state.timeline })
+    ...mapState('favourite', { timeline: state => state.timeline })
   },
   mounted () {
-    this.fetchFavourite()
+    const messages = DialogMessage.getMessages('ja')
+    this.fetchFavourite().catch((e) => {
+      logger.error(e)
+      this.showMessage({ message: messages.favoriteFetchError })
+    })
   },
   methods: {
-    ...mapActions(['fetchFavourite'])
+    ...mapActions('favourite', ['fetchFavourite']),
+    ...mapActions('modal', ['showMessage'])
   }
 }
 </script>

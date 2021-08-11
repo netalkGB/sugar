@@ -101,6 +101,7 @@ import IosLockIcon from 'vue-ionicons/dist/ios-lock.vue'
 import IosMailIcon from 'vue-ionicons/dist/ios-mail.vue'
 import MdTrashIcon from 'vue-ionicons/dist/md-trash.vue'
 import { mapActions, mapGetters } from 'vuex'
+import DialogMessage from '@/utils/DialogMessage'
 import logger from '@/other/Logger'
 
 export default {
@@ -170,7 +171,11 @@ export default {
   methods: {
     deleteToot () {
       logger.debug('delete')
-      this.deleteOwnToot({ id: this.id })
+      this.deleteOwnToot({ id: this.id }).catch((e) => {
+        const messages = DialogMessage.getMessages('ja')
+        logger.error(e)
+        this.showMessage({ message: messages.removeTootRequestError })
+      })
     },
     replyToot () {
       logger.debug('reply')
@@ -181,15 +186,23 @@ export default {
         logger.debug('to unfavorite')
         this.displayFavorited = false
         this.displayFavoritesCount--
-        this.unFavorite({ id: this.id }).catch((_e) => {
+        this.unFavorite({ id: this.id }).catch((e) => {
           this.displayFavorited = true
+          this.displayFavoritesCount++
+          logger.error(e)
+          const messages = DialogMessage.getMessages('ja')
+          this.showMessage({ message: messages.unFavoriteTootRequestError })
         })
       } else {
         logger.debug('to favorite')
         this.displayFavoritesCount++
         this.displayFavorited = true
-        this.favorite({ id: this.id }).catch((_e) => {
+        this.favorite({ id: this.id }).catch((e) => {
           this.displayFavorited = false
+          this.displayFavoritesCount--
+          logger.error(e)
+          const messages = DialogMessage.getMessages('ja')
+          this.showMessage({ message: messages.favoriteTootRequestError })
         })
       }
     },
@@ -198,19 +211,28 @@ export default {
         logger.debug('to unboost')
         this.displayBoosted = false
         this.displayBoostsCount--
-        this.unBoost({ id: this.id }).catch((_e) => {
+        this.unBoost({ id: this.id }).catch((e) => {
           this.displayBoosted = true
+          this.displayBoostsCount++
+          logger.error(e)
+          const messages = DialogMessage.getMessages('ja')
+          this.showMessage({ message: messages.unBoostTootRequestError })
         })
       } else {
         logger.debug('to boost')
         this.displayBoostsCount++
         this.displayBoosted = true
-        this.boost({ id: this.id }).catch((_e) => {
+        this.boost({ id: this.id }).catch((e) => {
           this.displayBoosted = false
+          this.displayBoostsCount--
+          logger.error(e)
+          const messages = DialogMessage.getMessages('ja')
+          this.showMessage({ message: messages.boostTootRequestError })
         })
       }
     },
-    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost', 'reply', 'deleteOwnToot'])
+    ...mapActions('timelines', ['favorite', 'unFavorite', 'boost', 'unBoost', 'reply', 'deleteOwnToot']),
+    ...mapActions('modal', ['showMessage'])
   }
 }
 </script>

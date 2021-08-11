@@ -89,6 +89,8 @@ import MtButton from '@/components/Form/MtButton'
 import MtSelect from '@/components/Form/MtSelect'
 import Mastodon from '@/other/Mastodon'
 import ServerSideError from '@/other/ServerSideError'
+import DialogMessage from '@/utils/DialogMessage'
+import { mapActions } from 'vuex'
 
 const maxTootLength = 500
 
@@ -240,6 +242,8 @@ export default {
         }
         this.sending = false
         logger.error(e)
+        const messages = DialogMessage.getMessages('ja')
+        this.showMessage({ message: messages.tootRequestError })
       })
     },
     handleInput (e) {
@@ -247,7 +251,7 @@ export default {
       this.toot = value
     },
     addFile () {
-      ipcRenderer.invoke('openDialog').then((appendFile) => {
+      ipc.invoke('openDialog').then((appendFile) => {
         if (appendFile !== null) {
           const { filePaths } = appendFile
           filePaths.forEach((filePath) => {
@@ -256,7 +260,11 @@ export default {
             this.uploadFile(file)
           })
         }
-      }).catch(error => logger.error(error))
+      }).catch((error) => {
+        logger.error(error)
+        const messages = DialogMessage.getMessages('ja')
+        this.showMessage({ message: messages.fileAddError })
+      })
     },
     uploadFile (file) {
       const { accessToken, host } = this.keys
@@ -292,6 +300,8 @@ export default {
           )
         }
         logger.error(err)
+        const messages = DialogMessage.getMessages('ja')
+        this.showMessage({ message: messages.fileUploadError })
       })
     },
     removeFile (idx) {
@@ -304,14 +314,16 @@ export default {
       this.files = []
       this.copyInReplyToID = null
       this.copyDestination = null
-    }
+    },
+    ...mapActions('modal', ['showMessage'])
   }
 }
 </script>
 
 <style scoped>
 .newToot {
-  background-color: #eeeeee;
+  width: 100%;
+  height: 100%;
 }
 .toot {
   border: none;

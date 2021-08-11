@@ -7,9 +7,10 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import TimeLine from '@/components/TimeLine/TimeLine'
-const { mapActions, mapGetters } = createNamespacedHelpers('conversation')
+import logger from '@/other/Logger'
+import DialogMessage from '@/utils/DialogMessage'
 export default {
   components: { TimeLine },
   props: {
@@ -19,12 +20,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ conversations: 'getConversations' })
+    ...mapGetters('conversation', { conversations: 'getConversations' })
   },
   methods: {
-    ...mapActions(['loadConversations']),
+    ...mapActions('conversation', ['loadConversations']),
+    ...mapActions('modal', ['showMessage']),
     loadToot () {
-      this.loadConversations({ tootId: this.id })
+      const messages = DialogMessage.getMessages('ja')
+      this.loadConversations({ tootId: this.id }).catch((e) => {
+        logger.error(e)
+        this.showMessage({ message: messages.conversationFetchError })
+      })
     }
   }
 }
