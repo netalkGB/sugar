@@ -41,6 +41,7 @@ export default {
     width: 200px;
     font-size: 12px;
     border: 2px solid #ccc;
+    z-index: 1000;
   }
   .ok {
     display: flex;
@@ -57,7 +58,7 @@ export default {
   .background {
     top: 0px;
     left: 0px;
-    position: fixed;
+    position: absolute;
     background: rgba(50,50,50, 0.5);
     width: 100%;
     height: 100%;
