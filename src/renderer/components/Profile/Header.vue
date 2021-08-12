@@ -61,15 +61,18 @@ export default {
   computed: {
     followersCount () {
       const followersCount = this.profile.followersCount
-      return followersCount && String(followersCount)
+      const radix = 10
+      return followersCount.toString(radix)
     },
     followingCount () {
       const followingCount = this.profile.followingCount
-      return followingCount && String(followingCount)
+      const radix = 10
+      return followingCount.toString(radix)
     },
     tootCount () {
       const statusesCount = this.profile.statusesCount
-      return statusesCount && String(statusesCount)
+      const radix = 10
+      return statusesCount.toString(radix)
     }
   },
   methods: {
