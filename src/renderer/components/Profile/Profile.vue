@@ -17,6 +17,9 @@
       :following="following"
       :active="active"
       :style="{ height: `calc(100% - ${profileHeight})`}"
+      :first-timeline-load-done="firstTimelineLoadDone"
+      :first-followers-load-done="firstFollowersLoadDone"
+      :first-following-load-done="firstFollowingLoadDone"
       @wantOldToot="wantOldToot"
     />
   </div>
@@ -46,7 +49,10 @@ export default {
   data () {
     return {
       profileHeight: '50%',
-      loadDone: false
+      loadDone: false,
+      firstTimelineLoadDone: false,
+      firstFollowersLoadDone: false,
+      firstFollowingLoadDone: false
     }
   },
   computed: {
@@ -61,14 +67,20 @@ export default {
       this.fetchProfileTimeline({ internalId }).catch((e) => {
         logger.error(e)
         this.showMessage({ message: messages.profileTimelineFetchError })
+      }).finally(() => {
+        this.firstTimelineLoadDone = true
       })
       this.fetchProfileFollowers({ internalId }).then(() => logger.debug(`follower: ${this.followers.length}`)).catch((e) => {
         logger.error(e)
         this.showMessage({ message: messages.profileFollowersFetchError })
+      }).finally(() => {
+        this.firstFollowersLoadDone = true
       })
       this.fetchProfileFollowing({ internalId }).then(() => logger.debug(`following: ${this.following.length}`)).catch((e) => {
         logger.error(e)
         this.showMessage({ message: messages.profileFollowingFetchError })
+      }).finally(() => {
+        this.firstFollowingLoadDone = true
       })
       this.fetchProfile({ internalId }).then(() => {
         this.loadDone = true

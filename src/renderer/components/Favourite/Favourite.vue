@@ -4,6 +4,7 @@
       ref="timeline"
       :infinite-mode="false"
       :timeline="timeline"
+      :first-load-done="firstTimelineLoadDone"
     />
   </div>
 </template>
@@ -18,6 +19,11 @@ export default {
   components: {
     TimeLine
   },
+  data () {
+    return {
+      firstTimelineLoadDone: false
+    }
+  },
   computed: {
     ...mapState('favourite', { timeline: state => state.timeline })
   },
@@ -26,6 +32,8 @@ export default {
     this.fetchFavourite().catch((e) => {
       logger.error(e)
       this.showMessage({ message: messages.favoriteFetchError })
+    }).finally(() => {
+      this.firstTimelineLoadDone = true
     })
   },
   methods: {

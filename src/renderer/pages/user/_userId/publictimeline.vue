@@ -1,5 +1,12 @@
 <template>
-  <TimeLine ref="timeline" :type="type" :timeline="timeline" @wantOldToot="wantOldToot" @scrollStateChanged="handleScrollState" />
+  <TimeLine
+    ref="timeline"
+    :type="type"
+    :timeline="timelineData"
+    :first-load-done="firstLoadDone"
+    @wantOldToot="wantOldToot"
+    @scrollStateChanged="handleScrollState"
+  />
 </template>
 
 <script>
@@ -20,12 +27,19 @@ export default {
   computed: {
     ...mapGetters('users', { currentUser: 'getCurrentUser' }),
     ...mapState({ tl: state => state.timelines.timelines }),
-    timeline () {
+    currentTimeline () {
+      return this.tl.find(timeline => timeline.type === this.type)
+    },
+    timelineData () {
       if (this.state === 'loading(next)') {
         this.cleaningTl({ type: this.type })
       }
-      const timeline = this.tl.find(timeline => timeline.type === this.type)
+      const timeline = this.currentTimeline
       return timeline ? timeline.data : []
+    },
+    firstLoadDone () {
+      const timeline = this.currentTimeline
+      return timeline && timeline.firstLoadDone
     }
   },
   mounted () {

@@ -4,6 +4,7 @@
       <TimeLine
         ref="timeline"
         :timeline="timeline"
+        :first-load-done="firstTimelineLoadDone"
         @wantOldToot="wantOldToot"
       />
     </template>
@@ -11,12 +12,14 @@
       <UserList
         :infinite-mode="false"
         :users="following"
+        :first-load-done="firstFollowingLoadDone"
       />
     </template>
     <template v-if="active === 'followers'">
       <UserList
         :infinite-mode="false"
         :users="followers"
+        :first-load-done="firstFollowersLoadDone"
       />
     </template>
   </div>
@@ -44,6 +47,18 @@ export default {
     following: {
       type: Array,
       required: true
+    },
+    firstTimelineLoadDone: {
+      type: Boolean,
+      default: false
+    },
+    firstFollowersLoadDone: {
+      type: Boolean,
+      default: false
+    },
+    firstFollowingLoadDone: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
