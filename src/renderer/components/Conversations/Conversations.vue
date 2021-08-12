@@ -3,6 +3,7 @@
     ref="timeline"
     :infinite-mode="false"
     :timeline="conversations"
+    :first-load-done="firstTimelineLoadDone"
   />
 </template>
 
@@ -19,6 +20,11 @@ export default {
       default: null
     }
   },
+  data () {
+    return {
+      firstTimelineLoadDone: false
+    }
+  },
   computed: {
     ...mapGetters('conversation', { conversations: 'getConversations' })
   },
@@ -30,6 +36,8 @@ export default {
       this.loadConversations({ tootId: this.id }).catch((e) => {
         logger.error(e)
         this.showMessage({ message: messages.conversationFetchError })
+      }).finally(() => {
+        this.firstTimelineLoadDone = true
       })
     }
   }
