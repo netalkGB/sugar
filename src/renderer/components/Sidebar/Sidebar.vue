@@ -181,6 +181,7 @@ export default {
   bottom: 30px;
   left: 30px;
   box-shadow: 2px 2px 4px gray;
+  z-index: 2;
 }
 .menuitemchildren {
   width: 100%;
