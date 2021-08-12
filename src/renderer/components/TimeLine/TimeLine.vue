@@ -15,7 +15,7 @@
       />
       <div
         v-if="loadingPrev === true"
-        class="loading"
+        class="loadingicon"
       >
         <IosSyncIcon
           w="20px"
@@ -24,14 +24,16 @@
         />
       </div>
     </div>
+    <Loading v-if="!firstLoadDone" />
   </div>
 </template>
 
 <script>
 import Toot from '@/components/TimeLine/Toot/Toot'
+import Loading from '@/components/TimeLine/Loading'
 import IosSyncIcon from 'vue-ionicons/dist/ios-sync.vue'
 export default {
-  components: { Toot, IosSyncIcon },
+  components: { Toot, IosSyncIcon, Loading },
   props: {
     timeline: {
       type: Array,
@@ -41,6 +43,10 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    firstLoadDone: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -98,13 +104,14 @@ export default {
 
 <style scoped>
 .timelineContainer {
+  position: relative;
   font-size: 12px;
   height: 100%;
   width: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
-.loading {
+.loadingicon {
   text-align: center;
   color: #00aaff;
 }
