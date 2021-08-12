@@ -109,6 +109,7 @@ export const actions: ActionTree<UsersState, RootState> = {
       dispatch('saveUserConfig')
     } catch (e) {
       logger.error(e)
+      throw e
     }
   },
   fetchOwnFollower ({ commit, getters }) {
