@@ -28,7 +28,8 @@ export default {
     ...mapGetters('users', { currentUser: 'getCurrentUser' }),
     ...mapState({ tl: state => state.timelines.timelines }),
     currentTimeline () {
-      return this.tl.find(timeline => timeline.type === this.type)
+      const { host, accessToken } = this.currentUser
+      return this.tl.find(timeline => timeline.type === this.type && timeline.host === host && timeline.accessToken === accessToken)
     },
     timelineData () {
       if (this.state === 'loading(next)') {
