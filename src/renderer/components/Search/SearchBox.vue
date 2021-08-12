@@ -40,10 +40,13 @@ export default {
     ...mapActions('search', ['searchMastodon', 'clearSearchList']),
     ...mapActions('modal', ['showMessage']),
     search () {
+      this.$emit('startFetch')
       this.searchMastodon({ q: this.query }).catch((e) => {
         const messages = DialogMessage.getMessages('ja')
         logger.error(e)
         this.showMessage({ message: messages.searchResultFetchError })
+      }).finally(() => {
+        this.$emit('endFetch')
       })
     },
     clearList () {
