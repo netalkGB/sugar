@@ -8,6 +8,7 @@
     </div>
     <nuxt id="content" />
     <Modal />
+    <Loading v-if="!ownFollowerAndFollowingLoaded" />
   </div>
 </template>
 
@@ -17,18 +18,22 @@ import logger from '@/other/Logger'
 import TimelineType from '@/other/TimelineType'
 import Sidebar from '@/components/Sidebar/Sidebar'
 import Modal from '@/components/Modal/Modal'
+import Loading from '@/components/TimeLine/Loading'
 import DialogMessage from '@/utils/DialogMessage'
+
 const ipcRenderer = window.ipc
 
 export default {
   components: {
     Sidebar,
-    Modal
+    Modal,
+    Loading
   },
   data () {
     return {
       width: 0,
-      height: 0
+      height: 0,
+      ownFollowerAndFollowingLoaded: false
     }
   },
   computed: {
@@ -43,7 +48,7 @@ export default {
     ipcRenderer.send('changeWindowSize', 'main')
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
-    await this.fetchOwnFollowerAndFollowing()
+    await this.firstFetchOwnFollowerAndFollowing()
     this.firstFetch({ type: TimelineType.localtl }).then(() => {
       this.startStreaming({ type: TimelineType.localtl }).catch((e) => {
         logger.error(e)
@@ -91,7 +96,11 @@ export default {
   methods: {
     ...mapActions('users', ['setCurrentUserId', 'fetchOwnFollowerAndFollowing']),
     ...mapActions('timelines', ['firstFetch', 'startStreaming']),
-    ...mapActions('modal', ['showMessage'])
+    ...mapActions('modal', ['showMessage']),
+    async firstFetchOwnFollowerAndFollowing () {
+      await this.fetchOwnFollowerAndFollowing()
+      this.ownFollowerAndFollowingLoaded = true
+    }
   }
 }
 </script>
