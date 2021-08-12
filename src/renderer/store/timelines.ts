@@ -77,7 +77,7 @@ export const mutations: MutationTree<TimelinesState> = {
     }
   },
   setTimeline (state:Timelines, payload:TimelinePayload) {
-    const { type, statuses, notifications, host, accessToken, user } = payload
+    const { type, statuses, notifications, host, accessToken, user, firstLoadDone } = payload
     let data:Array<Toot> = []
     if (type !== TimelineType.notification) {
       if (statuses) {
@@ -87,15 +87,31 @@ export const mutations: MutationTree<TimelinesState> = {
       data = notifications.map(item => Toot.fromMastodonNotification(item))
     }
 
-    const timeline:Timeline = {
-      host,
-      accessToken,
-      type,
-      active: false,
-      data,
-      user
+    const existsTimeline = state.timelines.find(timeline => timeline.host === host && timeline.accessToken === accessToken && timeline.type === type) !== undefined
+    if (existsTimeline) {
+      for (const timeline of state.timelines) {
+        if (
+          timeline.host === host &&
+          timeline.accessToken === accessToken &&
+          timeline.type === type
+        ) {
+          timeline.firstLoadDone = firstLoadDone
+          timeline.data = data
+          break
+        }
+      }
+    } else {
+      const timeline:Timeline = {
+        host,
+        accessToken,
+        type,
+        active: false,
+        data,
+        user,
+        firstLoadDone
+      }
+      state.timelines = [...state.timelines, timeline]
     }
-    state.timelines = [...state.timelines, timeline]
   },
   prependNotification (state:Timelines, payload:TimelinePayload) {
     const { host, accessToken, notification } = payload
@@ -385,77 +401,34 @@ export const actions: ActionTree<TimelinesState, RootState> = {
       })
     }
   },
-  firstFetch ({ commit, state }, payload) {
+  async firstFetch ({ commit }, payload) {
     const { host, accessToken, user } = this.getters['users/getCurrentUser']
     const { type } = payload
-    if (type === TimelineType.hometl) {
-      return new Promise<void>((resolve, reject) => {
-        if (
-          !state.timelines.find(
-            tl =>
-              tl.type === type &&
-              tl.accessToken === accessToken)
-        ) {
-          const mastodon = Mastodon.getMastodon({ accessToken, host })
-          mastodon.fetchHomeTimeline().then((result) => {
-            commit('setTimeline', { host, accessToken, type, statuses: result, user })
-            resolve()
-          }).catch((e) => {
-            reject(e)
-          })
+    const emptyStatus:Array<Toot> = []
+    commit('setTimeline', { host, accessToken, type, statuses: emptyStatus, user, firstLoadDone: false })
+    const mastodon = Mastodon.getMastodon({ accessToken, host })
+    try {
+      if (type !== TimelineType.notification) {
+        let result
+        if (type === TimelineType.hometl) {
+          result = await mastodon.fetchHomeTimeline()
+        } else if (type === TimelineType.localtl) {
+          result = await mastodon.fetchLocalTimeline()
+        } else if (type === TimelineType.publictl) {
+          result = await mastodon.fetchPublicTimeline()
         }
-      })
-    } else if (type === TimelineType.localtl) {
-      return new Promise<void>((resolve, reject) => {
-        if (
-          !state.timelines.find(
-            tl =>
-              tl.type === type &&
-              tl.accessToken === accessToken)
-        ) {
-          const mastodon = Mastodon.getMastodon({ accessToken, host })
-          mastodon.fetchLocalTimeline().then((result) => {
-            commit('setTimeline', { host, accessToken, type, statuses: result, user })
-            resolve()
-          }).catch((e) => {
-            reject(e)
-          })
-        }
-      })
-    } else if (type === TimelineType.publictl) {
-      return new Promise<void>((resolve, reject) => {
-        if (
-          !state.timelines.find(
-            tl =>
-              tl.type === type &&
-              tl.accessToken === accessToken)
-        ) {
-          const mastodon = Mastodon.getMastodon({ accessToken, host })
-          mastodon.fetchPublicTimeline().then((result) => {
-            commit('setTimeline', { host, accessToken, type, statuses: result, user })
-            resolve()
-          }).catch((e) => {
-            reject(e)
-          })
-        }
-      })
-    } else {
-      return new Promise<void>((resolve, reject) => {
-        if (
-          !state.timelines.find(
-            tl =>
-              tl.type === type &&
-              tl.accessToken === accessToken)
-        ) {
-          const mastodon = Mastodon.getMastodon({ accessToken, host })
-          mastodon.fetchNotification().then((result) => {
-            commit('setTimeline', { host, accessToken, type, notifications: result, user })
-            resolve()
-          }).catch((e) => {
-            reject(e)
-          })
-        }
-      })
+        commit('setTimeline', { host, accessToken, type, statuses: result, user, firstLoadDone: true })
+      } else {
+        const result = await mastodon.fetchNotification()
+        commit('setTimeline', { host, accessToken, type, notifications: result, user, firstLoadDone: true })
+      }
+    } catch (e) {
+      if (type !== TimelineType.notification) {
+        commit('setTimeline', { host, accessToken, type, statuses: emptyStatus, user, firstLoadDone: true })
+      } else {
+        commit('setTimeline', { host, accessToken, type, notifications: emptyStatus, user, firstLoadDone: true })
+      }
+      throw e
     }
   },
   startStreaming ({ commit, dispatch }, payload) {
