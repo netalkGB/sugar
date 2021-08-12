@@ -49,9 +49,6 @@
           @{{ currentUser.user.userid }}
         </div>
       </div>
-      <!-- <div class="menuitem">
-        <div class="menuitemchildren">設定</div>
-      </div> -->
     </div>
   </div>
 </template>
