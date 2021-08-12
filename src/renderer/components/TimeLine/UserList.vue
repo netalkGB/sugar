@@ -6,14 +6,16 @@
         <IosSyncIcon w="20px" h="20px" animate="rotate" />
       </div>
     </div>
+    <Loading v-if="!firstLoadDone" />
   </div>
 </template>
 
 <script>
 import User from '@/components/TimeLine/Toot/User'
+import Loading from '@/components/TimeLine/Loading'
 import IosSyncIcon from 'vue-ionicons/dist/ios-sync.vue'
 export default {
-  components: { User, IosSyncIcon },
+  components: { User, IosSyncIcon, Loading },
   props: {
     users: {
       type: Array,
@@ -23,6 +25,10 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    firstLoadDone: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -79,6 +85,7 @@ export default {
 
 <style scoped>
 .userListContainer {
+  position: relative;
   font-size: 12px;
   height: 100%;
   width: 100%;
