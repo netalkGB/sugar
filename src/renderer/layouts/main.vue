@@ -6,9 +6,9 @@
     <div id="menu">
       <Sidebar :user-id="userId" />
     </div>
-    <nuxt id="content" />
+    <nuxt v-if="ownFollowerAndFollowingLoaded" id="content" />
     <Modal />
-    <Loading v-if="!ownFollowerAndFollowingLoaded" />
+    <Loading v-if="!ownFollowerAndFollowingLoaded"/>
   </div>
 </template>
 
@@ -48,7 +48,12 @@ export default {
     ipcRenderer.send('changeWindowSize', 'main')
     logger.debug('userId', this.userId)
     this.setCurrentUserId(this.userId)
-    await this.firstFetchOwnFollowerAndFollowing()
+    try {
+      await this.firstFetchOwnFollowerAndFollowing()
+    } catch (e) {
+      logger.error(e)
+      this.showMessage({ message: messages.ownFollowingFollowersFetchError })
+    }
     this.firstFetch({ type: TimelineType.localtl }).then(() => {
       this.startStreaming({ type: TimelineType.localtl }).catch((e) => {
         logger.error(e)
@@ -98,8 +103,11 @@ export default {
     ...mapActions('timelines', ['firstFetch', 'startStreaming']),
     ...mapActions('modal', ['showMessage']),
     async firstFetchOwnFollowerAndFollowing () {
-      await this.fetchOwnFollowerAndFollowing()
-      this.ownFollowerAndFollowingLoaded = true
+      try {
+        await this.fetchOwnFollowerAndFollowing()
+      } finally {
+        this.ownFollowerAndFollowingLoaded = true
+      }
     }
   }
 }
@@ -120,4 +128,5 @@ export default {
   height: 100%;
   overflow-y: hidden;
 }
+
 </style>

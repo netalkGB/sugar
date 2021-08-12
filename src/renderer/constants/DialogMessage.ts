@@ -72,6 +72,12 @@ const dialogMessage:Messages = {
       message: 'プロフィールのフォロワーの取得に失敗しました。'
     }
   ],
+  ownFollowingFollowersFetchError: [
+    {
+      language: 'ja',
+      message: '自ユーザのフォロー/フォロワーの取得に失敗しました。'
+    }
+  ],
   searchResultFetchError: [
     {
       language: 'ja',
