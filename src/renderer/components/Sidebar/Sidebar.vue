@@ -5,10 +5,6 @@
         :items="menu"
         @onChanged="handleChange"
       />
-      <Icon
-
-        icon="addTab"
-      />
     </div>
     <div>
       <div @click="newToot">
