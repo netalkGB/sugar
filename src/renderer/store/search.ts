@@ -59,6 +59,7 @@ export const actions: ActionTree<SearchState, RootState> = {
     const ownUser = currentUser.user
     const { q } = payload
     return new Promise<void>((resolve, reject) => {
+      commit('clear')
       const mastodon = Mastodon.getMastodon({ accessToken, host })
       mastodon.searchMastodon(q).then((data) => {
         const accounts:Array<Entity.Account> = data.accounts
