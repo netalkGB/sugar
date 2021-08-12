@@ -44,11 +44,11 @@ export default {
   },
   props: {
     file: {
-      type: String,
+      type: Object,
       required: true
     },
     idx: {
-      type: String,
+      type: Number,
       required: true
     }
   },
