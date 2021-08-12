@@ -169,7 +169,6 @@ export default {
 }
 .settingsMenu {
   position: absolute;
-  width: 100px;
   background-color: #fefefe;
   bottom: 30px;
   left: 30px;
@@ -177,7 +176,7 @@ export default {
   z-index: 2;
 }
 .menuitemchildren {
-  width: 100%;
+  padding-right: 10px;
   padding-left: 20px;
 }
 .menuitem {
