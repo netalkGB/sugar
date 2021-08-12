@@ -11,5 +11,6 @@ export interface TimelinePayload {
   notifications?: Array<Entity.Notification>,
   notification: Entity.Notification
   user: User,
-  id: string
+  id: string,
+  firstLoadDone: boolean
 }

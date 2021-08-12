@@ -7,5 +7,6 @@ export interface Timeline {
   type: 'hometl' | 'localtl' | 'publictl'|'notification'
   active:boolean
   data: Array<Toot>
-  user: User
+  user: User,
+  firstLoadDone: boolean
 }
