@@ -48,7 +48,7 @@ async function main () {
         config,
         arm64: true,
         x64: true,
-        mac: ['zip']
+        mac: ['dmg']
       })
     }
 
