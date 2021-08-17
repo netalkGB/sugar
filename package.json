@@ -6,6 +6,7 @@
     "name": "gb"
   },
   "version": "0.0.1",
+  "license": "MIT",
   "scripts": {
     "nuxt-generate": "nuxt generate",
     "dev-electron-start": "cross-env NODE_ENV=development electron .",
