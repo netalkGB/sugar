@@ -137,6 +137,12 @@ const dialogMessage:Messages = {
       language: 'ja',
       message: 'ファイルの追加に失敗しました。'
     }
+  ],
+  requiredToReflectConfigRestartApp: [
+    {
+      language: 'ja',
+      message: '設定の反映のためには再起動が必要です'
+    }
   ]
 }
 
