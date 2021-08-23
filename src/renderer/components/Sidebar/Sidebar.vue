@@ -49,6 +49,14 @@
           @{{ currentUser.user.userid }}
         </div>
       </div>
+      <div class="menuitem">
+        <div
+          class="menuitemchildren"
+          @mouseup="openSettingsWindow"
+        >
+          設定
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -153,6 +161,12 @@ export default {
       const userId = this.userId
       const params = { userId }
       this.menu = menu.map(val => ({ ...val, to: { ...val.to, params } }))
+    },
+    openSettingsWindow () {
+      const currentPath = localStorage.getItem('currentPath')
+      const url = this.$router.resolve(`/settings/${this.userId}`).href
+      ipcRenderer.send('newWindow', `${currentPath}${url}`, 'settingsWindow')
+      this.isShowSettingMenu = false
     }
   }
 }

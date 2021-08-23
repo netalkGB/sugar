@@ -46,6 +46,9 @@ export default function (logger:Logger, windows:WindowManager) {
       case 'favouriteWindow':
         newWindow({ width: 256, height: 480 })
         break
+      case 'settingsWindow':
+        newWindow({ width: 640, height: 400 })
+        break
       default:
         newWindow({ width: 256, height: 500 })
         break
