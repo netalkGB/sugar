@@ -1,6 +1,6 @@
 <template>
   <div :style="{ width: width + 'px', height: height + 'px' }">
-    <div>TEST</div>
+    <Settings />
     <Modal />
   </div>
 </template>
@@ -8,13 +8,15 @@
 <script>
 import logger from '@/other/Logger'
 import { createNamespacedHelpers } from 'vuex'
+import Settings from '@/components/Settings/Settings'
 import Modal from '@/components/Modal/Modal'
 
 const { mapActions } = createNamespacedHelpers('users')
 
 export default {
   components: {
-    Modal
+    Modal,
+    Settings
   },
   data () {
     return {
