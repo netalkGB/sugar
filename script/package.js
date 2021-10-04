@@ -44,8 +44,9 @@ async function main () {
     await spawn('npm', ['run', 'nuxt-generate'], { stdio: 'inherit' })
 
     if (platform === 'all' || platform === 'darwin') {
+      const copyConfig = JSON.parse(JSON.stringify(config))
       await build({
-        config,
+        config: copyConfig,
         arm64: true,
         x64: true,
         mac: ['dmg']
@@ -53,8 +54,9 @@ async function main () {
     }
 
     if (platform === 'all' || platform === 'win') {
+      const copyConfig = JSON.parse(JSON.stringify(config))
       await build({
-        config,
+        config: copyConfig,
         arm64: true,
         x64: true,
         win: ['zip']
@@ -62,8 +64,9 @@ async function main () {
     }
 
     if (platform === 'all' || platform === 'linux') {
+      const copyConfig = JSON.parse(JSON.stringify(config))
       await build({
-        config,
+        config: copyConfig,
         arm64: true,
         armv7l: true,
         x64: true,
